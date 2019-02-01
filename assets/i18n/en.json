@@ -1,0 +1,31 @@
+{
+    "error": {
+        "mqtt": "Sorry, there was a communication error with the Snips platform",
+        "config": "Sorry, there was an error with your config file.",
+        "locale": "Sorry, there was an error with your language settings.",
+        "intentNotRecognized": "Sorry, I did not understand your request.",
+        "APIResponse": "Sorry, there was an issue with the directions service provider.",
+        "APIRequest": "Sorry, the service provider is unreachable.",
+        "unspecific": "Oops, something went wrong.",
+        "noHomeAddress": "Please, make sure you set up your home address",
+        "noWorkAddress": "Please, make sure you set up your work address",
+        "noCurrentAddress": "Please, make sure you set up your current location",
+        "badCurrentAddress": "Sorry, your current location is not properly configured",
+        "noArrivalTime": "",
+        "noDepartureTime": ""
+    },
+    "directions": {
+        "dialog": {
+            "noDestinationAddress": "What's your destination?"
+        },
+        "info": {
+            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes",
+            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
+            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}"
+        },
+        "fromLocation": {
+            "home": "from your home",
+            "work": "from your workplace"
+        }
+    }
+}
