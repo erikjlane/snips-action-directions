@@ -1,14 +1,16 @@
 require('./helpers/setup').bootstrap()
 const Session = require('./helpers/session')
-const { createPokemonIdSlot } = require('./utils')
+const { createLocationFromSlot, createLocationToSlot, createTravelModeSlot } = require('./utils')
 
 it('should query a Pokemon by its id and output its name', async () => {
     const session = new Session()
     await session.start({
-        intentName: 'pokemon',
-        input: 'Give me the details for Pokemon 1',
+        intentName: 'GetDirections',
+        input: 'Give me the directions to go from 18 rue Saint-Marc to 3 rue des Acacias by metro',
         slots: [
-            createPokemonIdSlot('1')
+            createLocationFromSlot('18 rue Saint-Marc'),
+            createLocationToSlot('3 rue des Acacias'),
+            createTravelModeSlot('transit')
         ]
     })
     // In test mode, the i18n output is mocked as a JSON containing the i18n key and associated options.

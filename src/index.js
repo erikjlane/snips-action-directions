@@ -23,7 +23,7 @@ module.exports = function ({
                 },
                 {
                     intent: 'Superuser:GetNavigationTime',
-                    action: handlers.getNavigationTime
+                    action: handlers.getDirections
                 },
                 {
                     intent: 'Superuser:GetDepartureTime',

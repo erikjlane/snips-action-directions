@@ -16,7 +16,7 @@ module.exports = {
             i18n = i18nFactory.get()
         }
 
-        if(i18n) {
+        if (i18n) {
             return i18n([`error.${error.message}`, 'error.unspecific'])
         } else {
             return 'Oops, something went wrong.'
@@ -66,7 +66,6 @@ module.exports = {
     },
     arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
         const i18n = i18nFactory.get()
-
         const config = configFactory.get()
 
         // Date object handles the epoch in ms
@@ -82,6 +81,40 @@ module.exports = {
             ' ' +
             i18n('directions.fromLocation.' + config.currentAddress) +
             '.'
+
+        return tts
+    },
+    directionsToSpeech (locationFrom, locationTo, travelMode, directionsData) {
+        const i18n = i18nFactory.get()
+        const config = configFactory.get()
+
+        let tts = ''
+        let i
+        for (i = 0; i < directionsData.length; i++) {
+            if (directionsData[i].travel_mode === 'WALKING') {
+                if (directionsData[i + 1] && directionsData[i + 1].travel_mode === 'TRANSIT') {
+                    if (directionsData[i].duration > 90) {
+                        tts += i18n('directions.info.walkToMetro', {
+                            arrival_stop: directionsData[i + 1].departure_stop,
+                            duration: directionsData[i + 1].duration / 60
+                        })
+                    }
+                } else {
+                    tts += i18n('directions.info.walkToFinalLocation', {
+                        distance: directionsData[i].distance,
+                        location_to: locationTo
+                    })
+                }
+            }
+            else if (directionsData[i].travel_mode === 'TRANSIT') {
+                tts += i18n('directions.info.metro', {
+                    line_name: directionsData[i].line_name,
+                    headsign: directionsData[i].headsign,
+                    arrival_stop: directionsData[i].arrival_stop
+                })
+            }
+            tts += ' '
+        }
 
         return tts
     }

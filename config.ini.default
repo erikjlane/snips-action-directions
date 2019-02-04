@@ -1,4 +1,8 @@
 [global]
 locale=french
+home_address=
+work_address=
+current_address=home
+units=metric
 
 [secret]

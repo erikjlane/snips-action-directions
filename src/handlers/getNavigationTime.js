@@ -16,17 +16,17 @@ module.exports = async function (msg, flow) {
     logger.info("travel_mode: ", travelMode)
 
     // Get the data from Directions API
-    const directions = await api.calculateRoute({
+    const directionsData = await api.calculateRoute({
         origin: locationFrom,
         destination: locationTo,
         travel_mode: travelMode
     })
-    logger.debug(directions)
+    logger.debug(directionsData)
 
     let speech = ''
 
     try {
-        const navigationTime = directions.routes[0].legs[0].duration.value
+        const navigationTime = directionsData.routes[0].legs[0].duration.value
         speech = translation.navigationTimeToSpeech(locationFrom, locationTo, travelMode, navigationTime)
     } catch (error) {
         logger.error(error)

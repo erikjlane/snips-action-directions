@@ -28,19 +28,19 @@ module.exports = async function (msg, flow) {
     logger.info("arrival_time: ", arrivalTime)
 
     // Get the data from Directions API
-    const directions = await api.calculateRoute({
+    const directionsData = await api.calculateRoute({
         origin: locationFrom,
         destination: locationTo,
         travel_mode: travelMode,
         arrival_time: arrivalTime
     })
-    logger.debug(directions)
+    logger.debug(directionsData)
 
     let speech = ''
 
     try {
-        const departureTime = directions.routes[0].legs[0].departure_time.value
-        const arrivalTime = directions.routes[0].legs[0].arrival_time.value
+        const departureTime = directionsData.routes[0].legs[0].departure_time.value
+        const arrivalTime = directionsData.routes[0].legs[0].arrival_time.value
 
         speech = translation.departureTimeToSpeech(locationFrom, locationTo, travelMode, departureTime, arrivalTime)
     } catch (error) {

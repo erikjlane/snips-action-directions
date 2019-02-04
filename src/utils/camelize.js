@@ -4,7 +4,7 @@ module.exports = {
     ),
     camelizeKeys: obj => {
         const clone = {}
-        for(let key in obj){
+        for (let key in obj){
             clone[module.exports.camelize(key)] = obj[key]
         }
         return clone

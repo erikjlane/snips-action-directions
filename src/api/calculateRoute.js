@@ -1,8 +1,7 @@
 const { httpFactory } = require('../factories')
 
 module.exports = function ({origin, destination, travel_mode, departure_time = '', arrival_time = ''} = {}) {
-    const http = httpFactory.get()
-    return http.query({
+    return httpFactory.get().query({
         origin: origin,
         destination: destination,
         mode: travel_mode,

@@ -1,13 +1,37 @@
 module.exports = {
-    createPokemonIdSlot(id) {
+    createLocationFromSlot(address) {
         return {
-            slotName: 'pokemon_id',
-            entity: 'pokemon_id',
+            slotName: 'location_from',
+            entity: 'address',
             confidence: 1,
-            rawValue: id,
+            rawValue: address,
             value: {
                 kind: 'Custom',
-                value: id
+                value: address
+            }
+        }
+    }
+    createLocationToSlot(address) {
+        return {
+            slotName: 'location_to',
+            entity: 'address',
+            confidence: 1,
+            rawValue: address,
+            value: {
+                kind: 'Custom',
+                value: address
+            }
+        }
+    }
+    createTravelModeSlot(travelMode) {
+        return {
+            slotName: 'travel_mode',
+            entity: 'travel_mode',
+            confidence: 1,
+            rawValue: travelMode,
+            value: {
+                kind: 'Custom',
+                value: travelMode
             }
         }
     }

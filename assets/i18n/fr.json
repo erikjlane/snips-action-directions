@@ -19,9 +19,15 @@
             "noDestinationAddress": "Quelle est votre destination?"
         },
         "info": {
-            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes",
-            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
-            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}"
+            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes.",
+            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}.",
+            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
+            "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
+            "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
+            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}."
+        },
+        "transportAdvice": {
+            "connectionTrain": "pour un changement"
         },
         "fromLocation": {
             "home": "de votre domicile",
