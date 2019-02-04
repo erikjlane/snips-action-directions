@@ -1,19 +1,27 @@
 {
-  "name": "snips-directions-simple",
+  "name": "snips-action-directions",
   "version": "0.0.1",
-  "description": "Snips Assistant Directions.",
+  "description": "Get Directions &amp; Traffic info",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint ."
+    "start": "npm run lint && npm run test",
+    "lint": "eslint .",
+    "test": "jest '^.*\\.spec\\.js$'"
   },
   "author": "Thomas Bouvier",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^5.12.0"
+    "camelcase": "^5.0.0",
+    "eslint": "^5.12.0",
+    "eslint-plugin-jest": "^22.1.3",
+    "fetch-mock": "^7.3.0",
+    "jest": "^23.6.0",
+    "mqtt": "^2.18.8",
+    "uuid": "^3.3.2"
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "hermes-javascript": "0.0.6",
+    "hermes-javascript": "^0.1.0",
     "i18next": "^13.1.2",
     "ini": "^1.3.5",
     "node-fetch": "^2.3.0",

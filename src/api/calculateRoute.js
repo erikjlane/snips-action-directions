@@ -1,8 +1,8 @@
-const request = require('./request')
-const { message, logger } = require('../utils')
+const { httpFactory } = require('../factories')
 
 module.exports = function ({origin, destination, travel_mode, departure_time = '', arrival_time = ''} = {}) {
-    return request.query({
+    const http = httpFactory.get()
+    return http.query({
         origin: origin,
         destination: destination,
         mode: travel_mode,

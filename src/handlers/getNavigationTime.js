@@ -21,6 +21,7 @@ module.exports = async function (msg, flow) {
         destination: locationTo,
         travel_mode: travelMode
     })
+    logger.debug(directions)
 
     let speech = ''
 

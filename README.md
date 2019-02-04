@@ -1,18 +1,42 @@
-# snips-action-template-javacript
-#### Starter repository for writing Snips action code in Javascript.
+# snips-action-directions
+#### Get Directions &amp; Traffic info
 
-## Clone me
+## Setup
 
-```bash
-git clone https://github.com/snipsco/snips-action-template-javacript
-cd snips-action-template-javacript
+```
+npm install
 ```
 
-## Features
+## Run
 
-- 🐚 Action code template (folder structure & files) fully commented
-- ⚚ Platform interactions going through [hermes-javascript](https://www.npmjs.com/package/hermes-javascript)
-- 💬 Internationalization (i18n) using [i18next](https://www.i18next.com)
-- 📞 Api calls using [wretch](https://github.com/elbywan/wretch) and [wretch-middlewares](https://github.com/elbywan/wretch-middlewares)
-- ✍️ Logger with [debug](https://github.com/visionmedia/debug)
-- ✅ Linter with [eslint](https://eslint.org/)
+```
+node action.js
+```
+
+## Debug
+
+In the `action.js` file:
+
+```js
+// Uncomment this line to print everything
+// debug.enable(name + ':*')
+```
+
+When running from the terminal, to enable full depth object printing:
+
+```bash
+env DEBUG_DEPTH=null action.js
+```
+
+## Test & Lint
+
+*Requires [mosquitto](https://mosquitto.org/download/) to be installed.*
+
+```sh
+npm start
+```
+
+**In test mode, i18n output and http calls are mocked.**
+
+- **http**: see `tests/httpMocks/index.js`
+- **i18n**: see `src/factories/i18nFactory.js`

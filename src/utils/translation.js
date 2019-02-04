@@ -11,12 +11,12 @@ module.exports = {
     errorMessage: async error => {
         let i18n = i18nFactory.get()
 
-        if (!i18n) {
+        if(!i18n) {
             await i18nFactory.init()
             i18n = i18nFactory.get()
         }
 
-        if (i18n) {
+        if(i18n) {
             return i18n([`error.${error.message}`, 'error.unspecific'])
         } else {
             return 'Oops, something went wrong.'
@@ -27,7 +27,6 @@ module.exports = {
         const i18n = i18nFactory.get()
         const possibleValues = i18n(key, { returnObjects: true, ...opts })
         const randomIndex = Math.floor(Math.random() * possibleValues.length)
-
         return possibleValues[randomIndex]
     },
     navigationTimeToSpeech (locationFrom, locationTo, travelMode, navigationTime) {

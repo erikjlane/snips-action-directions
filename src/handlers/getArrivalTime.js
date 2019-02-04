@@ -34,6 +34,7 @@ module.exports = async function (msg, flow) {
         travel_mode: travelMode,
         departure_time: departureTime
     })
+    logger.debug(directions)
 
     let speech = ''
 

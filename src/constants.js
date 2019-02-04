@@ -5,6 +5,5 @@ module.exports = {
     LANGUAGE_MAPPINGS: {
         english: 'en',
         french: 'fr'
-    },
-    INTENT_PROBABILITY_THRESHOLD: 0.5
+    }
 }
