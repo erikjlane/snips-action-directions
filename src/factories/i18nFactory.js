@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const i18next = require('i18next')
+const { logger } = require('../utils')
 const { DEFAULT_LANGUAGE } = require('../constants')
 
 let i18n = null

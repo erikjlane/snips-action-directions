@@ -11,6 +11,22 @@ const http = wretch(BASE_URL)
     .middlewares([
         dedupe()
     ])
+    /*
+    .middlewares([
+        dedupe(),
+        next => async (url, opts) => {
+            const response = await next(url, opts)
+            const clone = await response.clone()
+            const body = await response.json()
+            if (body.status === 'ZERO_RESULTS') {
+                // chope l'id dans le body
+                return next( nouvelle url , opts)
+            } else {
+                return response
+            }
+        }
+    ])
+    */
 
 module.exports = {
     init (httpOptions = {}) {
@@ -32,11 +48,11 @@ module.exports = {
                 mode: travelMode,
                 departure_time: departureTime,
                 arrival_time: arrivalTime,
-                units: config.unitSystem === 'metric' ? 'metric' : 'imperial',
+                units: config.unitSystem,
                 key: 'AIzaSyD44qt1yNsG4sucw6voNSLy9VU-2-PT-60'
             })
 
-        logger.debug(request)
+        //logger.debug(request)
 
         const results = await request
             .get()

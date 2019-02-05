@@ -28,9 +28,6 @@
             "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
             "trafficInfo": "En conditions normales, "
         },
-        "transportAdvice": {
-            "connectionTrain": "pour un changement"
-        },
         "fromLocation": {
             "home": "de votre domicile",
             "work": "de votre lieu de travail"

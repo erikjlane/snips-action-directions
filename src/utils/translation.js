@@ -1,5 +1,4 @@
 const { i18nFactory, configFactory } = require('../factories')
-const { isToday } = require('./time')
 const { info } = require('./logger')
 
 function getFormattedHoursAndMinutes (date) {
@@ -30,6 +29,7 @@ module.exports = {
         return possibleValues[randomIndex]
     },
     navigationTimeToSpeech (locationFrom, locationTo, travelMode, navigationTime) {
+        info(i18nFactory)
         const i18n = i18nFactory.get()
         const config = configFactory.get()
 
@@ -125,9 +125,11 @@ module.exports = {
         const i18n = i18nFactory.get()
         const config = configFactory.get()
 
-        let tts = ''
-
-
+        const tts = i18n('directions.info.trafficInfo', {
+            location_from: locationFrom,
+            location_to: locationTo,
+            travel_mode: travelMode
+        })
 
         return tts
     }

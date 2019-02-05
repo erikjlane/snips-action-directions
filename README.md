@@ -25,7 +25,7 @@ In the `action.js` file:
 When running from the terminal, to enable full depth object printing:
 
 ```bash
-env DEBUG_DEPTH=null action.js
+env DEBUG_DEPTH=null node action.js
 ```
 
 ## Test & Lint

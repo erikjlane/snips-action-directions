@@ -26,7 +26,7 @@
             "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
             "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
             "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
-            "trafficInfo": "En conditions normales, "
+            "trafficInfo": "En conditions normales, {{ location_from }}, {{ location_to }}, {{ travel_mode }}"
         },
         "fromLocation": {
             "home": "from your home",

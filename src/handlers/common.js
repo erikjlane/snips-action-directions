@@ -5,8 +5,8 @@ const { INTENT_PROBABILITY_THRESHOLD, HOME_SYNONYMS, WORK_SYNONYMS } = require('
 function getCurrentLocation() {
     const config = configFactory.get()
 
-    if (config.currentAddress) {
-        switch (config.currentAddress) {
+    if (config.currentLocation) {
+        switch (config.currentLocation) {
             case 'work':
                 return getWorkLocation()
             case 'home':
@@ -21,27 +21,54 @@ function getCurrentLocation() {
 
 function getWorkLocation() {
     const config = configFactory.get()
-    if (!config.workAddress) {
+
+    if (!config.workAddress || !config.workCity) {
         throw new Error('noWorkAddress')
     }
-    return config.workAddress
+
+    return config.workAddress + ' ' + config.workCity
 }
 
 function getHomeLocation() {
     const config = configFactory.get()
-    if (!config.homeAddress) {
+
+    if (!config.homeAddress || !config.homeCity) {
         throw new Error('noHomeAddress')
     }
-    return config.homeAddress
+
+    return config.homeAddress + ' ' + config.homeCity
 }
 
-function getRealAddress(location) {
+function getCompleteAddress(location) {
+    const config = configFactory.get()
+
     if (WORK_SYNONYMS.includes(location)) {
         return getWorkLocation()
     }
     if (HOME_SYNONYMS.includes(location)) {
         return getHomeLocation()
     }
+
+    // Increasing precision if current city in provided
+    /*
+    if (config.currentLocation) {
+        switch (config.currentLocation) {
+            case 'work':
+                if (!location.includes(config.workCity)) {
+                    location += ' ' + config.workCity
+                }
+                break
+            case 'home':
+                if (!location.includes(config.homeCity)) {
+                    location += ' ' + config.homeCity
+                }
+                break
+            default:
+                break
+        }
+    }
+    */
+
     return location
 }
 
@@ -62,7 +89,7 @@ module.exports = async function (msg) {
 
     let locationFrom = ''
     if (locationFromSlot) {
-        locationFrom = getRealAddress(locationFromSlot.value.value)
+        locationFrom = getCompleteAddress(locationFromSlot.value.value)
     } else {
         locationFrom = getCurrentLocation()
     }
@@ -71,7 +98,7 @@ module.exports = async function (msg) {
 
     let locationTo = ''
     if (locationToSlot) {
-        locationTo = getRealAddress(locationToSlot.value.value)
+        locationTo = getCompleteAddress(locationToSlot.value.value)
     } else {
         return new Error('noDestinationAddress')
     }

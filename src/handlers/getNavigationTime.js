@@ -1,5 +1,5 @@
-const { i18nFactory, configFactory, httpFactory } = require('../factories')
-const { message, logger, translation } = require('../utils')
+const { i18nFactory, httpFactory } = require('../factories')
+const { logger, translation } = require('../utils')
 const commonHandler = require('./common')
 
 module.exports = async function (msg, flow) {
