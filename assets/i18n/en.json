@@ -7,21 +7,26 @@
         "APIResponse": "Sorry, there was an issue with the directions service provider.",
         "APIRequest": "Sorry, the service provider is unreachable.",
         "unspecific": "Oops, something went wrong.",
-        "noHomeAddress": "Please, make sure you set up your home address",
-        "noWorkAddress": "Please, make sure you set up your work address",
-        "noCurrentAddress": "Please, make sure you set up your current location",
-        "badCurrentAddress": "Sorry, your current location is not properly configured",
-        "noArrivalTime": "",
-        "noDepartureTime": ""
+        "place": "Sorry, the location you asked for is unknown to me.",
+        "noHomeAddress": "Please, make sure you set up your home address.",
+        "noWorkAddress": "Please, make sure you set up your work address.",
+        "noCurrentAddress": "Please, make sure you set up your current location.",
+        "badCurrentAddress": "Sorry, your current location is not properly configured.",
+        "noArrivalTime": "Sorry, I did not understand your wanted arrival time.",
+        "noDepartureTime": "Sorry, I did not understand your wanted departure time."
     },
     "directions": {
         "dialog": {
             "noDestinationAddress": "What's your destination?"
         },
         "info": {
-            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes",
-            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
-            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}"
+            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes.",
+            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}.",
+            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
+            "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
+            "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
+            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
+            "trafficInfo": "En conditions normales, "
         },
         "fromLocation": {
             "home": "from your home",

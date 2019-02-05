@@ -19,7 +19,7 @@ function init () {
                 ...camelizeKeys(iniConfig[section])
             }
         }
-        if(!config.locale) {
+        if (!config.locale) {
             config.locale = DEFAULT_LOCALE
         }
     } catch (error) {

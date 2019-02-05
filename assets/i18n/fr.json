@@ -7,16 +7,17 @@
         "APIResponse": "Désolé, une erreur s'est produite avec le service de calcul des directions.",
         "APIRequest": "Désolé, le service de météo est injoignable.",
         "unspecific": "Oups, quelque chose s'est mal passé.",
-        "noHomeAddress": "Veillez à configurer l'adresse de votre domicile",
-        "noWorkAddress": "Veillez à configurer l'adresse de votre lieu de travail",
-        "noCurrentAddress": "Veillez à configurer votre localisation courante",
-        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée",
-        "noArrivalTime": "",
-        "noDepartureTime": ""
+        "place": "Désolé, le lieu demandé n'a pas été retrouvé.",
+        "noHomeAddress": "Veillez à configurer l'adresse de votre domicile.",
+        "noWorkAddress": "Veillez à configurer l'adresse de votre lieu de travail.",
+        "noCurrentAddress": "Veillez à configurer votre localisation courante.",
+        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée.",
+        "noArrivalTime": "Désolé, je n'ai pas compris l'heure d'arrivée souhaitée.",
+        "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée."
     },
     "directions": {
         "dialog": {
-            "noDestinationAddress": "Quelle est votre destination?"
+            "noDestinationAddress": "Quelle est votre destination ?"
         },
         "info": {
             "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes.",
@@ -24,7 +25,8 @@
             "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
             "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
             "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
-            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}."
+            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
+            "trafficInfo": "En conditions normales, "
         },
         "transportAdvice": {
             "connectionTrain": "pour un changement"

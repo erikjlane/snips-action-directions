@@ -1,6 +1,49 @@
 const { message, logger } = require('../utils')
 const { configFactory } = require('../factories')
-const { INTENT_PROBABILITY_THRESHOLD } = require('../constants')
+const { INTENT_PROBABILITY_THRESHOLD, HOME_SYNONYMS, WORK_SYNONYMS } = require('../constants')
+
+function getCurrentLocation() {
+    const config = configFactory.get()
+
+    if (config.currentAddress) {
+        switch (config.currentAddress) {
+            case 'work':
+                return getWorkLocation()
+            case 'home':
+                return getHomeLocation()
+            default:
+                throw new Error('badCurrentAddress')
+        }
+    } else {
+        throw new Error('noCurrentAddress')
+    }
+}
+
+function getWorkLocation() {
+    const config = configFactory.get()
+    if (!config.workAddress) {
+        throw new Error('noWorkAddress')
+    }
+    return config.workAddress
+}
+
+function getHomeLocation() {
+    const config = configFactory.get()
+    if (!config.homeAddress) {
+        throw new Error('noHomeAddress')
+    }
+    return config.homeAddress
+}
+
+function getRealAddress(location) {
+    if (WORK_SYNONYMS.includes(location)) {
+        return getWorkLocation()
+    }
+    if (HOME_SYNONYMS.includes(location)) {
+        return getHomeLocation()
+    }
+    return location
+}
 
 module.exports = async function (msg) {
     const config = configFactory.get()
@@ -15,36 +58,43 @@ module.exports = async function (msg) {
     const locationToSlot = message.getSlotsByName(msg, 'location_to', { onlyMostConfident: true })
     const travelModeSlot = message.getSlotsByName(msg, 'travel_mode', { onlyMostConfident: true })
 
-    // If no location_from was specified, fallback to the default location
-    let locationFromDefault = ''
-    if (!locationFromSlot) {
-        const config = configFactory.get()
-        if (!config.currentAddress) {
-            throw new Error('noCurrentAddress')
-        } else {
-            if (config.currentAddress === 'work') {
-                if (!config.workAddress) {
-                    throw new Error('noWorkAddress')
-                }
-                locationFromDefault = config.workAddress
-            } else if (config.currentAddress === 'home') {
-                if (!config.homeAddress) {
-                    throw new Error('noHomeAddress')
-                }
-                locationFromDefault = config.homeAddress
-            } else {
-                throw new Error('badCurrentAddress')
-            }
-        }
+    // location_from
+
+    let locationFrom = ''
+    if (locationFromSlot) {
+        locationFrom = getRealAddress(locationFromSlot.value.value)
+    } else {
+        locationFrom = getCurrentLocation()
     }
 
-    if (!locationToSlot) {
+    // location_to
+
+    let locationTo = ''
+    if (locationToSlot) {
+        locationTo = getRealAddress(locationToSlot.value.value)
+    } else {
         return new Error('noDestinationAddress')
     }
 
+    // travel_mode
+
+    let travelMode = ''
+    if (travelModeSlot) {
+        const travelModeAvailable = {
+            'bike': 'bicycling',
+            'car': 'driving',
+            'walk': 'walking',
+            'train': 'transit',
+            'bus': 'bus'
+        }
+        travelMode = travelModeAvailable[travelModeSlot.value.value] || 'transit'
+    } else {
+        travelMode = 'transit'
+    }
+
     return {
-        locationFrom: locationFromSlot ? locationFromSlot.value.value : locationFromDefault,
-        locationTo: locationToSlot.value.value,
-        travelMode: travelModeSlot ? travelModeSlot : 'transit'
+        locationFrom,
+        locationTo,
+        travelMode
     }
 }

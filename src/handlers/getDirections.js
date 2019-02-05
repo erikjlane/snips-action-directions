@@ -1,5 +1,4 @@
-const api = require('../api')
-const { i18nFactory, configFactory } = require('../factories')
+const { i18nFactory, configFactory, httpFactory } = require('../factories')
 const { message, logger, translation, directions } = require('../utils')
 const commonHandler = require('./common')
 
@@ -16,10 +15,10 @@ module.exports = async function (msg, flow) {
     logger.info("travel_mode: ", travelMode)
 
     // Get the data from Directions API
-    const directionsData = await api.calculateRoute({
+    const directionsData = await httpFactory.calculateRoute({
         origin: locationFrom,
         destination: locationTo,
-        travel_mode: travelMode
+        travelMode: travelMode
     })
     logger.debug(directionsData)
 
