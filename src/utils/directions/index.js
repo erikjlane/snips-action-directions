@@ -1,3 +1,4 @@
 module.exports = {
-    aggregateDirections: require('./aggregateDirections').aggregateDirections
+    aggregateDirections: require('./aggregateDirections').aggregateDirections,
+    isConnection: require('./aggregateDirections').isConnection
 }

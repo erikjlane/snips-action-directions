@@ -23,19 +23,19 @@ module.exports = function ({
                     action: handlers.getTrafficInfo
                 },
                 {
-                    intent: 'Superuser:GetNavigationTime',
+                    intent: 'snips-assistant:GetNavigationTime',
                     action: handlers.getNavigationTime
                 },
                 {
-                    intent: 'Superuser:GetDepartureTime',
+                    intent: 'snips-assistant:GetDepartureTime',
                     action: handlers.getDepartureTime
                 },
                 {
-                    intent: 'Superuser:GetArrivalTime',
+                    intent: 'snips-assistant:GetArrivalTime',
                     action: handlers.getArrivalTime
                 },
                 {
-                    intent: 'Superuser:GetDirections',
+                    intent: 'snips-assistant:GetDirections',
                     action: handlers.getDirections
                 }
             ])

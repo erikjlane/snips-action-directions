@@ -1,8 +1,13 @@
 const { i18nFactory, configFactory } = require('../factories')
 const { info } = require('./logger')
+const { isConnection } = require('./directions')
 
 function getFormattedHoursAndMinutes (date) {
     return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+}
+
+function roundToOne(num) {    
+    return +(Math.round(num + "e+1") + "e-1");
 }
 
 module.exports = {
@@ -39,7 +44,7 @@ module.exports = {
                 navigation_time: Math.round(navigationTime / 60)
             }) +
             ' ' +
-            i18n('directions.fromLocation.' + config.currentAddress) +
+            i18n('directions.fromLocation.' + config.currentLocation) +
             '.'
 
         return tts
@@ -59,7 +64,7 @@ module.exports = {
                 arrival_time: getFormattedHoursAndMinutes(arrivalTimeDate)
             }) +
             ' ' +
-            i18n('directions.fromLocation.' + config.currentAddress) +
+            i18n('directions.fromLocation.' + config.currentLocation) +
             '.'
 
         return tts
@@ -73,50 +78,85 @@ module.exports = {
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
         const tts =
-            i18n('directions.info.departureTime', {
+            i18n('directions.info.arrivalTime', {
                 location_to: locationTo,
                 departure_time: getFormattedHoursAndMinutes(departureTimeDate),
                 arrival_time: getFormattedHoursAndMinutes(arrivalTimeDate)
             }) +
             ' ' +
-            i18n('directions.fromLocation.' + config.currentAddress) +
+            i18n('directions.fromLocation.' + config.currentLocation) +
             '.'
 
         return tts
     },
-    directionsToSpeech (locationFrom, locationTo, travelMode, directionsData) {
+    directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData) {
         const i18n = i18nFactory.get()
-        const config = configFactory.get()
+        const { randomTranslation } = module.exports
 
         let tts = ''
-        let i
-        for (i = 0; i < directionsData.length; i++) {
-            const currentStep = directionsData[i]
-            const nextStep = directionsData[i + 1]
 
-            if (currentStep.travel_mode === 'WALKING') {
-                if (nextStep && nextStep.travel_mode === 'TRANSIT') {
-                    if (currentStep.duration > 90) {
-                        tts += i18n('directions.info.walkToMetro', {
-                            arrival_stop: nextStep.departure_stop,
-                            duration: currentStep.duration / 60
-                        })
-                    }
-                } else {
-                    tts += i18n('directions.info.walkToFinalLocation', {
-                        distance: currentStep.distance,
-                        location_to: locationTo
-                    })
-                }
-            }
-            else if (currentStep.travel_mode === 'TRANSIT') {
-                tts += i18n('directions.info.metro', {
-                    line_name: currentStep.line_name,
-                    headsign: currentStep.headsign,
-                    arrival_stop: currentStep.arrival_stop
+        switch (travelMode) {
+            case 'walking':
+            case 'bicycling':
+            case 'driving':
+                tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
+                    location_to: locationTo,
+                    duration: Math.round(duration / 60),
+                    distance: roundToOne(distance / 1000)
                 })
-            }
-            tts += ' '
+                break
+
+            case 'transit':
+                tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
+                    location_to: locationTo,
+                    duration: Math.round(duration / 60),
+                    distance: roundToOne(distance / 1000)
+                }) +
+                ' '
+
+                let i
+                let connection = false
+                for (i = 0; i < directionsData.length; i++) {
+                    const currentStep = directionsData[i]
+
+                    if (currentStep.travel_mode === 'WALKING') {
+                        if (i === directionsData.length - 1) {
+                            tts += i18n('directions.directions.transit.walkToFinalDestination', {
+                                distance: currentStep.distance,
+                                location_to: locationTo
+                            })
+                        } else if (isConnection(directionsData, i)) {
+                            connection = true
+                        } else {
+                            const nextStep = directionsData[i + 1]
+                            tts += i18n('directions.directions.transit.walkToMetro', {
+                                arrival_stop: nextStep.departure_stop,
+                                duration: Math.round(currentStep.duration / 60)
+                            })
+                        }
+                    }
+                    else if (currentStep.travel_mode === 'TRANSIT') {
+                        if (!connection) {
+                            tts += i18n('directions.directions.transit.metro', {
+                                line_name: currentStep.line_name,
+                                headsign: currentStep.headsign,
+                                arrival_stop: currentStep.arrival_stop
+                            })
+                        } else {
+                            tts += i18n('directions.directions.transit.connectionMetro', {
+                                line_name: currentStep.line_name,
+                                headsign: currentStep.headsign,
+                                arrival_stop: currentStep.arrival_stop
+                            })
+                            connection = false
+                        }
+                    }
+                    tts += ' '
+                }
+                break
+
+            default:
+                break
         }
 
         return tts

@@ -1,8 +1,11 @@
 [global]
-locale=french
+locale=
+current_region=
+current_location=
 home_address=
+home_city=
 work_address=
-current_address=home
-units=metric
+work_city=
+unit_system=
 
 [secret]

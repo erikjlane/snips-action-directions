@@ -1,4 +1,4 @@
-const { message, logger } = require('../utils')
+const { message } = require('../utils')
 const { configFactory } = require('../factories')
 const { INTENT_PROBABILITY_THRESHOLD, HOME_SYNONYMS, WORK_SYNONYMS } = require('../constants')
 
@@ -50,7 +50,6 @@ function getCompleteAddress(location) {
     }
 
     // Increasing precision if current city in provided
-    /*
     if (config.currentLocation) {
         switch (config.currentLocation) {
             case 'work':
@@ -67,7 +66,6 @@ function getCompleteAddress(location) {
                 break
         }
     }
-    */
 
     return location
 }

@@ -20,13 +20,45 @@
             "noDestinationAddress": "Quelle est votre destination ?"
         },
         "info": {
-            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes.",
-            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}.",
-            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
-            "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
-            "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
-            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
+            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes",
+            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
+            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}",
             "trafficInfo": "En conditions normales, "
+        },
+        "directions": {
+            "transit": {
+                "toDestination": [
+                    "Se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes",
+                    "En transports en commun, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}.",
+                    "En transports en commun, prévoyez {{ duration }} minutes pour vous rendre à {{ location_to }}."
+                ],
+                "walkToMetro": "Marchez {{ duration }} minutes jusqu'à la station {{ arrival_stop }}.",
+                "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}, et descendez à la station {{ arrival_stop }}.",
+                "connectionMetro": "À la correspondance, prenez la ligne {{ line_name }} en direction de {{ headsign }} puis descendez à la station {{ arrival_stop }}.",
+                "walkToFinalDestination": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}."
+            },
+            "walking": {
+                "toDestination": [
+                    "Se rendre à {{ location_to }} à pied vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "Marcher jusqu'à {{ location_to }} vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "À pied, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À pied, prévoyez {{ duration }} minutes."
+                ]
+            },
+            "bicycling": {
+                "toDestination": [
+                    "Se rendre à {{ location_to }} à vélo vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "À vélo, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À vélo, prévoyez {{ duration }} minutes."
+                ]
+            },
+            "driving": {
+                "toDestination": [
+                    "Se rendre à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "En voiture, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. En voiture, prévoyez {{ duration }} minutes."
+                ]
+            }
         },
         "fromLocation": {
             "home": "de votre domicile",

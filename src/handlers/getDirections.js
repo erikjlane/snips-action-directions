@@ -28,7 +28,10 @@ module.exports = async function (msg, flow) {
     let speech = ''
 
     try {
-        speech = translation.directionsToSpeech(locationFrom, locationTo, travelMode, aggregatedDirectionsData)
+        const duration = directionsData.routes[0].legs[0].duration.value
+        const distance = directionsData.routes[0].legs[0].distance.value
+
+        speech = translation.directionsToSpeech(locationFrom, locationTo, travelMode, duration, distance, aggregatedDirectionsData)
     } catch (error) {
         logger.error(error)
         throw new Error('APIResponse')
