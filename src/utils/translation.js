@@ -10,6 +10,10 @@ function roundToOne(num) {
     return +(Math.round(num + "e+1") + "e-1");
 }
 
+function extractFirstPart(address) {
+    return address.split(',')[0]
+}
+
 module.exports = {
     // Outputs an error message based on the error object, or a default message if not found.
     errorMessage: async error => {
@@ -33,15 +37,15 @@ module.exports = {
         const randomIndex = Math.floor(Math.random() * possibleValues.length)
         return possibleValues[randomIndex]
     },
-    navigationTimeToSpeech (locationFrom, locationTo, travelMode, navigationTime) {
+    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration) {
         info(i18nFactory)
         const i18n = i18nFactory.get()
         const config = configFactory.get()
 
         const tts =
-            i18n('directions.info.navigationTime', {
-                location_to: locationTo,
-                navigation_time: Math.round(navigationTime / 60)
+            i18n('directions.navigationTime.' + travelMode, {
+                location_to: extractFirstPart(locationTo),
+                duration: Math.round(duration / 60)
             }) +
             ' ' +
             i18n('directions.fromLocation.' + config.currentLocation) +
@@ -58,8 +62,8 @@ module.exports = {
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
         const tts =
-            i18n('directions.info.departureTime', {
-                location_to: locationTo,
+            i18n('directions.departureTime.' + travelMode, {
+                location_to: extractFirstPart(locationTo),
                 departure_time: getFormattedHoursAndMinutes(departureTimeDate),
                 arrival_time: getFormattedHoursAndMinutes(arrivalTimeDate)
             }) +
@@ -78,8 +82,8 @@ module.exports = {
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
         const tts =
-            i18n('directions.info.arrivalTime', {
-                location_to: locationTo,
+            i18n('directions.arrivalTime.' + travelMode, {
+                location_to: extractFirstPart(locationTo),
                 departure_time: getFormattedHoursAndMinutes(departureTimeDate),
                 arrival_time: getFormattedHoursAndMinutes(arrivalTimeDate)
             }) +
@@ -100,7 +104,7 @@ module.exports = {
             case 'bicycling':
             case 'driving':
                 tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
-                    location_to: locationTo,
+                    location_to: extractFirstPart(locationTo),
                     duration: Math.round(duration / 60),
                     distance: roundToOne(distance / 1000)
                 })
@@ -108,7 +112,7 @@ module.exports = {
 
             case 'transit':
                 tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
-                    location_to: locationTo,
+                    location_to: extractFirstPart(locationTo),
                     duration: Math.round(duration / 60),
                     distance: roundToOne(distance / 1000)
                 }) +
@@ -123,7 +127,7 @@ module.exports = {
                         if (i === directionsData.length - 1) {
                             tts += i18n('directions.directions.transit.walkToFinalDestination', {
                                 distance: currentStep.distance,
-                                location_to: locationTo
+                                location_to: extractFirstPart(locationTo)
                             })
                         } else if (isConnection(directionsData, i)) {
                             connection = true
@@ -161,16 +165,33 @@ module.exports = {
 
         return tts
     },
-    trafficInfoToSpeech (locationFrom, locationTo, travelMode) {
+    trafficInfoToSpeech (locationFrom, locationTo, travelMode, duration, durationInTraffic = '') {
         const i18n = i18nFactory.get()
-        const config = configFactory.get()
 
-        const tts = i18n('directions.info.trafficInfo', {
-            location_from: locationFrom,
-            location_to: locationTo,
-            travel_mode: travelMode
-        })
+        let tts = ''
 
+        switch (travelMode) {
+            case 'walking':
+            case 'bicycling':
+            case 'transit':
+                tts = i18n('directions.trafficInfo.' + travelMode, {
+                    location_to: extractFirstPart(locationTo),
+                    duration: Math.round(duration / 60)
+                })
+                break
+
+            case 'driving':
+                tts = i18n('directions.trafficInfo.driving', {
+                    location_to: extractFirstPart(locationTo),
+                    duration: Math.round(duration / 60),
+                    duration_in_traffic: Math.round(durationInTraffic / 60)
+                })
+                break
+
+            default:
+                break
+        }
+        
         return tts
     }
 }

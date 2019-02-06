@@ -1,5 +1,5 @@
-const { i18nFactory, configFactory, httpFactory } = require('../factories')
-const { message, logger, translation, directions } = require('../utils')
+const { httpFactory } = require('../factories')
+const { logger, translation, directions } = require('../utils')
 const commonHandler = require('./common')
 
 module.exports = async function (msg, flow) {
@@ -28,10 +28,11 @@ module.exports = async function (msg, flow) {
     let speech = ''
 
     try {
+        const destination = directionsData.routes[0].legs[0].end_address
         const duration = directionsData.routes[0].legs[0].duration.value
         const distance = directionsData.routes[0].legs[0].distance.value
 
-        speech = translation.directionsToSpeech(locationFrom, locationTo, travelMode, duration, distance, aggregatedDirectionsData)
+        speech = translation.directionsToSpeech(locationFrom, destination, travelMode, duration, distance, aggregatedDirectionsData)
     } catch (error) {
         logger.error(error)
         throw new Error('APIResponse')

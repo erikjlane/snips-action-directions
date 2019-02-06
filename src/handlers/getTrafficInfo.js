@@ -25,7 +25,16 @@ module.exports = async function (msg, flow) {
     let speech = ''
 
     try {
-        speech = translation.trafficInfoToSpeech(locationFrom, locationTo, travelMode)
+        const destination = directionsData.routes[0].legs[0].end_address
+        const duration = directionsData.routes[0].legs[0].duration.value
+
+        if (travelMode === 'driving') {
+            const durationInTraffic = directionsData.routes[0].legs[0].durationInTraffic.value
+            speech = translation.trafficInfoToSpeech(locationFrom, destination, travelMode, duration, durationInTraffic)
+        } else {
+            speech = translation.trafficInfoToSpeech(locationFrom, destination, travelMode, duration)
+        }
+
     } catch (error) {
         logger.error(error)
         throw new Error('APIResponse')

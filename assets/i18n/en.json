@@ -19,14 +19,59 @@
         "dialog": {
             "noDestinationAddress": "What's your destination?"
         },
-        "info": {
-            "navigationTime": "En conditions normales, se rendre à {{ location_to }} vous prendra {{ navigation_time }} minutes.",
-            "departureTime": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}.",
-            "arrivalTime": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
-            "walkToMetro": "Rejoinez la station de métro {{ arrival_stop }} à pied. Vous mettrez environ {{ duration }} minutes.",
-            "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}. Descendez à l'arrêt {{ arrival_stop }}.",
-            "walkToFinalLocation": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}.",
-            "trafficInfo": "En conditions normales, {{ location_from }}, {{ location_to }}, {{ travel_mode }}"
+        "navigationTime": {
+            "transit": "With normal conditions, going to {{ location_to }} by public transport will take you {{ duration }} minutes",
+            "walking": "Walking to {{ location_to }} will take you {{ duration }} minutes",
+            "bicycling": "Bicycling to {{ location_to }} will take you {{ duration }} minutes",
+            "driving": "With normal conditions, driving to {{ location_to }} will take you {{ duration }} minutes"
+        },
+        "departureTime": {
+            "transit": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }}",
+            "walking": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }}",
+            "bicycling": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }}",
+            "driving": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }}"
+        },
+        "arrivalTime": {
+            "transit": "If you leave at {{ departure_time }}, you should arrive at {{ location_to }} at {{ arrival_time }}",
+            "walking": "If you leave at {{ departure_time }}, you should arrive at {{ location_to }} at {{ arrival_time }}",
+            "bicycling": "If you leave at {{ departure_time }}, you should arrive at {{ location_to }} at {{ arrival_time }}",
+            "driving": "If you leave at {{ departure_time }}, you should arrive at {{ location_to }} at {{ arrival_time }}"
+        },
+        "directions": {
+            "transit": {
+                "toDestination": [
+                    "Going to {{ location_to }} by public transport will take you {{ duration }} minutes.",
+                    "By public transport, you should plan {{ duration }} minutes to go to {{ location_to}}."
+                ],
+                "walkToMetro": "Walk {{ duration }} minutes to the station {{ arrival_stop }}.",
+                "metro": "Take line {{ line_name }} towards {{ headsign }} and get off at station {{ arrival_stop }}.",
+                "connectionMetro": "When connecting take line {{ line_name }} towards {{ headsign }} and get off at station {{ arrival_stop }}.",
+                "walkToFinalDestination": "Walk another {{ distance }} meters to reach the address {{ location_to }}."
+            },
+            "walking": {
+                "toDestination": [
+                    "Walking to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
+                    "The trip to {{ location_to }} is {{ distance }} kilometers long. By foot, you should plan {{ duration }} minutes."
+                ]
+            },
+            "bicycling": {
+                "toDestination": [
+                    "Bicycling to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
+                    "The trip to {{ location_to }} is {{ distance }} kilometers long. By bike, you should plan {{ duration }} minutes."
+                ]
+            },
+            "driving": {
+                "toDestination": [
+                    "Driving to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
+                    "The trip to {{ location_to }} is {{ distance }} kilometers long. By car, you should plan {{ duration }} minutes."
+                ]
+            }
+        },
+        "trafficInfo": {
+            "transit": "Going to {{ location_to }} by public transport will take you {{ duration }} minutes. I have no information on the current traffic.",
+            "walking": "Walking to {{ location_to }} will take you {{ duration }} minutes.",
+            "bicycling": "Bicycling to {{ location_to }} will take you {{ duration }} minutes.",
+            "driving": "With normal conditions, driving to {{ location_to }} will take you {{ duration }} minutes. With current conditions, you should plan {{ duration_in_traffic }} minutes."
         },
         "fromLocation": {
             "home": "from your home",
