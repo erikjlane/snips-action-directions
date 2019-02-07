@@ -4,6 +4,7 @@
         "config": "Sorry, there was an error with your config file.",
         "locale": "Sorry, there was an error with your language settings.",
         "intentNotRecognized": "Sorry, I did not understand your request.",
+        "slotsNotRecognized": "Sorry, I did not understand your request.",
         "APIResponse": "Sorry, there was an issue with the directions service provider.",
         "APIRequest": "Sorry, the service provider is unreachable.",
         "unspecific": "Oops, something went wrong.",
@@ -11,13 +12,13 @@
         "noHomeAddress": "Please, make sure you set up your home address.",
         "noWorkAddress": "Please, make sure you set up your work address.",
         "noCurrentAddress": "Please, make sure you set up your current location.",
-        "badCurrentAddress": "Sorry, your current location is not properly configured.",
-        "noArrivalTime": "Sorry, I did not understand your wanted arrival time.",
-        "noDepartureTime": "Sorry, I did not understand your wanted departure time."
+        "badCurrentAddress": "Sorry, your current location is not properly configured."
     },
     "directions": {
         "dialog": {
-            "noDestinationAddress": "What's your destination?"
+            "noDestinationAddress": "I'm sorry, where would you like to go?",
+            "noArrivalTime": "I'm sorry, I did not understand your wanted arrival time.",
+            "noDepartureTime": "I'm sorry, I did not understand your wanted departure time."
         },
         "navigationTime": {
             "transit": "With normal conditions, going to {{ location_to }} by public transport will take you {{ duration }} minutes",

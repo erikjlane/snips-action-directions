@@ -4,6 +4,7 @@
         "config": "Désolé, une erreur s'est produite avec votre fichier de configuration.",
         "locale": "Désolé, une erreur s'est produite avec vos paramètres de localisation.",
         "intentNotRecognized": "Désolé, je n'ai pas compris votre requête.",
+        "slotsNotRecognized": "Désolé, je n'ai pas compris votre requête.",
         "APIResponse": "Désolé, une erreur s'est produite avec le service de calcul des directions.",
         "APIRequest": "Désolé, le service de météo est injoignable.",
         "unspecific": "Oups, quelque chose s'est mal passé.",
@@ -11,13 +12,13 @@
         "noHomeAddress": "Veillez à configurer l'adresse de votre domicile.",
         "noWorkAddress": "Veillez à configurer l'adresse de votre lieu de travail.",
         "noCurrentAddress": "Veillez à configurer votre localisation courante.",
-        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée.",
-        "noArrivalTime": "Désolé, je n'ai pas compris l'heure d'arrivée souhaitée.",
-        "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée."
+        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée."
     },
     "directions": {
         "dialog": {
-            "noDestinationAddress": "Quelle est votre destination ?"
+            "noDestinationAddress": "Désolé, quelle est votre destination ?",
+            "noArrivalTime": "Désolé, je n'ai pas compris l'heure d'arrivée souhaitée.",
+            "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée."
         },
         "navigationTime": {
             "transit": "En conditions normales, se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes",
