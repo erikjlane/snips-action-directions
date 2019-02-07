@@ -16,72 +16,78 @@
     },
     "directions": {
         "dialog": {
-            "noDestinationAddress": "Désolé, quelle est votre destination ?",
+            "noDestinationAddress": "Désolé, je n'ai pas compris quelle était votre destination.",
             "noArrivalTime": "Désolé, je n'ai pas compris l'heure d'arrivée souhaitée.",
-            "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée."
+            "noDestinationAddressAndArrivalTime": "Désolé, je n'ai compris ni votre destination ni votre heure d'arrivée souhaitée.",
+            "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée.",
+            "noDestinationAddressAndDepartureTime": "Désolé, je n'ai compris ni votre destination ni votre heure de départ souhaitée."
         },
         "navigationTime": {
-            "transit": "En conditions normales, se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes",
-            "walking": "Marcher jusqu'à {{ location_to }} vous prendra {{ duration }} minutes",
-            "bicycling": "Se rendre à {{ location_to }} en vélo vous prendra {{ duration }} minutes",
-            "driving": "En conditions normales, conduire jusqu'à {{ location_to }} vous prendra {{ duration }} minutes"
+            "transit": "En conditions normales, se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes.",
+            "walking": "Marcher jusqu'à {{ location_to }} vous prendra {{ duration }} minutes.",
+            "bicycling": "Se rendre à {{ location_to }} en vélo vous prendra {{ duration }} minutes.",
+            "driving": "En conditions normales, conduire jusqu'à {{ location_to }} vous prendra {{ duration }} minutes."
         },
         "departureTime": {
-            "transit": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
-            "walking": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
-            "bicycling": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}",
-            "driving": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }}"
+            "transit": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }} de {{ location_from }}.",
+            "walking": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }} de {{ location_from }}.",
+            "bicycling": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }} de {{ location_from }}.",
+            "driving": "Pour arriver à {{ arrival_time }} à {{ location_to }}, vous devriez partir à {{ departure_time }} de {{ location_from }}."
         },
         "arrivalTime": {
-            "transit": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}",
-            "walking": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}",
-            "bicycling": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}",
-            "driving": "Si vous partez à {{ departure_time }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}"
+            "transit": "Si vous partez à {{ departure_time }} de {{ location_from }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
+            "walking": "Si vous partez à {{ departure_time }} de {{ location_from }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
+            "bicycling": "Si vous partez à {{ departure_time }} de {{ location_from }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}.",
+            "driving": "Si vous partez à {{ departure_time }} de {{ location_from }}, vous devriez arriver à {{ location_to }} à {{ arrival_time }}."
         },
         "directions": {
             "transit": {
                 "toDestination": [
-                    "Se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes.",
-                    "En transports en commun, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}.",
-                    "En transports en commun, prévoyez {{ duration }} minutes pour vous rendre à {{ location_to }}."
+                    "Se rendre de {{ location_from }} à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes.",
+                    "En transports en commun, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}} de {{ location_from }}.",
+                    "En transports en commun, prévoyez {{ duration }} minutes pour vous rendre à {{ location_to }} de {{ location_from }}."
                 ],
                 "walkToMetro": "Marchez {{ duration }} minutes jusqu'à la station {{ arrival_stop }}.",
-                "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}, et descendez à la station {{ arrival_stop }}.",
-                "connectionMetro": "À la correspondance, prenez la ligne {{ line_name }} en direction de {{ headsign }} puis descendez à la station {{ arrival_stop }}.",
+                "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}, et descendez à {{ arrival_stop }}.",
+                "connectionMetro": "À la correspondance, prenez la ligne {{ line_name }} en direction de {{ headsign }} puis descendez à {{ arrival_stop }}.",
                 "walkToFinalDestination": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{ location_to }}."
             },
             "walking": {
                 "toDestination": [
-                    "Se rendre à {{ location_to }} à pied vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "Marcher jusqu'à {{ location_to }} vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "À pied, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À pied, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} à pied vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "Marcher de {{ location_from }} jusqu'à {{ location_to }} vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "À pied, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À pied, prévoyez {{ duration }} minutes."
                 ]
             },
             "bicycling": {
                 "toDestination": [
-                    "Se rendre à {{ location_to }} à vélo vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "À vélo, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À vélo, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} à vélo vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "À vélo, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À vélo, prévoyez {{ duration }} minutes."
                 ]
             },
             "driving": {
                 "toDestination": [
-                    "Se rendre à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "En voiture, vous mettrez {{ duration }} minutes à vous rendre à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet jusqu'à {{ location_to }} fait {{ distance }} kilomètres. En voiture, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
+                    "En voiture, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. En voiture, prévoyez {{ duration }} minutes."
                 ]
             }
         },
         "trafficInfo": {
-            "transit": "Se rendre à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes. Je n'ai pas d'informations sur les conditions de circulation actuelles.",
-            "walking": "Marcher jusqu'à {{ location_to }} vous prendra {{ duration }} minutes.",
-            "bicycling": "Se rendre à {{ location_to }} à vélo vous prendra {{ duration }} minutes.",
-            "driving": "En temps normal, se rendre à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Avec les conditions de circulation actuelles, vous devriez prévoir {{ duration_in_traffic }} minutes."
+            "transit": "Se rendre de {{ location_from }} à {{ location_to }} en transports en commun vous prendra {{ duration }} minutes. Je n'ai pas d'informations sur les conditions de circulation actuelles.",
+            "walking": "Marcher de {{ location_from }} jusqu'à {{ location_to }} vous prendra {{ duration }} minutes.",
+            "bicycling": "Se rendre de {{ location_from }} à {{ location_to }} à vélo vous prendra {{ duration }} minutes.",
+            "driving": "En temps normal, se rendre de {{ location_from }} à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Avec les conditions de circulation actuelles, vous devriez prévoir {{ duration_in_traffic }} minutes."
         },
         "fromLocation": {
-            "home": "de votre domicile",
-            "work": "de votre lieu de travail"
+            "home": "votre domicile",
+            "work": "votre lieu de travail"
+        },
+        "trafficConditions": {
+            "slow": "plus lent",
+            "fast": "plus rapide"
         }
     }
 }

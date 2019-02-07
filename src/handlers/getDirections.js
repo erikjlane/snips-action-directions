@@ -1,5 +1,5 @@
 const { httpFactory, i18nFactory } = require('../factories')
-const { logger, translation, directions } = require('../utils')
+const { logger, translation, directions, slot } = require('../utils')
 const commonHandler = require('./common')
  
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
@@ -17,7 +17,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     } = await commonHandler(msg, knownSlots)
 
     // One required slot is missing
-    if (!locationTo || locationTo.includes('unknownword')) {
+    if (slot.missing(locationTo)) {
         flow.continue('snips-assistant:GetDirections', (msg, flow) => (
             require('./index').getDirections(msg, flow, {
                 location_from: locationFrom,
@@ -37,7 +37,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         //logger.debug(directionsData)
 
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        //logger.debug(aggregatedDirectionsData)
+        logger.debug(aggregatedDirectionsData)
 
         let speech = ''
         try {

@@ -1,5 +1,5 @@
 const { i18nFactory, httpFactory } = require('../factories')
-const { message, logger, translation } = require('../utils')
+const { message, logger, translation, slot } = require('../utils')
 const commonHandler = require('./common')
 
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
@@ -17,29 +17,48 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     } = await commonHandler(msg, knownSlots)
 
     // Get arrival_time specific slot
-    const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', { onlyMostConfident: true })
-
-    if (!arrivalTimeSlot) {
-        throw new Error('noArrivalTime')
+    let arrivalTime
+    if (!('arrival_time' in knownSlots)) {
+        const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', { onlyMostConfident: true })
+        if (arrivalTimeSlot) {
+            const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
+            arrivalTime = arrivalTimeDate.getTime() / 1000
+        }
+    } else {
+        arrivalTime = knownSlots.arrival_time
     }
-
-    const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
-    const arrivalTime = arrivalTimeDate.getTime() / 1000
 
     logger.info("arrival_time: ", arrivalTime)
 
-    // One required slot is missing
-    if (!locationTo || locationTo.includes('unknownword')) {
-        flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => (
-            require('./index').getDepartureTime(msg, flow, {
-                location_to: locationTo,
+    // One or two required slots are missing
+    if (slot.missing(locationTo) || slot.missing(arrivalTime)) {
+        flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => {
+            let slotsToBeSent = {
                 location_from: locationFrom,
                 travel_mode: travelMode,
                 depth: knownSlots.depth - 1
-            })
-        ))
+            }
 
-        return i18n('directions.dialog.noDestinationAddress')
+            // Adding the known slots, if more
+            if (!slot.missing(locationTo)) {
+                slotsToBeSent.location_to = locationTo
+            }
+            if (!slot.missing(arrivalTime)) {
+                slotsToBeSent.arrival_time = arrivalTime
+            }
+
+            return require('./index').getArrivalTime(msg, flow, slotsToBeSent)
+        })
+        
+        if (slot.missing(locationTo) && slot.missing(arrivalTime)) {
+            return i18n('directions.dialog.noDestinationAddressAndArrivalTime')
+        }
+        if (slot.missing(locationTo)) {
+            return i18n('directions.dialog.noDestinationAddress')
+        }
+        if (slot.missing(arrivalTime)) {
+            return i18n('directions.dialog.noArrivalTime')
+        }
     } else {
         // Get the data from Directions API
         const directionsData = await httpFactory.calculateRoute({

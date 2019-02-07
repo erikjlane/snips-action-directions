@@ -1,5 +1,5 @@
 const { i18nFactory, httpFactory } = require('../factories')
-const { logger, translation } = require('../utils')
+const { logger, translation, slot } = require('../utils')
 const commonHandler = require('./common')
 
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
@@ -17,7 +17,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     } = await commonHandler(msg, knownSlots)
 
     // One required slot is missing
-    if (!locationTo || locationTo.includes('unknownword')) {
+    if (slot.missing(locationTo)) {
         flow.continue('snips-assistant:GetNavigationTime', (msg, flow) => (
             require('./index').getNavigationTime(msg, flow, {
                 location_from: locationFrom,
