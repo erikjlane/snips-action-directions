@@ -38,17 +38,23 @@ module.exports = {
     },
     calculateRoute: async ({origin, destination, travelMode, departureTime = 'now', arrivalTime = ''} = {}) => {
         const config = configFactory.get()
+        const query = {
+            origin: origin,
+            destination: destination,
+            mode: travelMode,
+            departure_time: departureTime,
+            arrival_time: arrivalTime,
+            units: config.unitSystem,
+            region: config.currentRegion
+        }
+
+        if (travelMode === 'bus') {
+            query.mode = 'transit'
+            query.transit_mode = 'bus'
+        }
 
         const results = await http
-            .query({
-                origin: origin,
-                destination: destination,
-                mode: travelMode,
-                departure_time: departureTime,
-                arrival_time: arrivalTime,
-                units: config.unitSystem,
-                region: config.currentRegion
-            })
+            .query(query)
             .get()
             .json()
             .catch(error => {

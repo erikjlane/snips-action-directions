@@ -24,21 +24,24 @@
         },
         "navigationTime": {
             "transit": "With normal conditions, going from {{ location_from }} to {{ location_to }} by public transport will take you {{ duration }} minutes.",
+            "bus": "Going from {{ location_from }} to {{ location_to }} by bus will take you {{ duration }} minutes.",
             "walking": "Walking from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes.",
             "bicycling": "Bicycling from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes.",
             "driving": "With normal conditions, driving from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes."
         },
         "departureTime": {
-            "transit": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }} from {{ location_from }}.",
-            "walking": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }} from {{ location_from }}.",
-            "bicycling": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }} from {{ location_from }}.",
-            "driving": "To be at {{ location_to }} at {{ arrival_time }}, you should leave at {{ departure_time }} from {{ location_from }}."
+            "transit": "By public transportation, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}.",
+            "bus": "By bus, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}.",
+            "walking": "By foot, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}.",
+            "bicycling": "By bike, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}.",
+            "driving": "By car, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}."
         },
         "arrivalTime": {
-            "transit": "If you leave at {{ departure_time }} from {{ location_from }}, you should arrive at {{ location_to }} at {{ arrival_time }}.",
-            "walking": "If you leave at {{ departure_time }} from {{ location_from }}, you should arrive at {{ location_to }} at {{ arrival_time }}.",
-            "bicycling": "If you leave at {{ departure_time }} from {{ location_from }}, you should arrive at {{ location_to }} at {{ arrival_time }}.",
-            "driving": "If you leave at {{ departure_time }} from {{ location_from }}, you should arrive at {{ location_to }} at {{ arrival_time }}."
+            "transit": "By public transportation, you should arrive at {{ location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{ location_from }}.",
+            "bus": "By bus, you should arrive at {{ location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{ location_from }}.",
+            "walking": "By foot, you should arrive at {{ location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{ location_from }}.",
+            "bicycling": "By bike, you should arrive at {{ location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{ location_from }}.",
+            "driving": "By car, you should arrive at {{ location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{ location_from }}."
         },
         "directions": {
             "transit": {
@@ -50,6 +53,12 @@
                 "metro": "Take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
                 "connectionMetro": "When connecting take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
                 "walkToFinalDestination": "Walk another {{ distance }} meters to reach the address {{ location_to }}."
+            },
+            "bus": {
+                "toDestination": [
+                    "Going from {{ location_from }} to {{ location_to }} by bus will take you {{ duration }} minutes.",
+                    "By bus, you should plan {{ duration }} minutes to go from {{ location_from }} to {{ location_to}}."
+                ]
             },
             "walking": {
                 "toDestination": [

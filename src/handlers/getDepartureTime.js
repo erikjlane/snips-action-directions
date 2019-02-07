@@ -23,12 +23,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         if (arrivalTimeSlot) {
             const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
             arrivalTime = arrivalTimeDate.getTime() / 1000
+            logger.info("arrival_time: ", arrivalTimeDate)
         }
     } else {
         arrivalTime = knownSlots.arrival_time
     }
-
-    logger.info("arrival_time: ", arrivalTime)
 
     // One or two required slots are missing
     if (slot.missing(locationTo) || slot.missing(arrivalTime)) {
