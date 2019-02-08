@@ -104,13 +104,11 @@
         "distance": {
             "metric": {
                 "meters": "{{ distance }} mètres",
-                "kilometers": "{{ distance }} kilomètres",
-                "minutes": "{{ duration }} minutes"
+                "kilometers": "{{ distance }} kilomètres"
             },
             "imperial": {
                 "miles": "{{ distance }} miles",
-                "feet": "{{ distance }} feet",
-                "minutes": "{{ duration }} minutes"
+                "feet": "{{ distance }} feet"
             }
         },
         "duration": {

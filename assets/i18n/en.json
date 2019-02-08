@@ -23,11 +23,11 @@
             "noDestinationAddressAndDepartureTime": "I'm sorry, I did not understand neither your destination nor your wanted departure time."
         },
         "navigationTime": {
-            "transit": "Going from {{ location_from }} to {{ location_to }} by public transport usually takes {{ duration }}.",
+            "transit": "Going from {{ location_from }} to {{ location_to }} by public transport usually takes {{ duration }}. I have no information on the current traffic.",
             "bus": "Going from {{ location_from }} to {{ location_to }} by bus will take you {{ duration }}.",
             "walking": "Walking from {{ location_from }} to {{ location_to }} will take you {{ duration }}.",
             "bicycling": "Bicycling from {{ location_from }} to {{ location_to }} will take you {{ duration }}.",
-            "driving": "Driving from {{ location_from }} to {{ location_to }} usually takes {{ duration }}. With current traffic, you should plan {{ duration_in_traffic }}."
+            "driving": "Driving from {{ location_from }} to {{ location_to }} usually takes {{ duration }}. With current traffic, you should plan {{ duration_in_traffic }} if you leave now."
         },
         "departureTime": {
             "transit": "By public transportation, you should leave at {{ departure_time }} from {{ location_from }} to be at {{ location_to }} at {{ arrival_time }}.",
@@ -52,7 +52,7 @@
                 "walkToMetro": "Walk {{ duration }} to the station {{ arrival_stop }}.",
                 "metro": "Take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
                 "connectionMetro": "When connecting take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
-                "walkToFinalDestination": "Walk another {{ distance }} meters to reach the address {{ location_to }}."
+                "walkToFinalDestination": "Walk another {{ distance }} to reach the address {{ location_to }}."
             },
             "bus": {
                 "toDestination": [
@@ -98,13 +98,11 @@
         "distance": {
             "metric": {
                 "meters": "{{ distance }} meters",
-                "kilometers": "{{ distance }} kilometers",
-                "minutes": "{{ duration }} minutes"
+                "kilometers": "{{ distance }} kilometers"
             },
             "imperial": {
                 "miles": "{{ distance }} miles",
-                "feet": "{{ distance }} feet",
-                "minutes": "{{ duration }} minutes"
+                "feet": "{{ distance }} feet"
             }
         },
         "duration": {

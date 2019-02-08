@@ -6,7 +6,18 @@ function metersToFeet(distance) {
 
 module.exports = {    
     time: date => {
-        return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+        const config = configFactory.get()
+
+        if (config.locale === 'french') {
+            // French
+            return date.getHours() + 'h' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+        } else {
+            // English
+            const meridiem = (date.getHours() > 11) ? 'pm' : 'am'
+            const hours = (meridiem === 'pm') ? date.getHours() - 12 : date.getHours()
+
+            return hours + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ' ' + meridiem
+        }
     },
     
     address: address => {
@@ -39,7 +50,14 @@ module.exports = {
             }
         } else {
             if (distance > 999) {
-                distance = +(Math.round(distance / 1000 + "e+1") + "e-1")
+                distance /= 1000
+
+                if (distance > 20) {
+                    distance = Math.round(distance)
+                } else {
+                    distance = +(Math.round(distance + "e+1") + "e-1")
+                }
+
                 return i18n('units.distance.metric.kilometers', { distance: distance })
             } else {
                 distance = 10 * Math.floor(distance / 10)

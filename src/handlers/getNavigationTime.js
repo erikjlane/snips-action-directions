@@ -42,8 +42,8 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             const duration = directionsData.routes[0].legs[0].duration.value
 
             if (travelMode === 'driving') {
-                const durationInTraffic = directionsData.routes[0].legs[0].durationInTraffic.value
-                
+                const durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
+
                 speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, durationInTraffic)
             } else {
                 speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration)
