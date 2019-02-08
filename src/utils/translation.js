@@ -1,31 +1,6 @@
 const { i18nFactory, configFactory } = require('../factories')
 const { isConnection } = require('./directions')
-
-function beautifyHoursAndMinutes (date) {
-    return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
-}
-
-function roundToOne(num) {    
-    return +(Math.round(num + "e+1") + "e-1");
-}
-
-function extractFirstPart(address) {
-    return address.split(',')[0]
-}
-
-function beautifyAddress(address) {
-    const i18n = i18nFactory.get()
-    const config = configFactory.get()
-
-    if (address.includes(config.homeAddress)) {
-        return i18n('directions.fromLocation.home')
-    }
-    if (address.includes(config.workAddress)) {
-        return i18n('directions.fromLocation.work')
-    }
-
-    return extractFirstPart(address)
-}
+const beautify = require('./beautify')
 
 module.exports = {
     // Outputs an error message based on the error object, or a default message if not found.
@@ -43,23 +18,27 @@ module.exports = {
             return 'Oops, something went wrong.'
         }
     },
+
     // Takes an array from the i18n and returns a random item.
     randomTranslation (key, opts) {
         const i18n = i18nFactory.get()
+
         const possibleValues = i18n(key, { returnObjects: true, ...opts })
         const randomIndex = Math.floor(Math.random() * possibleValues.length)
 
         return possibleValues[randomIndex]
     },
+
     navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration) {
         const i18n = i18nFactory.get()
 
         return i18n('directions.navigationTime.' + travelMode, {
-            location_from: beautifyAddress(locationFrom),
-            location_to: beautifyAddress(locationTo),
+            location_from: beautify.address(locationFrom),
+            location_to: beautify.address(locationTo),
             duration: Math.round(duration / 60)
         })
     },
+
     departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
         const i18n = i18nFactory.get()
 
@@ -68,12 +47,13 @@ module.exports = {
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
         return i18n('directions.departureTime.' + travelMode, {
-            location_from: beautifyAddress(locationFrom),
-            location_to: beautifyAddress(locationTo),
-            departure_time: beautifyHoursAndMinutes(departureTimeDate),
-            arrival_time: beautifyHoursAndMinutes(arrivalTimeDate)
+            location_from: beautify.address(locationFrom),
+            location_to: beautify.address(locationTo),
+            departure_time: beautify.hoursAndMinutes(departureTimeDate),
+            arrival_time: beautify.hoursAndMinutes(arrivalTimeDate)
         })
     },
+
     arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
         const i18n = i18nFactory.get()
 
@@ -82,21 +62,22 @@ module.exports = {
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
         return i18n('directions.arrivalTime.' + travelMode, {
-            location_from: beautifyAddress(locationFrom),
-            location_to: beautifyAddress(locationTo),
-            departure_time: beautifyHoursAndMinutes(departureTimeDate),
-            arrival_time: beautifyHoursAndMinutes(arrivalTimeDate)
+            location_from: beautify.address(locationFrom),
+            location_to: beautify.address(locationTo),
+            departure_time: beautify.hoursAndMinutes(departureTimeDate),
+            arrival_time: beautify.hoursAndMinutes(arrivalTimeDate)
         })
     },
+
     directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData) {
         const i18n = i18nFactory.get()
         const { randomTranslation } = module.exports
 
         let tts = randomTranslation('directions.directions.' + travelMode + '.toDestination', {
-            location_from: beautifyAddress(locationFrom),
-            location_to: beautifyAddress(locationTo),
+            location_from: beautify.address(locationFrom),
+            location_to: beautify.address(locationTo),
             duration: Math.round(duration / 60),
-            distance: roundToOne(distance / 1000)
+            distance: beautify.distance(distance)
         })
 
         if (travelMode === 'transit') {
@@ -111,8 +92,8 @@ module.exports = {
                         // If the distance of the final step is insignificant, skip it
                         if (currentStep.distance > 100) {
                             tts += i18n('directions.directions.transit.walkToFinalDestination', {
-                                distance: currentStep.distance,
-                                location_to: beautifyAddress(locationTo)
+                                distance: beautify.distance(currentStep.distance),
+                                location_to: beautify.address(locationTo)
                             })
                         }
                     } else if (isConnection(directionsData, i)) {
@@ -149,20 +130,21 @@ module.exports = {
 
         return tts
     },
+
     trafficInfoToSpeech (locationFrom, locationTo, travelMode, duration, durationInTraffic = '') {
         const i18n = i18nFactory.get()
 
         if (travelMode === 'driving') {
             return i18n('directions.trafficInfo.driving', {
-                location_from: beautifyAddress(locationFrom),
-                location_to: beautifyAddress(locationTo),
+                location_from: beautify.address(locationFrom),
+                location_to: beautify.address(locationTo),
                 duration: Math.round(duration / 60),
                 duration_in_traffic: Math.round(durationInTraffic / 60)
             })
         } else {
             return i18n('directions.trafficInfo.' + travelMode, {
-                location_from: beautifyAddress(locationFrom),
-                location_to: beautifyAddress(locationTo),
+                location_from: beautify.address(locationFrom),
+                location_to: beautify.address(locationTo),
                 duration: Math.round(duration / 60)
             })
         }

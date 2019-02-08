@@ -62,20 +62,20 @@
             },
             "walking": {
                 "toDestination": [
-                    "Walking from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
-                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} kilometers long. By foot, you should plan {{ duration }} minutes."
+                    "Walking from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} long.",
+                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} long. By foot, you should plan {{ duration }} minutes."
                 ]
             },
             "bicycling": {
                 "toDestination": [
-                    "Bicycling from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
-                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} kilometers long. By bike, you should plan {{ duration }} minutes."
+                    "Bicycling from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} long.",
+                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} long. By bike, you should plan {{ duration }} minutes."
                 ]
             },
             "driving": {
                 "toDestination": [
-                    "Driving from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} kilometers long.",
-                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} kilometers long. By car, you should plan {{ duration }} minutes."
+                    "Driving from {{ location_from }} to {{ location_to }} will take you {{ duration }} minutes. The trip is {{ distance }} long.",
+                    "The trip from {{ location_from }} to {{ location_to }} is {{ distance }} long. By car, you should plan {{ duration }} minutes."
                 ]
             }
         },
@@ -93,5 +93,18 @@
             "slow": "slower",
             "fast": "faster"
         }
+    },
+    "units": {
+        "metric": {
+            "meters": "{{ distance }} meters",
+            "kilometers": "{{ distance }} kilometers"
+        },
+        "imperial": {
+            "miles": "{{ distance }} miles",
+            "feet": "{{ distance }} feet"
+        }
+    },
+    "joins": {
+        "andSomething": "and {{- something }}"
     }
 }

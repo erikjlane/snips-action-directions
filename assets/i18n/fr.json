@@ -64,24 +64,24 @@
             },
             "walking": {
                 "toDestination": [
-                    "Se rendre de {{ location_from }} à {{ location_to }} à pied vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "Marcher de {{ location_from }} jusqu'à {{ location_to }} vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "À pied, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À pied, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} à pied vous prendra {{ duration }} minutes. Le trajet fait {{ distance }}.",
+                    "Marcher de {{ location_from }} jusqu'à {{ location_to }} vous prendra {{ duration }} minutes. Le trajet fait {{ distance }}.",
+                    "À pied, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }}.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }}. À pied, prévoyez {{ duration }} minutes."
                 ]
             },
             "bicycling": {
                 "toDestination": [
-                    "Se rendre de {{ location_from }} à {{ location_to }} à vélo vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "À vélo, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. À vélo, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} à vélo vous prendra {{ duration }} minutes. Le trajet fait {{ distance }}.",
+                    "À vélo, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }}.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }}. À vélo, prévoyez {{ duration }} minutes."
                 ]
             },
             "driving": {
                 "toDestination": [
-                    "Se rendre de {{ location_from }} à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Le trajet fait {{ distance }} kilomètres.",
-                    "En voiture, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }} kilomètres.",
-                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }} kilomètres. En voiture, prévoyez {{ duration }} minutes."
+                    "Se rendre de {{ location_from }} à {{ location_to }} en voiture vous prendra {{ duration }} minutes. Le trajet fait {{ distance }}.",
+                    "En voiture, vous mettrez {{ duration }} minutes pour vous rendre de {{ location_from }} à {{ location_to}}. Le trajet fait {{ distance }}.",
+                    "Le trajet de {{ location_from }} jusqu'à {{ location_to }} fait {{ distance }}. En voiture, prévoyez {{ duration }} minutes."
                 ]
             }
         },
@@ -99,5 +99,18 @@
             "slow": "plus lent",
             "fast": "plus rapide"
         }
+    },
+    "units": {
+        "metric": {
+            "meters": "{{ distance }} mètres",
+            "kilometers": "{{ distance }} kilomètres"
+        },
+        "imperial": {
+            "miles": "{{ distance }} miles",
+            "feet": "{{ distance }} feet"
+        }
+    },
+    "joins": {
+        "andSomething": "et {{- something }}"
     }
 }
