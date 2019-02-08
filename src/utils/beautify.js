@@ -5,7 +5,7 @@ function metersToFeet(distance) {
 }
 
 module.exports = {    
-    hoursAndMinutes: date => {
+    time: date => {
         return date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
     },
     
@@ -32,19 +32,35 @@ module.exports = {
     
             if (distance > 5280) {
                 distance = +(Math.round(distance / 5280 + "e+1") + "e-1")
-                return i18n('units.imperial.miles', { distance: distance })
+                return i18n('units.distance.imperial.miles', { distance: distance })
             } else {
                 distance = 100 * Math.floor(distance / 100)
-                return i18n('units.imperial.feet', { distance: distance })
+                return i18n('units.distance.imperial.feet', { distance: distance })
             }
         } else {
             if (distance > 999) {
                 distance = +(Math.round(distance / 1000 + "e+1") + "e-1")
-                return i18n('units.metric.kilometers', { distance: distance })
+                return i18n('units.distance.metric.kilometers', { distance: distance })
             } else {
                 distance = 10 * Math.floor(distance / 10)
-                return i18n('units.metric.meters', { distance: distance })
+                return i18n('units.distance.metric.meters', { distance: distance })
             }
+        }
+    },
+
+    duration: duration => {
+        const i18n = i18nFactory.get()
+
+        const minutes = Math.round(duration / 60)
+
+        if (minutes > 59) {
+            const str =
+                i18n('units.duration.hours', { duration: Math.floor(minutes / 60) }) + ' ' +
+                i18n('joins.andSomething', { something: i18n('units.duration.minutes', { duration: minutes % 60 }) })
+
+            return str
+        } else {
+            return i18n('units.duration.minutes', { duration: minutes })
         }
     }
 }

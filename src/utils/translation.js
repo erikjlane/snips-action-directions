@@ -29,14 +29,20 @@ module.exports = {
         return possibleValues[randomIndex]
     },
 
-    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration) {
+    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, durationInTraffic = '') {
         const i18n = i18nFactory.get()
 
-        return i18n('directions.navigationTime.' + travelMode, {
+        const options = {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
-            duration: Math.round(duration / 60)
-        })
+            duration: beautify.duration(duration)
+        }
+
+        if (travelMode === 'driving') {
+            options.duration_in_traffic = beautify.duration(durationInTraffic)
+        }
+
+        return i18n('directions.navigationTime.' + travelMode, options)
     },
 
     departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
@@ -49,8 +55,8 @@ module.exports = {
         return i18n('directions.departureTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
-            departure_time: beautify.hoursAndMinutes(departureTimeDate),
-            arrival_time: beautify.hoursAndMinutes(arrivalTimeDate)
+            departure_time: beautify.time(departureTimeDate),
+            arrival_time: beautify.time(arrivalTimeDate)
         })
     },
 
@@ -64,8 +70,8 @@ module.exports = {
         return i18n('directions.arrivalTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
-            departure_time: beautify.hoursAndMinutes(departureTimeDate),
-            arrival_time: beautify.hoursAndMinutes(arrivalTimeDate)
+            departure_time: beautify.time(departureTimeDate),
+            arrival_time: beautify.time(arrivalTimeDate)
         })
     },
 
@@ -76,7 +82,7 @@ module.exports = {
         let tts = randomTranslation('directions.directions.' + travelMode + '.toDestination', {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
-            duration: Math.round(duration / 60),
+            duration: beautify.duration(duration),
             distance: beautify.distance(distance)
         })
 
@@ -104,49 +110,23 @@ module.exports = {
                         const nextStep = directionsData[i + 1]
                         tts += i18n('directions.directions.transit.walkToMetro', {
                             arrival_stop: nextStep.departure_stop,
-                            duration: Math.round(currentStep.duration / 60)
+                            duration: beautify.duration(currentStep.duration)
                         })
                     }
                 }
                 else if (currentStep.travel_mode === 'TRANSIT') {
-                    if (!connection) {
-                        tts += i18n('directions.directions.transit.metro', {
-                            line_name: currentStep.line_name,
-                            headsign: currentStep.headsign,
-                            arrival_stop: currentStep.arrival_stop
-                        })
-                    } else {
-                        tts += i18n('directions.directions.transit.connectionMetro', {
-                            line_name: currentStep.line_name,
-                            headsign: currentStep.headsign,
-                            arrival_stop: currentStep.arrival_stop
-                        })
-                        connection = false
-                    }
+                    connection = false
+
+                    tts += i18n('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
+                        line_name: currentStep.line_name,
+                        headsign: currentStep.headsign,
+                        arrival_stop: currentStep.arrival_stop
+                    })
                 }
                 tts += ' '
             }
         }
 
         return tts
-    },
-
-    trafficInfoToSpeech (locationFrom, locationTo, travelMode, duration, durationInTraffic = '') {
-        const i18n = i18nFactory.get()
-
-        if (travelMode === 'driving') {
-            return i18n('directions.trafficInfo.driving', {
-                location_from: beautify.address(locationFrom),
-                location_to: beautify.address(locationTo),
-                duration: Math.round(duration / 60),
-                duration_in_traffic: Math.round(durationInTraffic / 60)
-            })
-        } else {
-            return i18n('directions.trafficInfo.' + travelMode, {
-                location_from: beautify.address(locationFrom),
-                location_to: beautify.address(locationTo),
-                duration: Math.round(duration / 60)
-            })
-        }
     }
 }

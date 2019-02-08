@@ -19,10 +19,6 @@ module.exports = function ({
             // This is a placeholder! Replace that by something valid!
             dialog.flows([
                 {
-                    intent: 'snips-assistant:GetTrafficInfo',
-                    action: handlers.getTrafficInfo
-                },
-                {
                     intent: 'snips-assistant:GetNavigationTime',
                     action: handlers.getNavigationTime
                 },

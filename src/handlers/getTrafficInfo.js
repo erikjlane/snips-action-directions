@@ -47,7 +47,6 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             } else {
                 speech = translation.trafficInfoToSpeech(locationFrom, destination, travelMode, duration)
             }
-
         } catch (error) {
             logger.error(error)
             throw new Error('APIResponse')

@@ -39,9 +39,15 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         let speech = ''
         try {
             const destination = directionsData.routes[0].legs[0].end_address
-            const navigationTime = directionsData.routes[0].legs[0].duration.value
+            const duration = directionsData.routes[0].legs[0].duration.value
 
-            speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, navigationTime)
+            if (travelMode === 'driving') {
+                const durationInTraffic = directionsData.routes[0].legs[0].durationInTraffic.value
+                
+                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, durationInTraffic)
+            } else {
+                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration)
+            }
         } catch (error) {
             logger.error(error)
             throw new Error('APIResponse')
