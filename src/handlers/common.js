@@ -113,7 +113,8 @@ module.exports = async function (msg, knownSlots = {}) {
                 'bike': 'bicycling',
                 'car': 'driving',
                 'walk': 'walking',
-                'train': 'transit',
+                'subway': 'transit',
+                'train': 'train',
                 'bus': 'bus'
             }
             travelMode = travelModeAvailable[travelModeSlot.value.value] || 'transit'
@@ -124,9 +125,9 @@ module.exports = async function (msg, knownSlots = {}) {
         travelMode = knownSlots.travel_mode
     }
 
-    logger.info("location_from: ", locationFrom)
-    logger.info("location_to: ", locationTo)
-    logger.info("travel_mode: ", travelMode)
+    logger.info("\tlocation_from: ", locationFrom)
+    logger.info("\tlocation_to: ", locationTo)
+    logger.info("\ttravel_mode: ", travelMode)
 
     return { locationFrom, locationTo, travelMode }
 }

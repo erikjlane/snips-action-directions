@@ -5,6 +5,8 @@ const commonHandler = require('./common')
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
+    logger.info("GetDirections")
+
     if (knownSlots.depth === 0) {
         throw new Error('slotsNotRecognized')
     }

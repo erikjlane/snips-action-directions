@@ -15,6 +15,7 @@ module.exports = {
     WORK_SYNONYMS: [
         'workplace',
         'work',
+        'work place',
         'office'
     ]
 }

@@ -86,7 +86,7 @@ module.exports = {
             distance: beautify.distance(distance)
         })
 
-        if (travelMode === 'transit') {
+        if (travelMode === 'transit' || travelMode === 'train' || travelMode === 'bus') {
             tts += ' '
 
             let connection = false

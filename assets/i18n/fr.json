@@ -25,6 +25,7 @@
         "navigationTime": {
             "transit": "Se rendre de {{ location_from}} à {{ location_to }} en transports en commun prend habituellement {{ duration }}.",
             "bus": "Se rendre de {{ location_from }} à {{ location_to }} en bus vous prendra {{ duration }}.",
+            "train": "Se rendre de {{ location_from }} à {{ location_to }} en train prend {{ duration }}.",
             "walking": "Marcher de {{ location_from }} jusqu'à {{ location_to }} vous prendra {{ duration }}.",
             "bicycling": "Se rendre de {{ location_from }} à {{ location_to }} en vélo vous prendra {{ duration }}.",
             "driving": "Conduire de {{ location_from }} jusqu'à {{ location_to }} prend habituellement {{ duration }}. Avec les conditions de circulation actuelles, cela vous prendra {{ duration_in_traffic }}."
@@ -32,6 +33,7 @@
         "departureTime": {
             "transit": "En transports en commun, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}.",
             "bus": "En bus, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}.",
+            "train": "En train, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}.",
             "walking": "À pied, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}.",
             "bicycling": "À vélo, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}.",
             "driving": "En voiture, vous devriez partir à {{ departure_time }} de {{ location_from }} pour arriver à {{ arrival_time }} à {{ location_to }}."
@@ -39,6 +41,7 @@
         "arrivalTime": {
             "transit": "En transports en commun, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}.",
             "bus": "En bus, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}.",
+            "train": "En train, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}.",
             "walking": "À vélo, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}.",
             "bicycling": "À vélo, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}.",
             "driving": "En voiture, vous devriez arriver à {{ location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{ location_from }}."
@@ -60,6 +63,11 @@
                     "Se rendre de {{ location_from }} à {{ location_to }} en bus vous prendra {{ duration }}.",
                     "En bus, vous mettrez {{ duration }} à vous rendre à {{ location_to}} de {{ location_from }}.",
                     "En bus, prévoyez {{ duration }} pour vous rendre à {{ location_to }} de {{ location_from }}."
+                ]
+            },
+            "train": {
+                "toDestination": [
+                    "Se rendre de {{ location_from }} à {{ location_to }} en train prend {{ duration }}."
                 ]
             },
             "walking": {
@@ -117,6 +125,7 @@
         }
     },
     "joins": {
-        "andSomething": "et {{- something }}"
+        "andSomething": "et {{- something }}",
+        "finally": "Enfin, {{- something }}"
     }
 }

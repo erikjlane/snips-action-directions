@@ -25,6 +25,7 @@ module.exports = {
 
             if (value.travel_mode === 'TRANSIT') {
                 finalData[i].line_name = value.transit_details.line.short_name
+                finalData[i].vehicle_type = value.transit_details.line.vehicle.type
                 finalData[i].headsign = value.transit_details.headsign
                 finalData[i].departure_stop = value.transit_details.departure_stop.name
                 finalData[i].arrival_stop = value.transit_details.arrival_stop.name
@@ -35,6 +36,7 @@ module.exports = {
 
         return finalData
     },
+
     isConnection: (aggregatedDirectionsData, currentIndex) => {
         const previousStep = aggregatedDirectionsData[currentIndex - 1]
         const currentStep = aggregatedDirectionsData[currentIndex]

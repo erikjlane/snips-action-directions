@@ -3,7 +3,7 @@ const { translation, logger } = require('../utils')
 // Wrap handlers to gracefully capture errors
 const handlerWrapper = handler => (
     async (message, flow, ...args) => {
-        logger.debug('message: %O', message)
+        //logger.debug('message: %O', message)
         try {
             // Run handler until completion
             const tts = await handler(message, flow, ...args)

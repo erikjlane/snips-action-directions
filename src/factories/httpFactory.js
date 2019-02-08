@@ -48,9 +48,9 @@ module.exports = {
             region: config.currentRegion
         }
 
-        if (travelMode === 'bus') {
+        if (travelMode === 'bus' || travelMode === 'train') {
             query.mode = 'transit'
-            query.transit_mode = 'bus'
+            query.transit_mode = travelMode
         }
 
         const results = await http
