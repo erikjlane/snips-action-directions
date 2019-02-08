@@ -20,7 +20,8 @@
             "noArrivalTime": "Désolé, je n'ai pas compris l'heure d'arrivée souhaitée.",
             "noDestinationAddressAndArrivalTime": "Désolé, je n'ai compris ni votre destination ni votre heure d'arrivée souhaitée.",
             "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée.",
-            "noDestinationAddressAndDepartureTime": "Désolé, je n'ai compris ni votre destination ni votre heure de départ souhaitée."
+            "noDestinationAddressAndDepartureTime": "Désolé, je n'ai compris ni votre destination ni votre heure de départ souhaitée.",
+            "sameLocations": "Cool, il semble que vous soyez déjà là où vous voulez aller !"
         },
         "navigationTime": {
             "transit": "Se rendre de {{ location_from}} à {{ location_to }} en transports en commun prend habituellement {{ duration }}.",

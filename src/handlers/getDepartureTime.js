@@ -61,6 +61,14 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             return i18n('directions.dialog.noArrivalTime')
         }
     } else {
+        // Are the origin and destination addresses the same?
+        if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
+            const speech = i18n('directions.dialog.sameLocations')
+            flow.end()
+            logger.info(speech)
+            return speech
+        }
+
         // Get the data from Directions API
         const directionsData = await httpFactory.calculateRoute({
             origin: locationFrom,
