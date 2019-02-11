@@ -126,8 +126,6 @@ module.exports = {
             travelMode = chosenTravelMode(directionsData)
         }
 
-        logger.debug(beautify.address(locationTo))
-
         // Time to get there by travelMode
         tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
             location_from: beautify.address(locationFrom),
@@ -135,8 +133,6 @@ module.exports = {
             duration: beautify.duration(duration),
             distance: beautify.distance(distance)
         })
-
-        logger.debug(tts)
 
         // Directions explanation (which stations?)
         if (travelMode === 'transit' || travelMode === 'train' || travelMode === 'bus') {

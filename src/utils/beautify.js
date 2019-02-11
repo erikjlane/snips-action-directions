@@ -24,10 +24,10 @@ module.exports = {
         const i18n = i18nFactory.get()
         const config = configFactory.get()
     
-        if (address.includes(config.homeAddress)) {
+        if (address.includes(config.homeAddress) || config.homeAddress.includes(address)) {
             return i18n('directions.fromLocation.home')
         }
-        if (address.includes(config.workAddress)) {
+        if (address.includes(config.workAddress) || config.workAddress.includes(address)) {
             return i18n('directions.fromLocation.work')
         }
     
