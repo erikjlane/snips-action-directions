@@ -1,4 +1,6 @@
 module.exports = {
-    aggregateDirections: require('./aggregateDirections').aggregateDirections,
-    isConnection: require('./aggregateDirections').isConnection
+    aggregateDirections: require('./aggregate').aggregateDirections,
+    isConnection: require('./helpers').isConnection,
+    noStepByTravelMode: require('./helpers').noStepByTravelMode,
+    chosenTravelMode: require('./helpers').chosenTravelMode
 }

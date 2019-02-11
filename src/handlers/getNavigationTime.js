@@ -1,5 +1,5 @@
 const { i18nFactory, httpFactory } = require('../factories')
-const { logger, translation, slot } = require('../utils')
+const { logger, translation, directions, slot } = require('../utils')
 const commonHandler = require('./common')
 
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
@@ -46,6 +46,9 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
         //logger.debug(directionsData)
 
+        const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
+        logger.debug(aggregatedDirectionsData)
+
         let speech = ''
         try {
             const destination = directionsData.routes[0].legs[0].end_address
@@ -54,9 +57,9 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             if (travelMode === 'driving') {
                 const durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
 
-                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, durationInTraffic)
+                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
             } else {
-                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration)
+                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, aggregatedDirectionsData)
             }
         } catch (error) {
             logger.error(error)

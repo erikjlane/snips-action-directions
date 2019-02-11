@@ -14,6 +14,14 @@
         "noCurrentAddress": "Please, make sure you set up your current location.",
         "badCurrentAddress": "Sorry, your current location is not properly configured."
     },
+    "travel_modes": {
+        "transit": "by public transport",
+        "bus": "by bus",
+        "train": "by train",
+        "walking": "by foot",
+        "bicycling": "by bike",
+        "driving": "by car"
+    },
     "directions": {
         "dialog": {
             "noDestinationAddress": "I'm sorry, I did not understand where you would like to go.",
@@ -21,7 +29,8 @@
             "noDestinationAddressAndArrivalTime": "I'm sorry, I did not understand neither your destination nor your wanted arrival time.",
             "noDepartureTime": "I'm sorry, I did not understand your wanted departure time.",
             "noDestinationAddressAndDepartureTime": "I'm sorry, I did not understand neither your destination nor your wanted departure time.",
-            "sameLocations": "Cool, it seems that you are already where you want to be!"
+            "sameLocations": "Cool, it seems that you are already where you want to be!",
+            "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you {{ travel_mode }}."
         },
         "navigationTime": {
             "transit": "Going from {{ location_from }} to {{ location_to }} by public transport usually takes {{ duration }}. I have no information on the current traffic.",

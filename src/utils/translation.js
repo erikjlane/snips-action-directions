@@ -1,5 +1,6 @@
 const { i18nFactory, configFactory } = require('../factories')
-const { isConnection } = require('./directions')
+const { isConnection, noStepByTravelMode, chosenTravelMode } = require('./directions')
+const logger = require('./logger')
 const beautify = require('./beautify')
 
 module.exports = {
@@ -29,8 +30,18 @@ module.exports = {
         return possibleValues[randomIndex]
     },
 
-    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, durationInTraffic = '') {
+    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, directionsData, durationInTraffic = '') {
         const i18n = i18nFactory.get()
+
+        let tts = ''
+
+        // If no route has been found by travelMode
+        if (noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n('directions.travel_modes.', travelMode)
+            })
+            travelMode = chosenTravelMode(directionsData)
+        }
 
         const options = {
             location_from: beautify.address(locationFrom),
@@ -42,50 +53,92 @@ module.exports = {
             options.duration_in_traffic = beautify.duration(durationInTraffic)
         }
 
-        return i18n('directions.navigationTime.' + travelMode, options)
+        tts += i18n('directions.navigationTime.' + travelMode, options)
+        return tts
     },
 
-    departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
+    departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
         const i18n = i18nFactory.get()
 
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
-        return i18n('directions.departureTime.' + travelMode, {
+        let tts = ''
+
+        // If no route has been found by travelMode
+        if (noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n('directions.travel_modes.', travelMode)
+            })
+            travelMode = chosenTravelMode(directionsData)
+        }
+
+        tts += i18n('directions.departureTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             departure_time: beautify.time(departureTimeDate),
             arrival_time: beautify.time(arrivalTimeDate)
         })
+
+        return tts
     },
 
-    arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime) {
+    arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
         const i18n = i18nFactory.get()
 
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
 
-        return i18n('directions.arrivalTime.' + travelMode, {
+        let tts = ''
+
+        // If no route has been found by travelMode
+        if (noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n('directions.travel_modes.', travelMode)
+            })
+            travelMode = chosenTravelMode(directionsData)
+        }
+
+        tts += i18n('directions.arrivalTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             departure_time: beautify.time(departureTimeDate),
             arrival_time: beautify.time(arrivalTimeDate)
         })
+
+        return tts
     },
 
     directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData) {
         const i18n = i18nFactory.get()
         const { randomTranslation } = module.exports
 
-        let tts = randomTranslation('directions.directions.' + travelMode + '.toDestination', {
+        let tts = ''
+
+        // If no route has been found by travelMode
+        if (noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n('travel_modes.' + travelMode)
+            })
+            tts += ' '
+            travelMode = chosenTravelMode(directionsData)
+        }
+
+        logger.debug(beautify.address(locationTo))
+
+        // Time to get there by travelMode
+        tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             duration: beautify.duration(duration),
             distance: beautify.distance(distance)
         })
 
+        logger.debug(tts)
+
+        // Directions explanation (which stations?)
         if (travelMode === 'transit' || travelMode === 'train' || travelMode === 'bus') {
             tts += ' '
 

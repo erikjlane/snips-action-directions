@@ -35,16 +35,5 @@ module.exports = {
         }
 
         return finalData
-    },
-
-    isConnection: (aggregatedDirectionsData, currentIndex) => {
-        const previousStep = aggregatedDirectionsData[currentIndex - 1]
-        const currentStep = aggregatedDirectionsData[currentIndex]
-        const nextStep = aggregatedDirectionsData[currentIndex + 1]
-
-        return previousStep && currentStep && nextStep
-            && currentStep.travel_mode === 'WALKING' &&
-            previousStep.travel_mode == 'TRANSIT' &&
-            nextStep.travel_mode === 'TRANSIT'
     }
 }

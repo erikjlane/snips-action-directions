@@ -14,6 +14,14 @@
         "noCurrentAddress": "Veillez à configurer votre localisation courante.",
         "badCurrentAddress": "Désolé, votre localisation courante est mal configurée."
     },
+    "travel_modes": {
+        "transit": "en transports en commun",
+        "bus": "en bus",
+        "train": "en train",
+        "walking": "à pied",
+        "bicycling": "à vélo",
+        "driving": "en voiture"
+    },
     "directions": {
         "dialog": {
             "noDestinationAddress": "Désolé, je n'ai pas compris quelle était votre destination.",
@@ -21,7 +29,8 @@
             "noDestinationAddressAndArrivalTime": "Désolé, je n'ai compris ni votre destination ni votre heure d'arrivée souhaitée.",
             "noDepartureTime": "Désolé, je n'ai pas compris l'heure de départ souhaitée.",
             "noDestinationAddressAndDepartureTime": "Désolé, je n'ai compris ni votre destination ni votre heure de départ souhaitée.",
-            "sameLocations": "Cool, il semble que vous soyez déjà là où vous voulez aller !"
+            "sameLocations": "Cool, il semble que vous soyez déjà là où vous voulez aller !",
+            "noTripWithTravelMode": "Désolé, je n'ai pas de trajet pertinent à vous proposer {{ travel_mode }}."
         },
         "navigationTime": {
             "transit": "Se rendre de {{ location_from}} à {{ location_to }} en transports en commun prend habituellement {{ duration }}.",

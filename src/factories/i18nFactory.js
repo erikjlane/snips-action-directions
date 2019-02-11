@@ -19,7 +19,7 @@ async function init(language = DEFAULT_LANGUAGE, i18nOptions = {}) {
             return
         }
         // Read the language files.
-        const languageResources = fs.readFileSync(path.resolve(__dirname + `/../../assets/i18n/${language}.json`), 'utf-8')
+        const languageResources = fs.readFileSync(path.resolve(__dirname + `/../../assets/i18n/${language}.json`), 'utf8')
         const resources = {
             [language]: {
                 translation: JSON.parse(languageResources)
