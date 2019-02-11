@@ -1,6 +1,5 @@
-const { i18nFactory, configFactory } = require('../factories')
+const { i18nFactory } = require('../factories')
 const { isConnection, noStepByTravelMode, chosenTravelMode } = require('./directions')
-const logger = require('./logger')
 const beautify = require('./beautify')
 
 module.exports = {
@@ -135,7 +134,7 @@ module.exports = {
         })
 
         // Directions explanation (which stations?)
-        if (travelMode === 'transit' || travelMode === 'train' || travelMode === 'bus') {
+        if (travelMode === 'transit' || travelMode === 'train' || travelMode === 'bus') {
             tts += ' '
 
             let connection = false

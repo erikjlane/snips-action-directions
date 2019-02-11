@@ -5,7 +5,7 @@ const commonHandler = require('./common')
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
-    logger.info("GetDepartureTime")
+    logger.info('GetDepartureTime')
 
     if (knownSlots.depth === 0) {
         throw new Error('slotsNotRecognized')
@@ -25,7 +25,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         if (arrivalTimeSlot) {
             const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
             arrivalTime = arrivalTimeDate.getTime() / 1000
-            logger.info("arrival_time: ", arrivalTimeDate)
+            logger.info('arrival_time: ', arrivalTimeDate)
         }
     } else {
         arrivalTime = knownSlots.arrival_time

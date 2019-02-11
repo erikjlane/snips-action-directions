@@ -44,8 +44,6 @@ function getHomeLocation() {
 }
 
 function getCompleteAddress(location) {
-    const config = configFactory.get()
-
     if (WORK_SYNONYMS.includes(location)) {
         return getWorkLocation()
     }
@@ -110,12 +108,12 @@ module.exports = async function (msg, knownSlots = {}) {
         const travelModeSlot = message.getSlotsByName(msg, 'travel_mode', { onlyMostConfident: true })
         if (travelModeSlot) {
             const travelModeAvailable = {
-                'bike': 'bicycling',
-                'car': 'driving',
-                'walk': 'walking',
-                'subway': 'transit',
-                'train': 'train',
-                'bus': 'bus'
+                bike: 'bicycling',
+                car: 'driving',
+                walk: 'walking',
+                subway: 'transit',
+                train: 'train',
+                bus: 'bus'
             }
             travelMode = travelModeAvailable[travelModeSlot.value.value] || 'transit'
         } else {
@@ -125,9 +123,9 @@ module.exports = async function (msg, knownSlots = {}) {
         travelMode = knownSlots.travel_mode
     }
 
-    logger.info("\tlocation_from: ", locationFrom)
-    logger.info("\tlocation_to: ", locationTo)
-    logger.info("\ttravel_mode: ", travelMode)
+    logger.info('\tlocation_from: ', locationFrom)
+    logger.info('\tlocation_to: ', locationTo)
+    logger.info('\ttravel_mode: ', travelMode)
 
     return { locationFrom, locationTo, travelMode }
 }

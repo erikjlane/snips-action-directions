@@ -1,7 +1,6 @@
 const { default: wretch } = require('wretch')
 const { dedupe } = require('wretch-middlewares')
 const configFactory = require('./configFactory')
-const logger = require('../utils/logger')
 
 const BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 

@@ -10,8 +10,9 @@ module.exports = {
                 value: address
             }
         }
-    }
-    createLocationToSlot(address) {
+    },
+
+    createLocationToSlot (address) {
         return {
             slotName: 'location_to',
             entity: 'address',
@@ -22,8 +23,9 @@ module.exports = {
                 value: address
             }
         }
-    }
-    createTravelModeSlot(travelMode) {
+    },
+
+    createTravelModeSlot (travelMode) {
         return {
             slotName: 'travel_mode',
             entity: 'travel_mode',

@@ -1,5 +1,3 @@
-const { debug } = require('../logger')
-
 function resetAccumulatorItem(nbSteps) {
     return Array.from({length: nbSteps}, () => ({
         travel_mode: null,
@@ -18,7 +16,7 @@ module.exports = {
         const finalData = resetAccumulatorItem(steps.length)
 
         let i = 0
-        for (let [key, value] of Object.entries(steps)) {
+        for (let value of Object.entries(steps)) {
             finalData[i].travel_mode = value.travel_mode
             finalData[i].distance = value.distance.value
             finalData[i].duration = value.duration.value

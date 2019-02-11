@@ -62,9 +62,9 @@
                     "Going from {{- location_from }} to {{- location_to }} by public transport will take you {{ duration }}.",
                     "By public transport, you should plan {{ duration }} to go from {{- location_from }} to {{- location_to}}."
                 ],
-                "walkToMetro": "Walk {{ duration }} to the station {{ arrival_stop }}.",
-                "metro": "Take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
-                "connectionMetro": "When connecting take line {{ line_name }} towards {{ headsign }} and get off at {{ arrival_stop }}.",
+                "walkToMetro": "Walk {{ duration }} to the station {{- arrival_stop }}.",
+                "metro": "Take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
+                "connectionMetro": "When connecting take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
                 "walkToFinalDestination": "Walk another {{ distance }} to reach the address {{- location_to }}."
             },
             "bus": {

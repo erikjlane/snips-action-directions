@@ -23,7 +23,7 @@ module.exports = {
     },
 
     noStepByTravelMode: (travelMode, aggregatedDirectionsData) => {
-        for (let [key, value] of Object.entries(aggregatedDirectionsData)) {
+        for (let value of Object.entries(aggregatedDirectionsData)) {
             switch (travelMode) {
                 case 'walking':
                     if (value.travel_mode === 'WALKING') return false
@@ -54,7 +54,7 @@ module.exports = {
         const defaultTravelMode = 'walking'
         let chosenTravelMode = defaultTravelMode
 
-        for (let [key, value] of Object.entries(aggregatedDirectionsData)) {
+        for (let value of Object.entries(aggregatedDirectionsData)) {
             if (buses.includes(value.vehicle_type)) {
                 if (chosenTravelMode !== defaultTravelMode) {
                     return 'transit'

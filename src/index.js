@@ -2,7 +2,6 @@ const { withHermes } = require('hermes-javascript')
 const bootstrap = require('./bootstrap')
 const handlers = require('./handlers')
 const { translation, logger } = require('./utils')
-const { i18nFactory } = require('./factories')
 
 // Initialize hermes
 module.exports = function ({

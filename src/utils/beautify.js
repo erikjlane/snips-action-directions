@@ -42,7 +42,7 @@ module.exports = {
             distance = metersToFeet(distance)
     
             if (distance > 5280) {
-                distance = +(Math.round(distance / 5280 + "e+1") + "e-1")
+                distance = +(Math.round(distance / 5280 + 'e+1') + 'e-1')
                 return i18n('units.distance.imperial.miles', { distance: distance })
             } else {
                 distance = 100 * Math.floor(distance / 100)
@@ -55,7 +55,7 @@ module.exports = {
                 if (distance > 20) {
                     distance = Math.round(distance)
                 } else {
-                    distance = +(Math.round(distance + "e+1") + "e-1")
+                    distance = +(Math.round(distance + 'e+1') + 'e-1')
                 }
 
                 return i18n('units.distance.metric.kilometers', { distance: distance })

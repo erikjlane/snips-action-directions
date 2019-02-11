@@ -63,9 +63,9 @@
                     "En transports en commun, vous mettrez {{ duration }} à vous rendre à {{ location_to}} de {{- location_from }}.",
                     "En transports en commun, prévoyez {{ duration }} pour vous rendre à {{- location_to }} de {{- location_from }}."
                 ],
-                "walkToMetro": "Marchez {{ duration }} jusqu'à la station {{ arrival_stop }}.",
-                "metro": "Prenez la ligne {{ line_name }} en direction de {{ headsign }}, et descendez à {{ arrival_stop }}.",
-                "connectionMetro": "À la correspondance, prenez la ligne {{ line_name }} en direction de {{ headsign }} puis descendez à {{ arrival_stop }}.",
+                "walkToMetro": "Marchez {{ duration }} jusqu'à la station {{- arrival_stop }}.",
+                "metro": "Prenez la ligne {{- line_name }} en direction de {{- headsign }}, et descendez à {{- arrival_stop }}.",
+                "connectionMetro": "À la correspondance, prenez la ligne {{- line_name }} en direction de {{- headsign }} puis descendez à {{- arrival_stop }}.",
                 "walkToFinalDestination": "Marchez encore {{ distance }} mètres pour arriver à l'adresse {{- location_to }}."
             },
             "bus": {

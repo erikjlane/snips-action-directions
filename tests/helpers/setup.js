@@ -9,6 +9,7 @@ module.exports = {
     bootstrap() {
         beforeAll(async () => {
             const mosquittoPort = await getFreePort()
+            //const mosquittoPort = 1883
             console.log('Launching mosquitto on port [' + mosquittoPort + ']')
             // To print full mosquitto logs, replace stdio: 'ignore' with stdio: 'inherit'
             const mosquitto = spawn('mosquitto', ['-p', mosquittoPort, '-v'], { stdio: 'ignore' })
