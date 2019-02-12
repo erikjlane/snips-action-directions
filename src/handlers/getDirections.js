@@ -6,10 +6,6 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
     logger.info('GetDirections')
-
-    if (knownSlots.depth === 0) {
-        throw new Error('slotsNotRecognized')
-    }
     
     // Extracting slots
     const {
@@ -20,6 +16,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     // One required slot is missing
     if (slot.missing(locationTo)) {
+        if (knownSlots.depth === 0) {
+            throw new Error('slotsNotRecognized')
+        }
+
         flow.continue('snips-assistant:GetDirections', (msg, flow) => (
             require('./index').getDirections(msg, flow, {
                 location_from: locationFrom,

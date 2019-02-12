@@ -7,10 +7,6 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     logger.info('GetDepartureTime')
 
-    if (knownSlots.depth === 0) {
-        throw new Error('slotsNotRecognized')
-    }
-
     // Extracting slots
     const {
         locationFrom,
@@ -33,6 +29,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     // One or two required slots are missing
     if (slot.missing(locationTo) || slot.missing(arrivalTime)) {
+        if (knownSlots.depth === 0) {
+            throw new Error('slotsNotRecognized')
+        }
+
         flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => {
             let slotsToBeSent = {
                 location_from: locationFrom,

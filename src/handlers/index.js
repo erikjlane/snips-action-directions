@@ -21,7 +21,6 @@ const handlerWrapper = handler => (
 
 // Add handlers here, and wrap them.
 module.exports = {
-    getTrafficInfo: handlerWrapper(require('./getTrafficInfo')),
     getNavigationTime: handlerWrapper(require('./getNavigationTime')),
     getArrivalTime: handlerWrapper(require('./getArrivalTime')),
     getDepartureTime: handlerWrapper(require('./getDepartureTime')),
