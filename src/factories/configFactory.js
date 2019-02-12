@@ -7,7 +7,7 @@ const { SUPPORTED_LOCALES, DEFAULT_LOCALE } = require('../constants')
 
 let config = null
 
-function init () {
+async function init () {
     try {
         // Get the config file.
         const configFilePath = path.resolve(__dirname + '/../../config.ini')
@@ -32,7 +32,15 @@ function init () {
     }
 }
 
+async function mock (mockedConfig) {
+    config = {
+        ...config,
+        ...camelizeKeys(mockedConfig)
+    }
+}
+
 module.exports = {
     init,
+    mock,
     get: () => config
 }

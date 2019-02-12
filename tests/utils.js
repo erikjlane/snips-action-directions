@@ -36,5 +36,35 @@ module.exports = {
                 value: travelMode
             }
         }
+    },
+
+    createDepartureTimeSlot (departureTime) {
+        return {
+            slotName: 'departure_time',
+            entity: 'snips/datetime',
+            confidence: 1,
+            rawValue: departureTime,
+            value: {
+                kind: 'InstantTime',
+                value: departureTime,
+                grain: 'Hour',
+                precision: 'Exact'
+            }
+        }
+    },
+
+    createArrivalTimeSlot (arrivalTime) {
+        return {
+            slotName: 'arrival_time',
+            entity: 'snips/datetime',
+            confidence: 1,
+            rawValue: arrivalTime,
+            value: {
+                kind: 'InstantTime',
+                value: arrivalTime,
+                grain: 'Hour',
+                precision: 'Exact'
+            }
+        }
     }
 }

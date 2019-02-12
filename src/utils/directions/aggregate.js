@@ -16,17 +16,17 @@ module.exports = {
         const finalData = resetAccumulatorItem(steps.length)
 
         let i = 0
-        for (let value of Object.entries(steps)) {
-            finalData[i].travel_mode = value.travel_mode
-            finalData[i].distance = value.distance.value
-            finalData[i].duration = value.duration.value
+        for (let element of Object.values(steps)) {
+            finalData[i].travel_mode = element.travel_mode
+            finalData[i].distance = element.distance.value
+            finalData[i].duration = element.duration.value
 
-            if (value.travel_mode === 'TRANSIT') {
-                finalData[i].line_name = value.transit_details.line.short_name
-                finalData[i].vehicle_type = value.transit_details.line.vehicle.type
-                finalData[i].headsign = value.transit_details.headsign
-                finalData[i].departure_stop = value.transit_details.departure_stop.name
-                finalData[i].arrival_stop = value.transit_details.arrival_stop.name
+            if (element.travel_mode === 'TRANSIT') {
+                finalData[i].line_name = element.transit_details.line.short_name
+                finalData[i].vehicle_type = element.transit_details.line.vehicle.type
+                finalData[i].headsign = element.transit_details.headsign
+                finalData[i].departure_stop = element.transit_details.departure_stop.name
+                finalData[i].arrival_stop = element.transit_details.arrival_stop.name
             }
 
             i++

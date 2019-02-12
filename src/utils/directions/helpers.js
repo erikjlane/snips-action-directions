@@ -23,25 +23,25 @@ module.exports = {
     },
 
     noStepByTravelMode: (travelMode, aggregatedDirectionsData) => {
-        for (let value of Object.entries(aggregatedDirectionsData)) {
+        for (let element of Object.values(aggregatedDirectionsData)) {
             switch (travelMode) {
                 case 'walking':
-                    if (value.travel_mode === 'WALKING') return false
+                    if (element.travel_mode === 'WALKING') return false
                     break
                 case 'bicycling':
-                    if (value.travel_mode === 'BICYCLING') return false
+                    if (element.travel_mode === 'BICYCLING') return false
                     break
                 case 'driving':
-                    if (value.travel_mode === 'DRIVING') return false
+                    if (element.travel_mode === 'DRIVING') return false
                     break
                 case 'transit':
-                    if (value.travel_mode === 'TRANSIT') return false
+                    if (element.travel_mode === 'TRANSIT') return false
                     break
                 case 'bus':
-                    if (value.travel_mode === 'TRANSIT' && buses.includes(value.vehicle_type)) return false
+                    if (element.travel_mode === 'TRANSIT' && buses.includes(element.vehicle_type)) return false
                     break
                 case 'train':
-                    if (value.travel_mode === 'TRANSIT' && trains.includes(value.vehicle_type)) return false
+                    if (element.travel_mode === 'TRANSIT' && trains.includes(element.vehicle_type)) return false
                     break
                 default:
                     break
@@ -54,14 +54,14 @@ module.exports = {
         const defaultTravelMode = 'walking'
         let chosenTravelMode = defaultTravelMode
 
-        for (let value of Object.entries(aggregatedDirectionsData)) {
-            if (buses.includes(value.vehicle_type)) {
+        for (let element of Object.values(aggregatedDirectionsData)) {
+            if (buses.includes(element.vehicle_type)) {
                 if (chosenTravelMode !== defaultTravelMode) {
                     return 'transit'
                 }
                 chosenTravelMode = 'bus'
             }
-            if (trains.includes(value.vehicle_type)) {
+            if (trains.includes(element.vehicle_type)) {
                 if (chosenTravelMode !== defaultTravelMode) {
                     return 'transit'
                 }
