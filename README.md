@@ -15,7 +15,7 @@ node action.js
 
 ## Debug
 
-In the `action.js` file:
+In the `action-directions.js` file:
 
 ```js
 // Uncomment this line to print everything
