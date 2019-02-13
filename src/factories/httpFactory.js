@@ -9,19 +9,6 @@ let http = wretch(BASE_URL)
     // (https://github.com/elbywan/wretch-middlewares)
     .middlewares([
         dedupe()
-        /*
-        next => async (url, opts) => {
-            const response = await next(url, opts)
-            const clone = await response.clone()
-            const body = await clone.json()
-            if (!body.geocoded_waypoints[1].types.includes('street_address')) {
-                // chope l'id dans le body
-                return next( nouvelle url , opts)
-            } else {
-                return response
-            }
-        }
-        */
     ])
 
 module.exports = {
@@ -32,7 +19,7 @@ module.exports = {
             fetch: httpOptions.mock || require('node-fetch')
         })
         http = http.query({
-            key: config.key
+            key: config.apiKey
         })
     },
     calculateRoute: async ({origin, destination, travelMode, departureTime = 'now', arrivalTime = ''} = {}) => {
