@@ -1,6 +1,9 @@
 const { default: wretch } = require('wretch')
 const { dedupe } = require('wretch-middlewares')
 const configFactory = require('./configFactory')
+const {
+    LANGUAGE_MAPPINGS
+} = require('../constants')
 
 const BASE_URL = 'https://maps.googleapis.com/maps/api/directions/json'
 
@@ -31,7 +34,8 @@ module.exports = {
             departure_time: departureTime,
             arrival_time: arrivalTime,
             units: config.unitSystem,
-            region: config.currentRegion
+            region: config.currentRegion,
+            language: LANGUAGE_MAPPINGS[config.locale]
         }
 
         if (travelMode === 'bus' || travelMode === 'train') {

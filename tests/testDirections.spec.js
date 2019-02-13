@@ -248,6 +248,33 @@ it('should query the directions to go from work to Buckingham Palace by bus', as
     await session.end()
 })
 
+it('should suggest another travel mode', async () => {
+    configFactory.mock({
+        locale: 'english',
+        current_region: 'uk',
+        current_location: 'work',
+        home_address: '21 Onslow Gardens',
+        home_city: 'London',
+        work_address: 'Hammond Court, 10 Hotspur St',
+        work_city: 'London',
+        unit_system: 'metric'
+    })
+
+    const session = new Session()
+    await session.start({
+        intentName: 'snips-assistant:GetDirections',
+        input: 'Give me directions to go from work to Buckingham Palace by car',
+        slots: [
+            createLocationFromSlot('work'),
+            createLocationToSlot('Buckingham Palace'),
+            createTravelModeSlot('car')
+        ]
+    })
+
+    await session.end()
+    //expect(endMsg).toMatch('/noTripWithTravelMode/')
+})
+
 it('should laugh of you', async () => {
     configFactory.mock({
         locale: 'english',

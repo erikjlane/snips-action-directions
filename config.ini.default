@@ -1,5 +1,7 @@
 [global]
 locale=
+
+[secret]
 current_region=
 current_location=
 home_address=
@@ -7,6 +9,4 @@ home_city=
 work_address=
 work_city=
 unit_system=
-
-[secret]
 api_key=
