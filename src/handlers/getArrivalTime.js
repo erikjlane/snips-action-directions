@@ -50,6 +50,13 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
             return require('./index').getArrivalTime(msg, flow, slotsToBeSent)
         })
+
+        flow.continue('snips-assistant:Cancel', (_, flow) => {
+            flow.end()
+        })
+        flow.continue('snips-assistant:Stop', (_, flow) => {
+            flow.end()
+        })
         
         if (slot.missing(locationTo) && slot.missing(departureTime)) {
             return i18n('directions.dialog.noDestinationAddressAndDepartureTime')

@@ -28,6 +28,13 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             })
         ))
 
+        flow.continue('snips-assistant:Cancel', (_, flow) => {
+            flow.end()
+        })
+        flow.continue('snips-assistant:Stop', (_, flow) => {
+            flow.end()
+        })
+
         return i18n('directions.dialog.noDestinationAddress')
     } else {
         // Are the origin and destination addresses the same?
