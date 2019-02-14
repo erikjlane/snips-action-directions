@@ -1,4 +1,4 @@
-const { httpFactory, i18nFactory } = require('../factories')
+const { directionsHttpFactory, i18nFactory } = require('../factories')
 const { logger, translation, directions, slot } = require('../utils')
 const commonHandler = require('./common')
  
@@ -46,7 +46,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
 
         // Get the data from Directions API
-        const directionsData = await httpFactory.calculateRoute({
+        const directionsData = await directionsHttpFactory.calculateRoute({
             origin: locationFrom,
             destination: locationTo,
             travelMode: travelMode
