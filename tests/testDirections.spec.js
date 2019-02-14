@@ -125,7 +125,10 @@ it('should ask the missing destination and pass', async () => {
     })
     expect(getMessageKey(whichDestinationMsg.text)).toBe('directions.dialog.noDestinationAddress')
 
-    await session.end()
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
+
 })
 
 it('should ask the missing destination twice and pass', async () => {
@@ -161,7 +164,9 @@ it('should ask the missing destination twice and pass', async () => {
     })).text
     expect(getMessageKey(whichDestinationMsg2)).toBe('directions.dialog.noDestinationAddress')
 
-    await session.end()
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 })
 
 it('should ask the missing destination twice and fail', async () => {
@@ -219,9 +224,12 @@ it('should query the directions to go to Buckingham Palace (default: home & tran
         ]
     })
 
-    await session.end()
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 })
 
+//TODO: the user asked for a trip by bus, but another transit mode is returned by Google (metro)
 it('should query the directions to go from work to Buckingham Palace by bus', async () => {
     configFactory.mock({
         locale: 'english',
@@ -245,10 +253,13 @@ it('should query the directions to go from work to Buckingham Palace by bus', as
         ]
     })
 
-    await session.end()
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('noTripWithTravelMode')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 })
 
-it('should suggest another travel mode', async () => {
+it('should suggest another travel mode instead of car', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -271,8 +282,10 @@ it('should suggest another travel mode', async () => {
         ]
     })
 
-    await session.end()
-    //expect(endMsg).toMatch('/noTripWithTravelMode/')
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('noTripWithTravelMode')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
 })
 
 it('should laugh of you', async () => {
@@ -300,19 +313,4 @@ it('should laugh of you', async () => {
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.dialog.sameLocations')
-})
-
-it('should query the directions to go from London Eye to Buckingham Palace by bike', async () => {
-    const session = new Session()
-    await session.start({
-        intentName: 'snips-assistant:GetDirections',
-        input: 'Give me directions to go from London Eye to Buckingham Palace by bike',
-        slots: [
-            createLocationFromSlot('London Eye'),
-            createLocationToSlot('Buckingham Palace'),
-            createTravelModeSlot('walk')
-        ]
-    })
-
-    await session.end()
 })
