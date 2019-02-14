@@ -24,12 +24,12 @@
     },
     "directions": {
         "dialog": {
-            "noDestinationAddress": "I'm sorry, I did not understand where you would like to go.",
-            "noArrivalTime": "I'm sorry, I did not understand your wanted arrival time.",
-            "noDestinationAddressAndArrivalTime": "I'm sorry, I did not understand neither your destination nor your wanted arrival time.",
-            "noDepartureTime": "I'm sorry, I did not understand your wanted departure time.",
-            "noDestinationAddressAndDepartureTime": "I'm sorry, I did not understand neither your destination nor your wanted departure time.",
-            "sameLocations": "Cool, it seems that you are already where you want to be!",
+            "noDestinationAddress": "I'm sorry, can you repeat where you want to go?",
+            "noArrivalTime": "I'm sorry, can you repeat the time you want to arrive there?",
+            "noDestinationAddressAndArrivalTime": "I'm sorry, can you repeat where you want to go as well as the time you want to arrive there?",
+            "noDepartureTime": "I'm sorry, can you repeat the time you want to leave?",
+            "noDestinationAddressAndDepartureTime": "I'm sorry, can you repeat where you want to go as well as the time you plan to leave?",
+            "sameLocations": "Good news! It seems that you are already where you want to be!",
             "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you {{ travel_mode }}."
         },
         "navigationTime": {
