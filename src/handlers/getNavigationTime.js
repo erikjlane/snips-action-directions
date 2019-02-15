@@ -20,13 +20,17 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             throw new Error('slotsNotRecognized')
         }
 
-        flow.continue('snips-assistant:GetNavigationTime', (msg, flow) => (
-            require('./index').getNavigationTime(msg, flow, {
+        flow.continue('snips-assistant:GetNavigationTime', (msg, flow) => {
+            if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                throw new Error('intentNotRecognized')
+            }
+
+            return require('./index').getNavigationTime(msg, flow, {
                 location_from: locationFrom,
                 travel_mode: travelMode,
                 depth: knownSlots.depth - 1
             })
-        ))
+        })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()

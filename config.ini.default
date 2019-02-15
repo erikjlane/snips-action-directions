@@ -1,12 +1,12 @@
 [global]
-locale=
+locale=english
 
 [secret]
-current_region=
-current_location=
+current_region=us
+current_location=home
 home_address=
 home_city=
 work_address=
 work_city=
-unit_system=
+unit_system=metric
 api_key=

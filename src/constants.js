@@ -17,5 +17,9 @@ module.exports = {
         'work',
         'work place',
         'office'
-    ]
+    ],
+    INTENT_PROBABILITY_THRESHOLD: 0.5,
+    INTENT_FILTER_PROBABILITY_THRESHOLD: 0,
+    SLOT_CONFIDENCE_THRESHOLD: 0,
+    ASR_TOKENS_CONFIDENCE_THRESHOLD: 0.5
 }

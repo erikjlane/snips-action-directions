@@ -17,7 +17,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     // Get arrival_time specific slot
     let arrivalTime
     if (!('arrival_time' in knownSlots)) {
-        const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', { onlyMostConfident: true })
+        const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', {
+            onlyMostConfident: true,
+            threshold: SLOT_CONFIDENCE_THRESHOLD
+        })
+
         if (arrivalTimeSlot) {
             const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
             arrivalTime = arrivalTimeDate.getTime() / 1000
@@ -34,6 +38,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
 
         flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => {
+            if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                throw new Error('intentNotRecognized')
+            }
+
             let slotsToBeSent = {
                 location_from: locationFrom,
                 travel_mode: travelMode,

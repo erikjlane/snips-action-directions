@@ -1,9 +1,11 @@
 const { message, logger } = require('../utils')
 const { configFactory } = require('../factories')
 const {
-    INTENT_PROBABILITY_THRESHOLD,
     HOME_SYNONYMS,
-    WORK_SYNONYMS
+    WORK_SYNONYMS,
+    INTENT_PROBABILITY_THRESHOLD,
+    SLOT_CONFIDENCE_THRESHOLD,
+    ASR_TOKENS_CONFIDENCE_THRESHOLD
 } = require('../constants')
 
 function getCurrentLocation() {
@@ -78,12 +80,19 @@ module.exports = async function (msg, knownSlots = {}) {
     if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
         throw new Error('intentNotRecognized')
     }
+    if (1 < ASR_TOKENS_CONFIDENCE_THRESHOLD) {
+        throw new Error('intentNotRecognized')
+    }
 
     let locationFrom, locationTo, travelMode
 
     // Slot location_from
     if (!('location_from' in knownSlots)) {
-        const locationFromSlot = message.getSlotsByName(msg, 'location_from', { onlyMostConfident: true })
+        const locationFromSlot = message.getSlotsByName(msg, 'location_from', {
+            onlyMostConfident: true,
+            threshold: SLOT_CONFIDENCE_THRESHOLD
+        })
+
         if (locationFromSlot) {
             locationFrom = getCompleteAddress(locationFromSlot.value.value)
         } else {
@@ -95,7 +104,11 @@ module.exports = async function (msg, knownSlots = {}) {
 
     // Slot location_to
     if (!('location_to' in knownSlots)) {
-        const locationToSlot = message.getSlotsByName(msg, 'location_to', { onlyMostConfident: true })
+        const locationToSlot = message.getSlotsByName(msg, 'location_to', {
+            onlyMostConfident: true,
+            threshold: SLOT_CONFIDENCE_THRESHOLD
+        })
+
         if (locationToSlot) {
             locationTo = getCompleteAddress(locationToSlot.value.value)
         }
@@ -105,7 +118,11 @@ module.exports = async function (msg, knownSlots = {}) {
 
     // Slot travel_mode
     if (!('travel_mode' in knownSlots)) {
-        const travelModeSlot = message.getSlotsByName(msg, 'travel_mode', { onlyMostConfident: true })
+        const travelModeSlot = message.getSlotsByName(msg, 'travel_mode', { 
+            onlyMostConfident: true,
+            threshold: SLOT_CONFIDENCE_THRESHOLD
+        })
+
         if (travelModeSlot) {
             const travelModeAvailable = {
                 bike: 'bicycling',
