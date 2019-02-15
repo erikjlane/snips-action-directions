@@ -30,7 +30,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             const departureTimeDate = new Date(departureTimeSlot.value.value.value)
             departureTime = departureTimeDate.getTime() / 1000
 
-            logger.info('departure_time: ', departureTimeDate)
+            logger.info('\tdeparture_time: ', departureTimeDate)
         }
     } else {
         departureTime = knownSlots.departure_time
@@ -99,7 +99,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         //logger.debug(directionsData)
 
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        logger.debug(aggregatedDirectionsData)
+        //logger.debug(aggregatedDirectionsData)
 
         let speech = ''
         try {

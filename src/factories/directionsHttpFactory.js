@@ -15,7 +15,7 @@ let directionsHttp = wretch(BASE_URL)
         next => async (url, opts) => {
             const config = configFactory.get()
             const places = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.destination)
-            
+
             const place = places.results[0]
             if (places.status !== 'ZERO_RESULTS' && place) {
                 // Places returned some results, extract and pass the place_id to Directions
@@ -77,8 +77,10 @@ module.exports = {
                 throw new Error('APIResponse')
             })
 
-        if (results && results.status === 'NOT FOUND') {
-            throw new Error('place')
+        if (results) {
+            if (results.results === 'ZERO_RESULTS' || results.status === 'NOT FOUND') {
+                throw new Error('place')
+            }
         }
 
         return results

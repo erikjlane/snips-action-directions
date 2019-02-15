@@ -1,6 +1,67 @@
 module.exports = {
     mock(fetchMock) {
-        fetchMock.mock('*', {
+        fetchMock.mock('glob:*api/place/nearbysearch*', {
+            html_attributions: [],
+            results: [
+                {
+                    geometry: {
+                        location: {
+                            lat: 51.501364,
+                            lng: -0.14189
+                        },
+                        viewport: {
+                            northeast: {
+                                lat: 51.50302137989272,
+                                lng: -0.13910645
+                            },
+                            southwest: {
+                                lat: 51.50032172010728,
+                                lng: -0.14281785
+                            }
+                        }
+                    },
+                    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png',
+                    id: '6a2997f5840e8cb6a28334f8e3bad9535e450e3c',
+                    name: 'Buckingham Palace',
+                    place_id: 'ChIJtV5bzSAFdkgRpwLZFPWrJgo',
+                    plus_code: {
+                        compound_code: 'GV25+G6 Westminster, London, UK',
+                        global_code: '9C3XGV25+G6'
+                    },
+                    rating: 4.5,
+                    reference: 'ChIJtV5bzSAFdkgRpwLZFPWrJgo',
+                    scope: 'GOOGLE',
+                    types: [
+                        'premise',
+                        'point_of_interest',
+                        'establishment'
+                    ],
+                    user_ratings_total: 77143,
+                    vicinity: 'London'
+                }
+            ],
+            status: 'OK'
+        })
+
+        fetchMock.mock('glob:*api/directions*', {
+            geocoded_waypoints: [
+                {
+                    geocoder_status: 'OK',
+                    place_id: 'ChIJ6QSUFpQEdkgR12P1w2Dt_B0',
+                    types: [
+                        'premise'
+                    ]
+                },
+                {
+                    geocoder_status: 'OK',
+                    place_id: 'ChIJtV5bzSAFdkgRpwLZFPWrJgo',
+                    types: [
+                        'establishment',
+                        'point_of_interest',
+                        'premise'
+                    ]
+                }
+            ],
             routes: [
                 {
                     legs: [
