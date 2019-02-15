@@ -34,9 +34,16 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
             // Or is it a TimeInterval object?
             else if (arrivalTimeSlot.value.value_type === 5) {
-
+                const from = arrivalTimeSlot.value.value.from
+                if (from) {
+                    arrivalTime = new Date(from)
+                } else {
+                    const to = arrivalTimeSlot.value.value.to
+                    if (to) {
+                        arrivalTime = new Date(to)
+                    }
+                }
             }
-            
         }
     } else {
         arrivalTime = knownSlots.arrival_time
