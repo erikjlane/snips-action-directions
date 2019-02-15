@@ -78,7 +78,7 @@ module.exports = {
             })
 
         if (results) {
-            if (results.results === 'ZERO_RESULTS' || results.status === 'NOT FOUND') {
+            if (results.status === 'ZERO_RESULTS' || results.status === 'NOT FOUND') {
                 throw new Error('place')
             }
         }
