@@ -12,7 +12,8 @@
         "noHomeAddress": "Veillez à configurer l'adresse de votre domicile.",
         "noWorkAddress": "Veillez à configurer l'adresse de votre lieu de travail.",
         "noCurrentAddress": "Veillez à configurer votre localisation courante.",
-        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée."
+        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée.",
+        "noCurrentCoordinates": "Veillez à configurer vos coordonnées GPS courantes."
     },
     "travel_modes": {
         "transit": "en transports en commun",

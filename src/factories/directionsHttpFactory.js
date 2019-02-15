@@ -14,13 +14,14 @@ let directionsHttp = wretch(BASE_URL)
         dedupe(),
         next => async (url, opts) => {
             const config = configFactory.get()
-            const places = await placesHttpFactory.nearbySearch(config.homeCoordinates, opts.destination)
+            const places = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.destination)
             
-            if (places.status !== 'ZERO_RESULTS') {
+            const place = places.results[0]
+            if (places.status !== 'ZERO_RESULTS' && place) {
                 // Places returned some results, extract and pass the place_id to Directions
                 const query = {
                     ...opts.query,
-                    destination: 'place_id:' + places.results[0].place_id,
+                    destination: 'place_id:' + place.place_id,
                     key: config.apiKey
                 }
                 return wretch(BASE_URL).query(query).get().res()

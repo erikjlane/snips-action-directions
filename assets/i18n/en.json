@@ -12,7 +12,8 @@
         "noHomeAddress": "Please, make sure you set up your home address.",
         "noWorkAddress": "Please, make sure you set up your work address.",
         "noCurrentAddress": "Please, make sure you set up your current location.",
-        "badCurrentAddress": "Sorry, your current location is not properly configured."
+        "badCurrentAddress": "Sorry, your current location is not properly configured.",
+        "noCurrentCoordinates": "Sorry, make sure you set up your current latitude and longitude."
     },
     "travel_modes": {
         "transit": "by public transport",

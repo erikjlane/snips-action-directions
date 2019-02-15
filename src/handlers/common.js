@@ -76,6 +76,14 @@ function getCompleteAddress(location) {
     return location
 }
 
+function checkCurrentCoordinates() {
+    const config = configFactory.get()
+
+    if (!config.currentCoordinates) {
+        throw new Error('noCurrentCoordinates')
+    }
+}
+
 module.exports = async function (msg, knownSlots = {}) {
     if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
         throw new Error('intentNotRecognized')
@@ -83,6 +91,8 @@ module.exports = async function (msg, knownSlots = {}) {
     if (1 < ASR_TOKENS_CONFIDENCE_THRESHOLD) {
         throw new Error('intentNotRecognized')
     }
+
+    checkCurrentCoordinates()
 
     let locationFrom, locationTo, travelMode
 

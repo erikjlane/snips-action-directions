@@ -4,9 +4,10 @@ locale=english
 [secret]
 current_region=us
 current_location=home
+current_coordinates=40.6976637,-74.1197635
 home_address=
-home_city=
+home_city=New York
 work_address=
-work_city=
+work_city=New York
 unit_system=metric
 api_key=
