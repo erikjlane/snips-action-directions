@@ -1,6 +1,9 @@
 const { i18nFactory, directionsHttpFactory } = require('../factories')
 const { logger, translation, directions, slot } = require('../utils')
 const commonHandler = require('./common')
+const {
+    INTENT_FILTER_PROBABILITY_THRESHOLD
+} = require('../constants')
 
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()

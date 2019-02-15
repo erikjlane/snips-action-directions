@@ -1,6 +1,10 @@
 const { i18nFactory, directionsHttpFactory } = require('../factories')
 const { message, logger, translation, directions, slot } = require('../utils')
 const commonHandler = require('./common')
+const {
+    SLOT_CONFIDENCE_THRESHOLD,
+    INTENT_FILTER_PROBABILITY_THRESHOLD
+} = require('../constants')
 
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
@@ -25,6 +29,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         if (departureTimeSlot) {
             const departureTimeDate = new Date(departureTimeSlot.value.value.value)
             departureTime = departureTimeDate.getTime() / 1000
+
             logger.info('departure_time: ', departureTimeDate)
         }
     } else {
