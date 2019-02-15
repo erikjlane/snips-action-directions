@@ -20,6 +20,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     // Get arrival_time specific slot
     let arrivalTime
+
     if (!('arrival_time' in knownSlots)) {
         const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', {
             onlyMostConfident: true,
@@ -27,14 +28,21 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
 
         if (arrivalTimeSlot) {
-            const arrivalTimeDate = new Date(arrivalTimeSlot.value.value.value)
-            arrivalTime = arrivalTimeDate.getTime() / 1000
+            // Is it an InstantTime object?
+            if (arrivalTimeSlot.value.value_type === 4) {
+                arrivalTime = new Date(arrivalTimeSlot.value.value.value)
+            }
+            // Or is it a TimeInterval object?
+            else if (arrivalTimeSlot.value.value_type === 5) {
 
-            logger.info('\tarrival_time: ', arrivalTimeDate)
+            }
+            
         }
     } else {
         arrivalTime = knownSlots.arrival_time
     }
+
+    logger.info('\tarrival_time: ', arrivalTime)
 
     // One or two required slots are missing
     if (slot.missing(locationTo) || slot.missing(arrivalTime)) {
@@ -94,12 +102,13 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             origin: locationFrom,
             destination: locationTo,
             travelMode: travelMode,
-            arrivalTime: arrivalTime
+            departureTime: '',
+            arrivalTime: arrivalTime.getTime() / 1000
         })
         logger.debug(directionsData)
 
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        //logger.debug(aggregatedDirectionsData)
+        logger.debug(aggregatedDirectionsData)
 
         let speech = ''
         try {

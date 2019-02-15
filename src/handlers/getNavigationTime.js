@@ -58,10 +58,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             destination: locationTo,
             travelMode: travelMode
         })
-        //logger.debug(directionsData)
+        logger.debug(directionsData)
 
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        //logger.debug(aggregatedDirectionsData)
+        logger.debug(aggregatedDirectionsData)
 
         let speech = ''
         try {
