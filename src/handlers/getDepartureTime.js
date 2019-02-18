@@ -94,14 +94,15 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             // Adding the known slots, if more
+
             if (!slot.missing(locationFrom)) {
-                Object.assign({ location_from: locationFrom }, slotsToBeSent)
+                slotsToBeSent.ocation_from = locationFrom
             }
             if (!slot.missing(locationTo)) {
-                Object.assign({ location_to: locationTo }, slotsToBeSent)
+                slotsToBeSent.location_to = locationTo
             }
             if (!slot.missing(arrivalTime)) {
-                Object.assign({ arrival_time: arrivalTime }, slotsToBeSent)
+                slotsToBeSent.arrival_time = arrivalTime
             }
 
             return require('./index').getDepartureTime(msg, flow, slotsToBeSent)

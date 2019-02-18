@@ -156,7 +156,6 @@ it('should ask the missing origin and pass', async () => {
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
-    expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
 })
 
 it('should ask the missing destination and pass', async () => {

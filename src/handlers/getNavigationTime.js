@@ -35,10 +35,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
             // Adding the location_from, if any
             if (!slot.missing(locationFrom)) {
-                Object.assign({ location_from: locationFrom}, slotsToBeSent)
+                slotsToBeSent.location_from = locationFrom
             }
             if (!slot.missing(locationTo)) {
-                Object.assign({ location_to: locationTo}, slotsToBeSent)
+                slotsToBeSent.location_to = locationTo
             }
 
             return require('./index').getNavigationTime(msg, flow, slotsToBeSent)
