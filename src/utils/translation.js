@@ -51,13 +51,14 @@ module.exports = {
         if (travelMode === 'driving') {
             let trafficQualifier = ''
 
-            if (duration_in_traffic > 1.10 * duration) {
+            if (durationInTraffic > 1.10 * duration) {
                 trafficQualifier = 'slower'
-            } else if (duration_in_traffic < 0.90 * duration) {
+            } else if (durationInTraffic < 0.90 * duration) {
                 trafficQualifier = 'faster'
             }
 
             if (trafficQualifier) {
+                tts += ' '
                 tts += i18n('directions.navigationTime.trafficInfo.' + trafficQualifier, {
                     duration_in_traffic: beautify.duration(durationInTraffic)
                 })

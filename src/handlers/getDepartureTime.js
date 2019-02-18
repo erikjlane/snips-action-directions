@@ -103,7 +103,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             return require('./index').getDepartureTime(msg, flow, slotsToBeSent)
-        }, { sendIntentNotRecognized: true })
+        }, { send_intent_not_recognized: true })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
