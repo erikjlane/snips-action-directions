@@ -6,6 +6,30 @@ const {
     INTENT_FILTER_PROBABILITY_THRESHOLD
 } = require('../constants')
 
+function generateMissingSlotsTTS (locationFrom, locationTo, arrivalTime) {
+    if (slot.missing(locationFrom) && slot.missing(locationTo) && slot.missing(arrivalTime)) {
+        throw new Error('intentNotRecognized')
+    }
+    if (slot.missing(locationFrom) && slot.missing(locationTo)) {
+        return i18n('directions.dialog.noOriginAndDestinationAddresses')
+    }
+    if (slot.missing(locationFrom) && slot.missing(arrivalTime)) {
+        return i18n('directions.dialog.noOriginAddressAndArrivalTime')
+    }
+    if (slot.missing(locationTo) && slot.missing(arrivalTime)) {
+        return i18n('directions.dialog.noDestinationAddressAndArrivalTime')
+    }
+    if (slot.missing(locationFrom)) {
+        return i18n('directions.dialog.noOriginAddress')
+    }
+    if (slot.missing(locationTo)) {
+        return i18n('directions.dialog.noDestinationAddress')
+    }
+    if (slot.missing(arrivalTime)) {
+        return i18n('directions.dialog.noArrivalTime')
+    }
+}
+
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
@@ -63,21 +87,23 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             let slotsToBeSent = {
-                location_from: locationFrom,
                 travel_mode: travelMode,
                 depth: knownSlots.depth - 1
             }
 
             // Adding the known slots, if more
+            if (!slot.missing(locationFrom)) {
+                Object.assign({ location_from: locationFrom }, slotsToBeSent)
+            }
             if (!slot.missing(locationTo)) {
-                slotsToBeSent.location_to = locationTo
+                Object.assign({ location_to: locationTo }, slotsToBeSent)
             }
             if (!slot.missing(arrivalTime)) {
-                slotsToBeSent.arrival_time = arrivalTime
+                Object.assign({ arrival_time: arrivalTime }, slotsToBeSent)
             }
 
             return require('./index').getDepartureTime(msg, flow, slotsToBeSent)
-        })
+        }, { sendIntentNotRecognized: true })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -86,15 +112,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             flow.end()
         })
         
-        if (slot.missing(locationTo) && slot.missing(arrivalTime)) {
-            return i18n('directions.dialog.noDestinationAddressAndArrivalTime')
-        }
-        if (slot.missing(locationTo)) {
-            return i18n('directions.dialog.noDestinationAddress')
-        }
-        if (slot.missing(arrivalTime)) {
-            return i18n('directions.dialog.noArrivalTime')
-        }
+        return generateMissingSlotsTTS(locationFrom, locationTo, arrivalTime)
     } else {
         // Are the origin and destination addresses the same?
         if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {

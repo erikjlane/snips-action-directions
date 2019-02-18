@@ -42,17 +42,28 @@ module.exports = {
             travelMode = chosenTravelMode(directionsData)
         }
 
-        const options = {
+        tts += i18n('directions.navigationTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             duration: beautify.duration(duration)
-        }
+        })
 
         if (travelMode === 'driving') {
-            options.duration_in_traffic = beautify.duration(durationInTraffic)
+            let trafficQualifier = ''
+
+            if (duration_in_traffic > 1.10 * duration) {
+                trafficQualifier = 'slower'
+            } else if (duration_in_traffic < 0.90 * duration) {
+                trafficQualifier = 'faster'
+            }
+
+            if (trafficQualifier) {
+                tts += i18n('directions.navigationTime.trafficInfo.' + trafficQualifier, {
+                    duration_in_traffic: beautify.duration(durationInTraffic)
+                })
+            }
         }
 
-        tts += i18n('directions.navigationTime.' + travelMode, options)
         return tts
     },
 

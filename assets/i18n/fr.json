@@ -25,11 +25,15 @@
     },
     "directions": {
         "dialog": {
+            "noOriginAddress": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre ?",
             "noDestinationAddress": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre ?",
             "noArrivalTime": "Désolé, pouvez-vous répéter à quelle heure vous souhaitez y être ?",
+            "noOriginAndDestinationAddresses": "Désolé, pouvez-vous répéter d'où vous souhaitez partir, et où vous souhaitez vous rendre ?",
+            "noOriginAddressAndDepartureTime": "Désolé, pouvez-vous répéter d'où et à quelle heure vous souhaitez partir ?",
+            "noOriginAddressAndArrivalTime": "Désolé, pouvez-vous répéter d'où vous souhaitez partir, ainsi que l'heure à laquelle vous souhaitez être à votre destination ?",
+            "noDestinationAddressAndDepartureTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous comptez partir ?",
             "noDestinationAddressAndArrivalTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous souhaitez y être ?",
             "noDepartureTime": "Désolé, pouvez-vous répéter l'heure à laquelle vous souhaitez partir ?",
-            "noDestinationAddressAndDepartureTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous comptez partir ?",
             "sameLocations": "Super ! Il semble que vous soyez déjà là où vous souhaitez aller !",
             "noTripWithTravelMode": "Désolé, je n'ai pas de trajet pertinent à vous proposer {{ travel_mode }}."
         },
@@ -39,7 +43,11 @@
             "train": "Se rendre de {{- location_from }} à {{- location_to }} en train prend {{ duration }}.",
             "walking": "Marcher de {{- location_from }} jusqu'à {{- location_to }} vous prendra {{ duration }}.",
             "bicycling": "Se rendre de {{- location_from }} à {{- location_to }} en vélo vous prendra {{ duration }}.",
-            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}. Avec les conditions de circulation actuelles, cela vous prendra {{ duration_in_traffic }}."
+            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}. Avec les conditions de circulation actuelles, cela vous prendra {{ duration_in_traffic }}.",
+            "trafficInfo": {
+                "slower": "Actuellement, le trafic est plus encombré que d'habitude. Vous devriez prévoir {{ duration_in_traffic }} si vous partez maitenant.",
+                "faster": "Actuellement, le trafic est moins encombré que d'habitude. Vous pouvez prévoir {{ duration_in_traffic }} si vous partez maitenant."
+            }
         },
         "departureTime": {
             "transit": "En transports en commun, vous devriez partir à {{ departure_time }} de {{- location_from }} pour arriver à {{ arrival_time }} à {{- location_to }}.",
@@ -113,10 +121,6 @@
         "fromLocation": {
             "home": "votre domicile",
             "work": "votre lieu de travail"
-        },
-        "trafficConditions": {
-            "slow": "plus lent",
-            "fast": "plus rapide"
         }
     },
     "units": {

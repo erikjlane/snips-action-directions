@@ -18,7 +18,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     } = await commonHandler(msg, knownSlots)
 
     // One required slot is missing
-    if (slot.missing(locationTo)) {
+    if (slot.missing(locationFrom) || slot.missing(locationTo)) {
         if (knownSlots.depth === 0) {
             throw new Error('slotsNotRecognized')
         }
@@ -28,12 +28,18 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
                 throw new Error('intentNotRecognized')
             }
 
-            return require('./index').getNavigationTime(msg, flow, {
-                location_from: locationFrom,
+            let slotsToBeSent = {
                 travel_mode: travelMode,
                 depth: knownSlots.depth - 1
-            })
-        })
+            }
+
+            // Adding the location_from, if any
+            if (!slot.missing(locationFrom)) {
+                Object.assign({ location_from: locationFrom}, slotsToBeSent)
+            }
+
+            return require('./index').getNavigationTime(msg, flow, slotsToBeSent)
+        }, { sendIntentNotRecognized: true })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -42,7 +48,15 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             flow.end()
         })
 
-        return i18n('directions.dialog.noDestinationAddress')
+        if (slot.missing(locationFrom) && slot.missing(locationTo)) {
+            throw new Error('intentNotRecognized')
+        }
+        if (slot.missing(locationFrom)) {
+            return i18n('directions.dialog.noOriginAddress')
+        }
+        if (slot.missing(locationTo)) {
+            return i18n('directions.dialog.noDestinationAddress')
+        }
     } else {
         // Are the origin and destination addresses the same?
         if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {

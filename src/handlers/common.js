@@ -99,18 +99,21 @@ module.exports = async function (msg, knownSlots = {}) {
     // Slot location_from
     if (!('location_from' in knownSlots)) {
         const locationFromSlot = message.getSlotsByName(msg, 'location_from', {
-            onlyMostConfident: true,
-            threshold: SLOT_CONFIDENCE_THRESHOLD
+            onlyMostConfident: true
         })
 
         if (locationFromSlot) {
-            locationFrom = getCompleteAddress(locationFromSlot.value.value)
+            if (locationFromSlot.confidence >= SLOT_CONFIDENCE_THRESHOLD) {
+                locationFrom = getCompleteAddress(locationFromSlot.value.value)
+            }
         } else {
             locationFrom = getCurrentLocation()
         }
     } else {
         locationFrom = knownSlots.location_from
     }
+
+    // Here, the previous slot location_from can be missing if the attached confidence is too slow
 
     // Slot location_to
     if (!('location_to' in knownSlots)) {
