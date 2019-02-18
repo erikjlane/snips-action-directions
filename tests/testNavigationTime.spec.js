@@ -98,6 +98,50 @@ it('should ask to properly configure the work location', async () => {
     expect(getMessageKey(endMsg)[0]).toBe('error.noWorkAddress')
 })
 
+it('should ask the missing origin and pass', async () => {
+    configFactory.mock({
+        locale: 'english',
+        current_region: 'uk',
+        current_location: 'home',
+        home_address: '21 Onslow Gardens',
+        home_city: 'London',
+        work_address: 'Hammond Court, 10 Hotspur St',
+        work_city: 'London',
+        unit_system: 'metric'
+    })
+
+    const session = new Session()
+    await session.start({
+        intentName: 'snips-assistant:GetNavigationTime',
+        input: 'How much time to go to London Eye from Buckingham Palace',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidence: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                }
+            },
+            createLocationToSlot('London Eye')
+        ]
+    })
+
+    const whichDestinationMsg = await session.continue({
+        intentName: 'snips-assistant:GetNavigationTime',
+        input: 'I want to go to Buckingham Palace',
+        slots: [
+            createLocationFromSlot('Buckingham Palace')
+        ]
+    })
+    expect(getMessageKey(whichDestinationMsg.text)).toBe('directions.dialog.noOriginAddress')
+
+    const endMsg = (await session.end()).text
+    expect(getMessageKey(endMsg)).toBe('directions.navigationTime.transit')
+})
+
 it('should ask the missing destination and pass', async () => {
     configFactory.mock({
         locale: 'english',

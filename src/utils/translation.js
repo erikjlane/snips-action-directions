@@ -51,9 +51,9 @@ module.exports = {
         if (travelMode === 'driving') {
             let trafficQualifier = ''
 
-            if (durationInTraffic > 1.10 * duration) {
+            if (durationInTraffic > 1.05 * duration) {
                 trafficQualifier = 'slower'
-            } else if (durationInTraffic < 0.90 * duration) {
+            } else if (durationInTraffic < 0.95 * duration) {
                 trafficQualifier = 'faster'
             }
 

@@ -1,5 +1,3 @@
-const logger = require('./logger')
-
 module.exports = {
     missing: slot => {
         const str = String(slot)

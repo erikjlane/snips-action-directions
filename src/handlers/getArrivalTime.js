@@ -7,6 +7,8 @@ const {
 } = require('../constants')
 
 function generateMissingSlotsTTS (locationFrom, locationTo, departureTime) {
+    const i18n = i18nFactory.get()
+
     if (slot.missing(locationFrom) && slot.missing(locationTo) && slot.missing(departureTime)) {
         throw new Error('intentNotRecognized')
     }
@@ -75,8 +77,8 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     logger.info('\tdeparture_time: ', departureTime)
 
-    // One or two required slots are missing
-    if (slot.missing(locationTo) || slot.missing(departureTime)) {
+    // At least one required slot is missing
+    if (slot.missing(locationFrom) || slot.missing(locationTo) || slot.missing(departureTime)) {
         if (knownSlots.depth === 0) {
             throw new Error('slotsNotRecognized')
         }
@@ -103,7 +105,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             return require('./index').getArrivalTime(msg, flow, slotsToBeSent)
-        }, { send_intent_not_recognized: true })
+        })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()

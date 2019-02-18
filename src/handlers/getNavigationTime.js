@@ -17,7 +17,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         travelMode
     } = await commonHandler(msg, knownSlots)
 
-    // One required slot is missing
+    // At least one required slot is missing
     if (slot.missing(locationFrom) || slot.missing(locationTo)) {
         if (knownSlots.depth === 0) {
             throw new Error('slotsNotRecognized')
@@ -37,9 +37,12 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             if (!slot.missing(locationFrom)) {
                 Object.assign({ location_from: locationFrom}, slotsToBeSent)
             }
+            if (!slot.missing(locationTo)) {
+                Object.assign({ location_to: locationTo}, slotsToBeSent)
+            }
 
             return require('./index').getNavigationTime(msg, flow, slotsToBeSent)
-        }, { send_intent_not_recognized: true })
+        })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
