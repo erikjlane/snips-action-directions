@@ -150,11 +150,18 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             if (!destination) {
                 destination = directionsData.routes[0].legs[0].end_address
             }
-            
-            const departureTime = directionsData.routes[0].legs[0].departure_time.value
-            const arrivalTime = directionsData.routes[0].legs[0].arrival_time.value
+    
+            // With travel modes different from transit, the API doesn't return departure and arrival time
+            let departureTimeEpoch, arrivalTimeEpoch
+            if (travelMode === 'transit') {
+                departureTimeEpoch = directionsData.routes[0].legs[0].departure_time.value
+                arrivalTimeEpoch = directionsData.routes[0].legs[0].arrival_time.value
+            } else {
+                arrivalTimeEpoch = arrivalTime.getTime() / 1000
+                departureTimeEpoch = arrivalTimeEpoch - directionsData.routes[0].legs[0].duration.value
+            }
 
-            speech = translation.departureTimeToSpeech(locationFrom, destination, travelMode, departureTime, arrivalTime, aggregatedDirectionsData)
+            speech = translation.departureTimeToSpeech(locationFrom, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
         } catch (error) {
             logger.error(error)
             throw new Error('APIResponse')
