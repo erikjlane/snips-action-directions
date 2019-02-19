@@ -83,9 +83,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             throw new Error('slotsNotRecognized')
         }
 
-        flow.continue('IntentNotRecognized', (_, _) => {
+        /*
+        flow.notRecognized((_, _) => {
             throw new Error('intentNotRecognized')
         })
+        */
         
         flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {
             if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
@@ -109,7 +111,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             return require('./index').getArrivalTime(msg, flow, slotsToBeSent)
-        }, { intent_not_recognized: true })
+        })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -142,7 +144,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
         let speech = ''
         try {
-            const destination = directionsData.routes[0].legs[0].end_address
+            let destination = directionsData.routes[0].legs[0].end_address_name
+            if (!destination) {
+                destination = directionsData.routes[0].legs[0].end_address
+            }
+            
             const departureTime = directionsData.routes[0].legs[0].departure_time.value
             const arrivalTime = directionsData.routes[0].legs[0].arrival_time.value
 

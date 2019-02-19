@@ -15,9 +15,11 @@ let directionsHttp = wretch(BASE_URL)
         next => async (url, opts) => {
             const config = configFactory.get()
             const places = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.destination)
-
+            
             const place = places.results[0]
             if (places.status !== 'ZERO_RESULTS' && place) {
+                // Storing the name
+                opts.context.name = place.name
                 // Places returned some results, extract and pass the place_id to Directions
                 const query = {
                     ...opts.query,
@@ -64,9 +66,10 @@ module.exports = {
             }
         }
 
+        const context = {}
         const results = await directionsHttp
             .query(query)
-            .options({ destination: destination, query: query })
+            .options({ destination, query, context })
             .get()
             .json()
             .catch(error => {
@@ -76,11 +79,17 @@ module.exports = {
                 // Other error
                 throw new Error('APIResponse')
             })
-
+        
         if (results) {
             if (results.status === 'ZERO_RESULTS' || results.status === 'NOT FOUND') {
                 throw new Error('place')
             }
+        } else {
+            throw new Error('APIResponse')
+        }
+
+        if (context.name) {
+            results.routes[0].legs[0].end_address_name = context.name
         }
 
         return results

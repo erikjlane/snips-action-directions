@@ -74,7 +74,7 @@
                 "walkToMetro": "Walk {{ duration }} to the station {{- arrival_stop }}.",
                 "metro": "Take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
                 "connectionMetro": "When connecting take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
-                "walkToFinalDestination": "Walk another {{ distance }} to reach the address {{- location_to }}."
+                "walkToFinalDestination": "Walk another {{ distance }} to reach {{- location_to }}."
             },
             "bus": {
                 "toDestination": [
