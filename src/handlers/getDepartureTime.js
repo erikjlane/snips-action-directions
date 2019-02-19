@@ -96,7 +96,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             // Adding the known slots, if more
 
             if (!slot.missing(locationFrom)) {
-                slotsToBeSent.ocation_from = locationFrom
+                slotsToBeSent.location_from = locationFrom
             }
             if (!slot.missing(locationTo)) {
                 slotsToBeSent.location_to = locationTo

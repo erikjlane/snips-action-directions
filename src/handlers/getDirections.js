@@ -35,7 +35,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
             // Adding the location_from, if any
             if (!slot.missing(locationFrom)) {
-                slotsToBeSent.ocation_from = locationFrom
+                slotsToBeSent.location_from = locationFrom
             }
             if (!slot.missing(locationTo)) {
                 slotsToBeSent.location_to = locationTo
