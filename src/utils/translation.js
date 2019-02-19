@@ -39,6 +39,7 @@ module.exports = {
             tts += i18n('directions.dialog.noTripWithTravelMode', {
                 travel_mode: i18n('directions.travel_modes.', travelMode)
             })
+            tts += ' '
             travelMode = chosenTravelMode(directionsData)
         }
 
@@ -82,6 +83,7 @@ module.exports = {
             tts += i18n('directions.dialog.noTripWithTravelMode', {
                 travel_mode: i18n('directions.travel_modes.', travelMode)
             })
+            tts += ' '
             travelMode = chosenTravelMode(directionsData)
         }
 
@@ -109,6 +111,7 @@ module.exports = {
             tts += i18n('directions.dialog.noTripWithTravelMode', {
                 travel_mode: i18n('directions.travel_modes.', travelMode)
             })
+            tts += ' '
             travelMode = chosenTravelMode(directionsData)
         }
 

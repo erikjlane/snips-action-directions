@@ -23,6 +23,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             throw new Error('slotsNotRecognized')
         }
 
+        flow.continue('IntentNotRecognized', (_, _) => {
+            throw new Error('intentNotRecognized')
+        })
+
         flow.continue('snips-assistant:GetNavigationTime', (msg, flow) => {
             if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
@@ -42,7 +46,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             }
 
             return require('./index').getNavigationTime(msg, flow, slotsToBeSent)
-        })
+        }, { intent_not_recognized: true })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()

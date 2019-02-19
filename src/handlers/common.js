@@ -5,7 +5,7 @@ const {
     WORK_SYNONYMS,
     INTENT_PROBABILITY_THRESHOLD,
     SLOT_CONFIDENCE_THRESHOLD,
-    ASR_TOKENS_CONFIDENCE_THRESHOLD
+    ASR_UTTERANCE_CONFIDENCE_THRESHOLD
 } = require('../constants')
 
 function getCurrentLocation() {
@@ -88,7 +88,7 @@ module.exports = async function (msg, knownSlots = {}) {
     if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
         throw new Error('intentNotRecognized')
     }
-    if (math.geometricMean(msg.asr_tokens.map(token => token.confidence)) < ASR_TOKENS_CONFIDENCE_THRESHOLD) {
+    if (math.geometricMean(msg.asr_tokens.map(token => token.confidence)) < ASR_UTTERANCE_CONFIDENCE_THRESHOLD) {
         throw new Error('intentNotRecognized')
     }
 
