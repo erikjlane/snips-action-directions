@@ -172,7 +172,7 @@ module.exports = {
                         // If the next step is a metro step, adapt the sentence accordingly
                         const nextStep = directionsData[i + 1]
                         tts += i18n('directions.directions.transit.walkToMetro', {
-                            arrival_stop: nextStep.departure_stop,
+                            arrival_stop: beautify.headsign(nextStep.departure_stop),
                             duration: beautify.duration(currentStep.duration)
                         })
                     }
@@ -182,8 +182,8 @@ module.exports = {
 
                     tts += i18n('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
                         line_name: currentStep.line_name,
-                        headsign: currentStep.headsign,
-                        arrival_stop: currentStep.arrival_stop
+                        headsign: beautify.headsign(currentStep.headsign),
+                        arrival_stop: beautify.headsign(currentStep.arrival_stop)
                     })
                 }
                 tts += ' '

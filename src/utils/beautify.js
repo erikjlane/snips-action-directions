@@ -33,6 +33,17 @@ module.exports = {
     
         return address.split(',')[0]
     },
+
+    headsign: address => {
+        const config = configFactory.get()
+
+        if (config.locale === 'english') {
+            address = address.replace(/(.*)( Av| AV| Av\.)(\/|$|-| )(.*)/g, '$1 Avenue$3$4')
+            address = address.replace(/(.*)( St)(\/|$|-| )(.*)/g, '$1 Street$3$4')
+        }
+
+        return address
+    },
     
     distance: distance => {
         const i18n = i18nFactory.get()

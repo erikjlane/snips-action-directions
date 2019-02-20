@@ -191,7 +191,7 @@ it('should ask the missing destination and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing departure time and pass', async () => {
@@ -227,7 +227,7 @@ it('should ask the missing departure time and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing destination & departure time and pass', async () => {
@@ -261,7 +261,7 @@ it('should ask the missing destination & departure time and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing destination and departure time twice and pass', async () => {
@@ -301,7 +301,7 @@ it('should ask the missing destination and departure time twice and pass', async
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should query the arrival time when going to Buckingham Palace (default: home & transit)', async () => {
@@ -485,7 +485,7 @@ it('should ask the missing destination and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing arrival time and pass', async () => {
@@ -521,7 +521,7 @@ it('should ask the missing arrival time and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing destination & arrival time and pass', async () => {
@@ -555,7 +555,7 @@ it('should ask the missing destination & arrival time and pass', async () => {
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should ask the missing destination and arrival time twice and pass', async () => {
@@ -595,7 +595,7 @@ it('should ask the missing destination and arrival time twice and pass', async (
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
-    expect(getMessageOptions(endMsg).location_to).toBe('Westminster')
+    expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should query the departure time to be at Buckingham Palace at ten pm (default: home & transit)', async () => {
