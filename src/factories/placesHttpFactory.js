@@ -24,7 +24,7 @@ module.exports = {
         const query = {
             location: coords,
             radius: 50000,
-            name: name
+            name
         }
 
         const results = await placesHttp

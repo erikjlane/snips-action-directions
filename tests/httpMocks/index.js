@@ -25,7 +25,7 @@ module.exports = {
                     name: 'Buckingham Palace',
                     place_id: 'ChIJtV5bzSAFdkgRpwLZFPWrJgo',
                     plus_code: {
-                        compound_code: 'GV25+G6 Buckingham Palace, London, UK',
+                        compound_code: 'GV25+G6 Westminster, London, UK',
                         global_code: '9C3XGV25+G6'
                     },
                     rating: 4.5,
@@ -84,7 +84,7 @@ module.exports = {
                                 text: '26 mins',
                                 value: 1547
                             },
-                            end_address: 'Buckingham Palace, London SW1A 1AA, UK',
+                            end_address: 'Westminster, London SW1A 1AA, UK',
                             end_location: {
                                 lat: 51.5015395,
                                 lng: -0.1412334

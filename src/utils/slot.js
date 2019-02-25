@@ -1,6 +1,10 @@
 module.exports = {
     missing: slot => {
-        const str = String(slot)
-        return !slot || str.includes('unknownword')
+        if (Array.isArray(slot)) {
+            return slot.length === 0
+        } else {
+            const str = String(slot)
+            return !slot || str.includes('unknownword')
+        }
     }
 }
