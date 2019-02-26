@@ -1,4 +1,4 @@
-const { message, logger, math } = require('../utils')
+const { message, logger } = require('../utils')
 const { configFactory } = require('../factories')
 const {
     HOME_SYNONYMS,
@@ -85,11 +85,13 @@ function checkCurrentCoordinates() {
 }
 
 module.exports = async function (msg, knownSlots = {}) {
-    if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
-        throw new Error('intentNotRecognized')
-    }
-    if (math.geometricMean(msg.asr_tokens.map(token => token.confidence)) < ASR_UTTERANCE_CONFIDENCE_THRESHOLD) {
-        throw new Error('intentNotRecognized')
+    if (msg.intent) {
+        if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
+            throw new Error('intentNotRecognized')
+        }
+        if (message.getAsrConfidence(msg) < ASR_UTTERANCE_CONFIDENCE_THRESHOLD) {
+            throw new Error('intentNotRecognized')
+        }
     }
 
     checkCurrentCoordinates()
