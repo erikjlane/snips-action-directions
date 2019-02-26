@@ -86,7 +86,7 @@ function checkCurrentCoordinates() {
 
 module.exports = async function (msg, knownSlots = {}) {
     if (msg.intent) {
-        if (msg.intent.probability < INTENT_PROBABILITY_THRESHOLD) {
+        if (msg.intent.confidenceScore < INTENT_PROBABILITY_THRESHOLD) {
             throw new Error('intentNotRecognized')
         }
         if (message.getAsrConfidence(msg) < ASR_UTTERANCE_CONFIDENCE_THRESHOLD) {
