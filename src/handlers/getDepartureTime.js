@@ -55,16 +55,16 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
         if (arrivalTimeSlot) {
             // Is it an InstantTime object?
-            if (arrivalTimeSlot.value.value_type === 4) {
-                arrivalTime = new Date(arrivalTimeSlot.value.value.value)
+            if (arrivalTimeSlot.value.kind === 'InstantTime') {
+                arrivalTime = new Date(arrivalTimeSlot.value.value)
             }
             // Or is it a TimeInterval object?
-            else if (arrivalTimeSlot.value.value_type === 5) {
-                const from = arrivalTimeSlot.value.value.from
+            else if (arrivalTimeSlot.value.kind === 'TimeInterval') {
+                const from = arrivalTimeSlot.value.from
                 if (from) {
                     arrivalTime = new Date(from)
                 } else {
-                    const to = arrivalTimeSlot.value.value.to
+                    const to = arrivalTimeSlot.value.to
                     if (to) {
                         arrivalTime = new Date(to)
                     }
@@ -90,7 +90,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
 
         flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => {
-            if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
 

@@ -105,7 +105,7 @@ module.exports = async function (msg, knownSlots = {}) {
         })
 
         if (locationFromSlot) {
-            if (locationFromSlot.confidence >= SLOT_CONFIDENCE_THRESHOLD) {
+            if (locationFromSlot.confidenceScore >= SLOT_CONFIDENCE_THRESHOLD) {
                 locationFrom = getCompleteAddress(locationFromSlot.value.value)
             }
         } else {

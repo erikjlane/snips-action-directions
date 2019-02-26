@@ -8,6 +8,7 @@ const fetchMock = require('fetch-mock')
 module.exports = {
     bootstrap() {
         beforeAll(async () => {
+            //require('debug').enable('snips-action-directions' + ':*')
             const mosquittoPort = await getFreePort()
             //const mosquittoPort = 1883
             console.log('Launching mosquitto on port [' + mosquittoPort + ']')

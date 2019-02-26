@@ -5,6 +5,7 @@ const {
     SLOT_CONFIDENCE_THRESHOLD,
     INTENT_FILTER_PROBABILITY_THRESHOLD
 } = require('../constants')
+const { Dialog } = require('hermes-javascript')
 
 function generateMissingSlotsTTS (locationFrom, locationTo, departureTime) {
     const i18n = i18nFactory.get()
@@ -55,16 +56,16 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
         if (departureTimeSlot) {
             // Is it an InstantTime object?
-            if (departureTimeSlot.value.value_type === 4) {
-                departureTime = new Date(departureTimeSlot.value.value.value)
+            if (departureTimeSlot.value.kind === Dialog.enums.slotType.instantTime) {
+                departureTime = new Date(departureTimeSlot.value.value)
             }
             // Or is it a TimeInterval object?
-            else if (departureTimeSlot.value.value_type === 5) {
-                const to = departureTimeSlot.value.value.to
+            else if (departureTimeSlot.value.kind === Dialog.enums.slotType.timeInterval) {
+                const to = departureTimeSlot.value.to
                 if (to) {
                     departureTime = new Date(to)
                 } else {
-                    const from = departureTimeSlot.value.value.from
+                    const from = departureTimeSlot.value.from
                     if (from) {
                         departureTime = new Date(from)
                     }
@@ -90,7 +91,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
         
         flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {
-            if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
             

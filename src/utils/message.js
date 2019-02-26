@@ -9,14 +9,14 @@ module.exports = {
     getSlotsByName: (message, slotName, { threshold = 0, onlyMostConfident = false } = {}) => {
         if (onlyMostConfident) {
             return message.slots.reduce((acc, slot) => {
-                if (slot.slot_name === slotName && slot.confidenceScore > threshold) {
+                if (slot.slotName === slotName && slot.confidenceScore > threshold) {
                     if (!acc || acc.confidenceScore < slot.confidenceScore)
                         return slot
                 }
                 return acc
             }, null)
         }
-        return message.slots.filter(slot => slot.slot_name === slotName && slot.confidenceScore > threshold)
+        return message.slots.filter(slot => slot.slotName === slotName && slot.confidenceScore > threshold)
     },
     getAsrConfidence(message) {
         if (!message.asrTokens || message.asrTokens.length < 1)

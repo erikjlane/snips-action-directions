@@ -118,11 +118,15 @@ it('should ask the missing origin and pass', async () => {
             {
                 slotName: 'location_from',
                 entity: 'address',
-                confidence: 0.05,
+                confidenceScore: 0.05,
                 rawValue: 'Buckingham Palace',
                 value: {
                     kind: 'Custom',
                     value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
                 }
             },
             createLocationToSlot('London Eye')

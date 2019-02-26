@@ -30,7 +30,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
 
         flow.continue('snips-assistant:GetDirections', (msg, flow) => {
-            if (msg.intent.probability < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
 
