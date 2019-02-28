@@ -40,7 +40,8 @@ module.exports = {
         if (config.locale === 'english') {
             address = address.replace(/(.*)( Av| AV| Av\.| Ave)(\/|$|-|,| )(.*)/g, '$1 Avenue$3$4')
             address = address.replace(/(.*)( Rd)(\/|$|-|,| )(.*)/g, '$1 Road$3$4')
-            address = address.replace(/(.*)( St)(\/|$|-|,| )(.*)/g, '$1 Street$3$4')
+            address = address.replace(/(.*)( St| ST)(\/|$|-|,| )(.*)/g, '$1 Street$3$4')
+            address = address.replace(/(.*)( Pk)(\/|$|-|,| )(.*)/g, '$1 Park$3$4')
         }
 
         return address

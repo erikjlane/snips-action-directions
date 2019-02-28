@@ -349,6 +349,6 @@ it('should query the navigation time to go from London Eye to Buckingham Palace 
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.navigationTime.walking')
-    expect(getMessageOptions(endMsg).location_from).toBe('London Eye')
+    expect(getMessageOptions(endMsg).location_from).toBe('Coca-Cola London Eye')
     expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })

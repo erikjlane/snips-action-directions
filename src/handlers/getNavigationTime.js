@@ -88,6 +88,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
         let speech = ''
         try {
+            let origin = directionsData.routes[0].legs[0].start_address_name
+            if (!origin) {
+                origin = directionsData.routes[0].legs[0].start_address
+            }
             let destination = directionsData.routes[0].legs[0].end_address_name
             if (!destination) {
                 destination = directionsData.routes[0].legs[0].end_address
@@ -98,9 +102,9 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             if (travelMode === 'driving') {
                 const durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
 
-                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
+                speech = translation.navigationTimeToSpeech(origin, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
             } else {
-                speech = translation.navigationTimeToSpeech(locationFrom, destination, travelMode, duration, aggregatedDirectionsData)
+                speech = translation.navigationTimeToSpeech(origin, destination, travelMode, duration, aggregatedDirectionsData)
             }
         } catch (error) {
             logger.error(error)

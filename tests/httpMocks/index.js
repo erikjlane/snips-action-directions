@@ -1,5 +1,50 @@
 module.exports = {
     mock(fetchMock) {
+        fetchMock.mock('glob:*api/place/nearbysearch*London+Eye*', {
+            html_attributions: [],
+            results: [
+                {
+                    geometry: {
+                        location: {
+                            lat: 51.503324,
+                            lng: -0.119543
+                        },
+                        viewport: {
+                            northeast: {
+                                lat: 51.50464877989272,
+                                lng: -0.11644895
+                            },
+                            southwest: {
+                                lat: 51.50194912010727,
+                                lng: -0.12057435
+                            }
+                        }
+                    },
+                    icon: 'https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png',
+                    id: '6d925b4f3e0d975eb6955a915a0689f8f4f0abd2',
+                    name: 'Coca-Cola London Eye',
+                    opening_hours: {
+                        open_now: true
+                    },
+                    place_id: 'ChIJc2nSALkEdkgRkuoJJBfzkUI',
+                    plus_code: {
+                        compound_code: 'GV3J+85 Lambeth, London, UK',
+                        global_code: '9C3XGV3J+85'
+                    },
+                    rating: 4.5,
+                    reference: 'ChIJc2nSALkEdkgRkuoJJBfzkUI',
+                    scope: 'GOOGLE',
+                    types: [
+                        'point_of_interest',
+                        'establishment'
+                    ],
+                    user_ratings_total: 72944,
+                    vicinity: 'London'
+                }
+            ],
+            status: 'OK'
+        })
+
         fetchMock.mock('glob:*api/place/nearbysearch*', {
             html_attributions: [],
             results: [

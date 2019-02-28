@@ -14,23 +14,49 @@ let directionsHttp = wretch(BASE_URL)
         dedupe(),
         next => async (url, opts) => {
             const config = configFactory.get()
-            const places = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.destination)
-            
-            const place = places.results[0]
-            if (places.status !== 'ZERO_RESULTS' && place) {
-                // Storing the name
-                opts.context.name = place.name
-                // Places returned some results, extract and pass the place_id to Directions
-                const query = {
-                    ...opts.query,
-                    destination: 'place_id:' + place.place_id,
-                    key: config.apiKey
-                }
-                return wretch(BASE_URL).query(query).get().res()
+
+            let query = {
+                ...opts.query,
+                key: config.apiKey
             }
-            
-            // Places didn't return any results, pass the request to Directions as it is
-            return next(url, opts)
+
+            // Origin
+            if (opts.origin !== config.homeAddress && opts.origin !== config.workAddress) {
+                const originPlaces = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.origin)
+
+                const originPlace = originPlaces.results[0]
+                if (originPlaces.status !== 'ZERO_RESULTS' && originPlace) {
+                    // Storing the name
+                    opts.context.originName = originPlace.name
+                    // Places returned some results, extract and pass the place_id to Directions
+                    query = {
+                        ...query,
+                        origin: 'place_id:' + originPlace.place_id
+                    }
+                }
+            }
+
+            // Destination
+            if (opts.destination !== config.homeAddress && opts.destination !== config.workAddress) {
+                const destinationPlaces = await placesHttpFactory.nearbySearch(config.currentCoordinates, opts.destination)
+                
+                const destinationPlace = destinationPlaces.results[0]
+                if (destinationPlaces.status !== 'ZERO_RESULTS' && destinationPlace) {
+                    // Storing the name
+                    opts.context.destinationName = destinationPlace.name
+                    // Places returned some results, extract and pass the place_id to Directions
+                    query = {
+                        ...query,
+                        destination: 'place_id:' + destinationPlace.place_id
+                    }
+                }
+
+                if (opts.context.originName || opts.context.destinationName) {
+                    return wretch(BASE_URL).query(query).get().res()
+                } else {
+                    return next(url, opts)
+                }
+            }
         }
     ])
 
@@ -69,7 +95,7 @@ module.exports = {
         const context = {}
         const results = await directionsHttp
             .query(query)
-            .options({ destination, query, context })
+            .options({ origin, destination, query, context })
             .get()
             .json()
             .catch(error => {
@@ -88,8 +114,11 @@ module.exports = {
             throw new Error('APIResponse')
         }
 
-        if (context.name) {
-            results.routes[0].legs[0].end_address_name = context.name
+        if (context.originName) {
+            results.routes[0].legs[0].start_address_name = context.originName
+        }
+        if (context.destinationName) {
+            results.routes[0].legs[0].end_address_name = context.destinationName
         }
 
         return results

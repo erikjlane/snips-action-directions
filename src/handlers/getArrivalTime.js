@@ -145,6 +145,10 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
         let speech = ''
         try {
+            let origin = directionsData.routes[0].legs[0].start_address_name
+            if (!origin) {
+                origin = directionsData.routes[0].legs[0].start_address
+            }
             let destination = directionsData.routes[0].legs[0].end_address_name
             if (!destination) {
                 destination = directionsData.routes[0].legs[0].end_address
@@ -160,7 +164,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
                 arrivalTimeEpoch = departureTimeEpoch + directionsData.routes[0].legs[0].duration.value
             }
 
-            speech = translation.arrivalTimeToSpeech(locationFrom, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
+            speech = translation.arrivalTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
         } catch (error) {
             logger.error(error)
             throw new Error('APIResponse')

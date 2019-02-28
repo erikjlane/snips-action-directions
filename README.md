@@ -1,5 +1,5 @@
 # snips-action-directions
-#### Get Directions &amp; Traffic info
+#### Action code for the Snips directions &amp; traffic info skill
 
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 
