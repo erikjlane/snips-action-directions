@@ -1,5 +1,5 @@
 const { directionsHttpFactory, i18nFactory } = require('../factories')
-const { logger, translation, directions, slot } = require('../utils')
+const { logger, translation, directions, slot, tts } = require('../utils')
 const commonHandler = require('./common')
 const {
     INTENT_FILTER_PROBABILITY_THRESHOLD
@@ -75,6 +75,8 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             return speech
         }
 
+        const now = Date.now()
+
         // Get the data from Directions API
         const directionsData = await directionsHttpFactory.calculateRoute({
             origin: locationFrom,
@@ -83,31 +85,26 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         })
         logger.debug(directionsData)
 
-        const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        logger.debug(aggregatedDirectionsData)
-
-        let speech = ''
         try {
-            let origin = directionsData.routes[0].legs[0].start_address_name
-            if (!origin) {
-                origin = directionsData.routes[0].legs[0].start_address
-            }
-            let destination = directionsData.routes[0].legs[0].end_address_name
-            if (!destination) {
-                destination = directionsData.routes[0].legs[0].end_address
-            }
+            const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
+            logger.debug(aggregatedDirectionsData)
 
+            const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
             const duration = directionsData.routes[0].legs[0].duration.value
             const distance = directionsData.routes[0].legs[0].distance.value
 
-            speech = translation.directionsToSpeech(origin, destination, travelMode, duration, distance, aggregatedDirectionsData)
+            const speech = translation.directionsToSpeech(origin, destination, travelMode, duration, distance, aggregatedDirectionsData)
+            logger.info(speech)
+
+            flow.end()
+            if (Date.now() - now < 4000) {
+                return speech
+            } else {
+                tts.say(speech)
+            }
         } catch (error) {
             logger.error(error)
             throw new Error('APIResponse')
         }
-
-        flow.end()
-        logger.info(speech)
-        return speech
     }
 }

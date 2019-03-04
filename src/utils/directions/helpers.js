@@ -1,3 +1,5 @@
+const { configFactory } = require('../../factories')
+
 const buses = [
     'BUS',
     'INTERCITY_BUS',
@@ -48,6 +50,28 @@ module.exports = {
             }
         }
         return true
+    },
+
+    getFullAddress: (locationFrom, locationTo, directionsData) => {
+        const config = configFactory.get()
+
+        let origin = locationFrom
+        if (!locationFrom.includes(config.homeAddress) && !locationFrom.includes(config.workAddress)) {
+            origin = directionsData.routes[0].legs[0].start_address_name
+            if (!origin) {
+                origin = directionsData.routes[0].legs[0].start_address
+            }
+        }
+
+        let destination = locationTo
+        if (!locationTo.includes(config.homeAddress) && !locationTo.includes(config.workAddress)) {
+            destination = directionsData.routes[0].legs[0].end_address_name
+            if (!destination) {
+                destination = directionsData.routes[0].legs[0].end_address
+            }
+        }
+
+        return { origin, destination }
     },
 
     chosenTravelMode: aggregatedDirectionsData => {
