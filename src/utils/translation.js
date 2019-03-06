@@ -24,8 +24,11 @@ module.exports = {
         const i18n = i18nFactory.get()
 
         const possibleValues = i18n(key, { returnObjects: true, ...opts })
-        const randomIndex = Math.floor(Math.random() * possibleValues.length)
+        if (typeof possibleValues === 'string') {
+            return possibleValues
+        }
 
+        const randomIndex = Math.floor(Math.random() * possibleValues.length)
         return possibleValues[randomIndex]
     },
 
@@ -52,9 +55,9 @@ module.exports = {
         if (travelMode === 'driving') {
             let trafficQualifier = ''
 
-            if (durationInTraffic > 1.05 * duration) {
+            if (durationInTraffic > 1.15 * duration) {
                 trafficQualifier = 'slower'
-            } else if (durationInTraffic < 0.95 * duration) {
+            } else if (durationInTraffic < 0.85 * duration) {
                 trafficQualifier = 'faster'
             }
 
