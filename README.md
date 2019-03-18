@@ -68,7 +68,7 @@ Get estimated travel time to get to the given location
 Get estimated travel time to get from location A to location B
 > *Hey Snips, how long will it take me to go from Times Square to the Metropolitan Museum?*
 
-Get estimated travel time to drive from a location A to a location B
+Get estimated travel time to get from a location A to a location B, indicating a travel mode
 > *Hey Snips, how long will it take me to drive from Times Square to the Metropolitan Museum?*
 
 ### `GetDepartureTime`

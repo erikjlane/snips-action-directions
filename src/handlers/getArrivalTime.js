@@ -87,7 +87,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
-            return require('./index').getDirections(msg, flow, knownSlots)
+            return require('./index').getArrivalTime(msg, flow, knownSlots)
         })
         
         flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {

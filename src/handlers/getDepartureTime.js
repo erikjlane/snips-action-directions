@@ -59,7 +59,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
                 arrivalTime = new Date(arrivalTimeSlot.value.value)
             }
             // Or is it a TimeInterval object?
-            else if (arrivalTimeSlot.value.kind === 'TimeInterval') {
+            if (arrivalTimeSlot.value.kind === 'TimeInterval') {
                 const from = arrivalTimeSlot.value.from
                 if (from) {
                     arrivalTime = new Date(from)
@@ -86,7 +86,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
-            return require('./index').getDirections(msg, flow, knownSlots)
+            return require('./index').getDepartureTime(msg, flow, knownSlots)
         })
 
         flow.continue('snips-assistant:GetDepartureTime', (msg, flow) => {

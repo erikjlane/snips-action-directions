@@ -5,6 +5,7 @@ const { translation, logger } = require('./utils')
 
 // Initialize hermes
 module.exports = function ({
+    // address: '192.168.171.167:1883'
     hermesOptions = {},
     bootstrapOptions = {}
 } = {}) {
