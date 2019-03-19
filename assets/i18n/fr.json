@@ -43,7 +43,7 @@
             "train": "Se rendre de {{- location_from }} à {{- location_to }} en train prend {{ duration }}.",
             "walking": "Marcher de {{- location_from }} jusqu'à {{- location_to }} vous prendra {{ duration }}.",
             "bicycling": "Se rendre de {{- location_from }} à {{- location_to }} à vélo vous prendra {{ duration }}.",
-            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}." 
+            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}.",
             "trafficInfo": {
                 "slower": "Actuellement, le trafic est plus encombré que d'habitude. Vous devriez prévoir {{ duration_in_traffic }} si vous partez maitenant.",
                 "faster": "Actuellement, le trafic est moins encombré que d'habitude. Vous pouvez prévoir {{ duration_in_traffic }} si vous partez maitenant."

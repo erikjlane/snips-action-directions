@@ -38,7 +38,7 @@
             "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you {{ travel_mode }}."
         },
         "navigationTime": {
-            "transit": "Going from {{- location_from }} to {{- location_to }} by public transport usually takes {{ duration }}. I have no information on the current traffic.",
+            "transit": "Going from {{- location_from }} to {{- location_to }} by public transport usually takes {{ duration }}.",
             "bus": "Going from {{- location_from }} to {{- location_to }} by bus will take you {{ duration }}.",
             "train": "Going from {{- location_from }} to {{- location_to }} by train takes {{ duration }}.",
             "walking": "Walking from {{- location_from }} to {{- location_to }} will take you {{ duration }}.",
