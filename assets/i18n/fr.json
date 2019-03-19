@@ -5,15 +5,15 @@
         "locale": "Désolé, une erreur s'est produite avec vos paramètres de localisation.",
         "intentNotRecognized": "Désolé, je n'ai pas compris votre requête.",
         "slotsNotRecognized": "Désolé, je n'ai pas compris votre requête.",
-        "APIResponse": "Désolé, une erreur s'est produite avec le service de calcul des directions.",
-        "APIRequest": "Désolé, le service de météo est injoignable.",
+        "APIResponse": "Désolé, une erreur s'est produite avec le service de données d'itinéraires.",
+        "APIRequest": "Désolé, le service de données d'itinéraires est injoignable.",
         "unspecific": "Oups, quelque chose s'est mal passé.",
         "place": "Désolé, le lieu demandé n'a pas été retrouvé.",
         "noHomeAddress": "Veillez à configurer l'adresse de votre domicile.",
         "noWorkAddress": "Veillez à configurer l'adresse de votre lieu de travail.",
-        "noCurrentAddress": "Veillez à configurer votre localisation courante.",
-        "badCurrentAddress": "Désolé, votre localisation courante est mal configurée.",
-        "noCurrentCoordinates": "Veillez à configurer vos coordonnées GPS courantes."
+        "noCurrentAddress": "Veillez à configurer votre localisation actuelle.",
+        "badCurrentAddress": "Désolé, votre localisation actuelle est mal configurée.",
+        "noCurrentCoordinates": "Veillez à configurer vos coordonnées GPS actuelles."
     },
     "travel_modes": {
         "transit": "en transports en commun",
@@ -25,16 +25,16 @@
     },
     "directions": {
         "dialog": {
-            "noOriginAddress": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre ?",
+            "noOriginAddress": "Désolé, pouvez-vous répéter d'où vous partez ?",
             "noDestinationAddress": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre ?",
             "noArrivalTime": "Désolé, pouvez-vous répéter à quelle heure vous souhaitez y être ?",
-            "noOriginAndDestinationAddresses": "Désolé, pouvez-vous répéter d'où vous souhaitez partir, et où vous souhaitez vous rendre ?",
+            "noOriginAndDestinationAddresses": "Désolé, pouvez-vous répéter d'où vous souhaitez partir et où vous souhaitez vous rendre ?",
             "noOriginAddressAndDepartureTime": "Désolé, pouvez-vous répéter d'où et à quelle heure vous souhaitez partir ?",
             "noOriginAddressAndArrivalTime": "Désolé, pouvez-vous répéter d'où vous souhaitez partir, ainsi que l'heure à laquelle vous souhaitez être à votre destination ?",
             "noDestinationAddressAndDepartureTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous comptez partir ?",
             "noDestinationAddressAndArrivalTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous souhaitez y être ?",
             "noDepartureTime": "Désolé, pouvez-vous répéter l'heure à laquelle vous souhaitez partir ?",
-            "sameLocations": "Super ! Il semble que vous soyez déjà là où vous souhaitez aller !",
+            "sameLocations": "Super ! Il semble que vous soyez déjà là où vous souhaitiez aller !",
             "noTripWithTravelMode": "Désolé, je n'ai pas de trajet pertinent à vous proposer {{ travel_mode }}."
         },
         "navigationTime": {
@@ -42,8 +42,8 @@
             "bus": "Se rendre de {{- location_from }} à {{- location_to }} en bus vous prendra {{ duration }}.",
             "train": "Se rendre de {{- location_from }} à {{- location_to }} en train prend {{ duration }}.",
             "walking": "Marcher de {{- location_from }} jusqu'à {{- location_to }} vous prendra {{ duration }}.",
-            "bicycling": "Se rendre de {{- location_from }} à {{- location_to }} en vélo vous prendra {{ duration }}.",
-            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}. Avec les conditions de circulation actuelles, cela vous prendra {{ duration_in_traffic }}.",
+            "bicycling": "Se rendre de {{- location_from }} à {{- location_to }} à vélo vous prendra {{ duration }}.",
+            "driving": "Conduire de {{- location_from }} jusqu'à {{- location_to }} prend habituellement {{ duration }}." 
             "trafficInfo": {
                 "slower": "Actuellement, le trafic est plus encombré que d'habitude. Vous devriez prévoir {{ duration_in_traffic }} si vous partez maitenant.",
                 "faster": "Actuellement, le trafic est moins encombré que d'habitude. Vous pouvez prévoir {{ duration_in_traffic }} si vous partez maitenant."
@@ -61,25 +61,25 @@
             "transit": "En transports en commun, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
             "bus": "En bus, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
             "train": "En train, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
-            "walking": "À vélo, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
+            "walking": "À pied, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
             "bicycling": "À vélo, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}.",
             "driving": "En voiture, vous devriez arriver à {{- location_to }} à {{ arrival_time }} si vous partez à {{ departure_time }} de {{- location_from }}."
         },
         "directions": {
             "transit": {
                 "toDestination": [
-                    "Se rendre de {{- location_from }} à {{- location_to }} en transports en commun vous prendra {{ duration }}.",
+                    "Se rendre de {{- location_from }} à {{- location_to }} en transports en commun vous prendra en moyenne {{ duration }}.",
                     "En transports en commun, vous mettrez {{ duration }} à vous rendre à {{ location_to}} de {{- location_from }}.",
                     "En transports en commun, prévoyez {{ duration }} pour vous rendre à {{- location_to }} de {{- location_from }}."
                 ],
                 "walkToMetro": "Marchez {{ duration }} jusqu'à la station {{- arrival_stop }}.",
                 "metro": "Prenez la ligne {{- line_name }} en direction de {{- headsign }}, et descendez à {{- arrival_stop }}.",
                 "connectionMetro": "À la correspondance, prenez la ligne {{- line_name }} en direction de {{- headsign }} puis descendez à {{- arrival_stop }}.",
-                "walkToFinalDestination": "Marchez encore {{ distance }} mètres pour arriver à {{- location_to }}."
+                "walkToFinalDestination": "Marchez encore {{ duration }} pour arriver à {{- location_to }}."
             },
             "bus": {
                 "toDestination": [
-                    "Se rendre de {{- location_from }} à {{- location_to }} en bus vous prendra {{ duration }}.",
+                    "Se rendre de {{- location_from }} à {{- location_to }} en bus vous prendra en moyenne {{ duration }}.",
                     "En bus, vous mettrez {{ duration }} à vous rendre à {{ location_to}} de {{- location_from }}.",
                     "En bus, prévoyez {{ duration }} pour vous rendre à {{- location_to }} de {{- location_from }}."
                 ]
@@ -131,7 +131,7 @@
             },
             "imperial": {
                 "miles": "{{ distance }} miles",
-                "feet": "{{ distance }} feet"
+                "feet": "{{ distance }} pieds"
             }
         },
         "duration": {
