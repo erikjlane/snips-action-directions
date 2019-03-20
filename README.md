@@ -96,3 +96,11 @@ Get the arrival time to location B when leaving location A at the given departur
 
 Get the arrival time to location B when leaving location A at the given departure time, indicating a travel mode
 > *Hey Snips, when will I reach the airport if I take the subway from 124 Main Street by noon?*
+
+## Contributing
+
+Please see the [Contribution Guidelines](https://github.com/snipsco/snips-actions-directions/blob/master/CONTRIBUTING.md).
+
+## Copyright
+
+This library is provided by [Snips](https://snips.ai) as Open Source software. See [LICENSE](https://github.com/snipsco/snips-action-directions/blob/master/LICENSE) for more information.

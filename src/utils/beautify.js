@@ -7,16 +7,20 @@ function metersToFeet(distance) {
 module.exports = {    
     time: date => {
         const config = configFactory.get()
+        const options = { hour: 'numeric', minute: 'numeric' }
 
         if (config.locale === 'french') {
             // French
-            return date.getHours() + 'h' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes()
+            return date.toLocaleString('fr-FR', {
+                ...options,
+                hour12: false
+            }).replace(':', ' heure ').replace(' 00', '')
         } else {
             // English
-            const meridiem = (date.getHours() > 11) ? 'pm' : 'am'
-            const hours = (meridiem === 'pm') ? date.getHours() - 12 : date.getHours()
-
-            return hours + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ' ' + meridiem
+            return date.toLocaleString('en-US', {
+                ...options,
+                hour12: true
+            }).replace(':', ' ').replace(' 00','')
         }
     },
     
