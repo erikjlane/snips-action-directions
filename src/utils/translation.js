@@ -164,8 +164,8 @@ module.exports = {
                         // If the distance of the final step is insignificant, skip it
                         if (currentStep.distance > 100) {
                             tts += i18n('directions.directions.transit.walkToFinalDestination', {
-                                distance: beautify.distance(currentStep.distance),
-                                location_to: beautify.address(locationTo)
+                                location_to: beautify.address(locationTo),
+                                duration: beautify.duration(currentStep.duration)
                             })
                         }
                     } else if (isConnection(directionsData, i)) {

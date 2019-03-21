@@ -99,7 +99,7 @@ Get the arrival time to location B when leaving location A at the given departur
 
 ## Contributing
 
-Please see the [Contribution Guidelines](https://github.com/snipsco/snips-actions-directions/blob/master/CONTRIBUTING.md).
+Please see the [Contribution Guidelines](https://github.com/snipsco/snips-action-directions/blob/master/CONTRIBUTING.md).
 
 ## Copyright
 
