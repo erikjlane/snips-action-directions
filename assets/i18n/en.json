@@ -5,7 +5,7 @@
         "locale": "Sorry, there was an error with your language settings.",
         "intentNotRecognized": "Sorry, I did not understand your request.",
         "slotsNotRecognized": "Sorry, I did not understand your request.",
-        "APIResponse": "Sorry, there was an issue with the directions service provider.",
+        "APIResponse": "Sorry, there was an issue with the direction service provider.",
         "APIRequest": "Sorry, the service provider is unreachable.",
         "unspecific": "Oops, something went wrong.",
         "place": "Sorry, the location you asked for is unknown to me.",
@@ -30,11 +30,11 @@
             "noArrivalTime": "I'm sorry, can you repeat the time you want to arrive there?",
             "noOriginAndDestinationAddresses": "I'm sorry, can you repeat from where you want to leave as well as where you want to go?",
             "noOriginAddressAndDepartureTime": "I'm sorry, can you repeat from where you want to leave as well as the time you plan to leave?",
-            "noOriginAddressAndArrivalTime": "I'm sorry, can you repeat from where you want to leave as well as the time you arrive at your destination?",
+            "noOriginAddressAndArrivalTime": "I'm sorry, can you repeat from where you want to leave as well as the time you would like to arrive at your destination?",
             "noDestinationAddressAndDepartureTime": "I'm sorry, can you repeat where you want to go as well as the time you plan to leave?",
             "noDestinationAddressAndArrivalTime": "I'm sorry, can you repeat where you want to go as well as the time you want to arrive there?",
-            "noDepartureTime": "I'm sorry, can you repeat the time you want to leave?",
-            "sameLocations": "Good news! It seems that you are already where you want to be!",
+            "noDepartureTime": "I'm sorry, can you repeat the time you want to leave at?",
+            "sameLocations": "Good news! It seems that you are already where you wanted to be!",
             "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you {{ travel_mode }}."
         },
         "navigationTime": {
@@ -74,7 +74,7 @@
                 "walkToMetro": "Walk {{ duration }} to the station {{- arrival_stop }}.",
                 "metro": "Take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
                 "connectionMetro": "When connecting take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",
-                "walkToFinalDestination": "Walk another {{ distance }} to reach {{- location_to }}."
+                "walkToFinalDestination": "Walk another {{ duration }} to reach {{- location_to }}."
             },
             "bus": {
                 "toDestination": [
