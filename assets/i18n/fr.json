@@ -2,7 +2,7 @@
     "error": {
         "mqtt": "Désolé, une erreur s'est produite lors de la communication avec la plateforme Snips",
         "config": "Désolé, une erreur s'est produite avec votre fichier de configuration.",
-        "locale": "Désolé, une erreur s'est produite avec vos paramètres de localisation.",
+        "locale": "Désolé, une erreur s'est produite avec vos paramètres de langue.",
         "intentNotRecognized": "Désolé, je n'ai pas compris votre requête.",
         "slotsNotRecognized": "Désolé, je n'ai pas compris votre requête.",
         "APIResponse": "Désolé, une erreur s'est produite avec le service de données d'itinéraires.",
@@ -25,7 +25,7 @@
     },
     "directions": {
         "dialog": {
-            "noOriginAddress": "Désolé, pouvez-vous répéter d'où vous partez ?",
+            "noOriginAddress": "Désolé, pouvez-vous répéter d'où vous souhaitez partir ?",
             "noDestinationAddress": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre ?",
             "noArrivalTime": "Désolé, pouvez-vous répéter à quelle heure vous souhaitez y être ?",
             "noOriginAndDestinationAddresses": "Désolé, pouvez-vous répéter d'où vous souhaitez partir et où vous souhaitez vous rendre ?",
