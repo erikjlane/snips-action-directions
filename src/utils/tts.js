@@ -1,5 +1,4 @@
 const { Hermes, Dialog } = require('hermes-javascript')
-const logger = require('./logger')
 
 module.exports = {
     say: (text, siteId='default') => {
