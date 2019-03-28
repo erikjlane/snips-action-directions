@@ -1,7 +1,7 @@
 {
   "name": "snips-action-directions",
   "version": "1.0.0",
-  "description": "Action code for the Snips directions &amp; traffic info skill",
+  "description": "Snips action code for the Directions &amp; traffic info app",
   "main": "src/index.js",
   "scripts": {
     "start": "npm run lint && npm run test",
