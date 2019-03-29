@@ -7,32 +7,6 @@ const {
 } = require('../constants')
 const { Dialog } = require('hermes-javascript')
 
-function generateMissingSlotsTTS (locationFrom, locationTo, departureTime) {
-    const i18n = i18nFactory.get()
-
-    if (slot.missing(locationFrom) && slot.missing(locationTo) && slot.missing(departureTime)) {
-        throw new Error('intentNotRecognized')
-    }
-    if (slot.missing(locationFrom) && slot.missing(locationTo)) {
-        return i18n('directions.dialog.noOriginAndDestinationAddresses')
-    }
-    if (slot.missing(locationFrom) && slot.missing(departureTime)) {
-        return i18n('directions.dialog.noOriginAddressAndDepartureTime')
-    }
-    if (slot.missing(locationTo) && slot.missing(departureTime)) {
-        return i18n('directions.dialog.noDestinationAddressAndDepartureTime')
-    }
-    if (slot.missing(locationFrom)) {
-        return i18n('directions.dialog.noOriginAddress')
-    }
-    if (slot.missing(locationTo)) {
-        return i18n('directions.dialog.noDestinationAddress')
-    }
-    if (slot.missing(departureTime)) {
-        return i18n('directions.dialog.noDepartureTime')
-    }
-}
-
 module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
@@ -84,35 +58,126 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             throw new Error('slotsNotRecognized')
         }
 
+        // intent not recognized
+
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
             return require('./index').getArrivalTime(msg, flow, knownSlots)
         })
+
+        // multiple slots missing
+
+        // missing itinerary
+        if (slot.missing(locationFrom) && slot.missing(locationTo) && !slot.missing(departureTime)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitItinerary', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    departure_time: departureTime,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noOriginAndDestinationAddresses')
+        }
         
-        flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {
-            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                throw new Error('intentNotRecognized')
-            }
-            
-            let slotsToBeSent = {
-                travel_mode: travelMode,
-                depth: knownSlots.depth - 1
-            }
+        // missing origin and departure time
+        if (slot.missing(locationFrom) && slot.missing(departureTime) && !slot.missing(locationTo)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitOriginAndDepartureTime', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
 
-            // Adding the known slots, if more
-            if (!slot.missing(locationFrom)) {
-                slotsToBeSent.location_from = locationFrom
-            }
-            if (!slot.missing(locationTo)) {
-                slotsToBeSent.location_to = locationTo
-            }
-            if (!slot.missing(departureTime)) {
-                slotsToBeSent.departure_time = departureTime
-            }
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_to: locationTo,
+                    depth: knownSlots.depth - 1
+                })
+            })
 
-            return require('./index').getArrivalTime(msg, flow, slotsToBeSent)
-        })
+            return i18n('directions.dialog.noOriginAddressAndDepartureTime')
+        }
+
+        // single slot missing
+
+        // missing origin
+        if (slot.missing(locationFrom) && !slot.missing(locationTo) && !slot.missing(departureTime)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_to: locationTo,
+                    departure_time: departureTime,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            // slot filling
+            /*
+            flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_to: locationTo,
+                    departure_time: departureTime,
+                    depth: knownSlots.depth - 1
+                })
+            }, { slotFiller: 'location_from' })
+            */
+
+            return i18n('directions.dialog.noOriginAddress')
+        }
+
+        // missing destination
+        if (slot.missing(locationTo) && !slot.missing(locationFrom) && !slot.missing(departureTime)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_from: locationFrom,
+                    departure_time: departureTime,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noDestinationAddress')
+        }
+
+        // missing departure_time
+        if (slot.missing(departureTime) && !slot.missing(locationTo) && !slot.missing(locationFrom)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getArrivalTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_from: locationFrom,
+                    location_to: locationTo,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noDepartureTime')
+        }
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -121,7 +186,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             flow.end()
         })
         
-        return generateMissingSlotsTTS(locationFrom, locationTo, departureTime)
+        throw new Error('intentNotRecognized')
     } else {        
         // Are the origin and destination addresses the same?
         if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
