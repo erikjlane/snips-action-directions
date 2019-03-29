@@ -133,14 +133,14 @@ it('should ask the missing origin and pass', async () => {
         ]
     })
 
-    const whichDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+    const whichOriginMsg = await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to Buckingham Palace',
         slots: [
             createLocationFromSlot('Buckingham Palace')
         ]
     })
-    expect(getMessageKey(whichDestinationMsg.text)).toBe('directions.dialog.noOriginAddress')
+    expect(getMessageKey(whichOriginMsg.text)).toBe('directions.dialog.noOriginAddress')
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.navigationTime.transit')
@@ -165,7 +165,7 @@ it('should ask the missing destination and pass', async () => {
     })
 
     const whichDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go to Buckingham Palace',
         slots: [
             createLocationToSlot('Buckingham Palace')
@@ -198,13 +198,13 @@ it('should ask the missing destination twice and pass', async () => {
     })
 
     const whichDestinationMsg1 = (await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go to'
     })).text
     expect(getMessageKey(whichDestinationMsg1)).toBe('directions.dialog.noDestinationAddress')
 
     const whichDestinationMsg2 = (await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go to Buckingham Palace',
         slots: [
             createLocationToSlot('Buckingham Palace')
@@ -237,13 +237,13 @@ it('should ask the missing destination twice and fail', async () => {
     })
 
     const whichDestinationMsg1 = (await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go'
     })).text
     expect(getMessageKey(whichDestinationMsg1)).toBe('directions.dialog.noDestinationAddress')
     
     const whichDestinationMsg2 = (await session.continue({
-        intentName: 'snips-assistant:GetNavigationTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go'
     })).text
     expect(getMessageKey(whichDestinationMsg2)).toBe('directions.dialog.noDestinationAddress')

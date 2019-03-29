@@ -23,32 +23,70 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             throw new Error('slotsNotRecognized')
         }
 
+        // intent not recognized
+
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
             return require('./index').getNavigationTime(msg, flow, knownSlots)
         })
 
-        flow.continue('snips-assistant:GetNavigationTime', (msg, flow) => {
-            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                throw new Error('intentNotRecognized')
-            }
+        // multiple slots missing
 
-            let slotsToBeSent = {
-                travel_mode: travelMode,
-                depth: knownSlots.depth - 1
-            }
+        // missing itinerary
+        if (slot.missing(locationFrom) && slot.missing(locationTo)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitItinerary', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
 
-            // Adding the location_from, if any
-            if (!slot.missing(locationFrom)) {
-                slotsToBeSent.location_from = locationFrom
-            }
-            if (!slot.missing(locationTo)) {
-                slotsToBeSent.location_to = locationTo
-            }
+                return require('./index').getNavigationTime(msg, flow, {
+                    travel_mode: travelMode,
+                    depth: knownSlots.depth - 1
+                })
+            })
 
-            return require('./index').getNavigationTime(msg, flow, slotsToBeSent)
-        })
+            return i18n('directions.dialog.noOriginAndDestinationAddresses')
+        }
+
+        // single slot missing
+
+        // missing origin
+        if (slot.missing(locationFrom) && !slot.missing(locationTo)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getNavigationTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_to: locationTo,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noOriginAddress')
+        }
+
+        // missing destination
+        if (slot.missing(locationTo) && !slot.missing(locationFrom)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getNavigationTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_from: locationFrom,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noDestinationAddress')
+        }
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -57,15 +95,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             flow.end()
         })
 
-        if (slot.missing(locationFrom) && slot.missing(locationTo)) {
-            throw new Error('intentNotRecognized')
-        }
-        if (slot.missing(locationFrom)) {
-            return i18n('directions.dialog.noOriginAddress')
-        }
-        if (slot.missing(locationTo)) {
-            return i18n('directions.dialog.noDestinationAddress')
-        }
+        throw new Error('intentNotRecognized')
     } else {
         // Are the origin and destination addresses the same?
         if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {

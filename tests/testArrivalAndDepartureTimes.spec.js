@@ -104,7 +104,7 @@ it('should ask to properly configure the work location', async () => {
     expect(getMessageKey(endMsg)[0]).toBe('error.noWorkAddress')
 })
 
-it('should ask the missing origin and pass', async () => {
+it.only('should ask the missing origin and pass', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -140,7 +140,7 @@ it('should ask the missing origin and pass', async () => {
     })
 
     const whichOriginAndDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:GetArrivalTime',
+        intentName: 'snips-assistant:ElicitItinerary',
         input: 'If I leave from Buckingham Palace at ten pm, when will I arrive there?',
         slots: [
             {
@@ -188,7 +188,7 @@ it('should ask the missing destination and pass', async () => {
     })
 
     const whichDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:GetArrivalTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go at Buckingham Palace',
         slots: [
             createLocationToSlot('Buckingham Palace')
@@ -224,7 +224,7 @@ it('should ask the missing departure time and pass', async () => {
     })
 
     const whichDepartureTimeMsg = await session.continue({
-        intentName: 'snips-assistant:GetArrivalTime',
+        intentName: 'snips-assistant:ElicitDepartureTime',
         input: 'I want to go at Buckingham Palace',
         slots: [
             createDepartureTimeSlot('2019-02-12 22:00:00 +00:00')
@@ -238,7 +238,7 @@ it('should ask the missing departure time and pass', async () => {
     expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
-it('should ask the missing destination & departure time and pass', async () => {
+it('should ask the missing origin & departure time and pass', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -256,15 +256,15 @@ it('should ask the missing destination & departure time and pass', async () => {
         input: 'I have to be at, when should I leave?'
     })
 
-    const whichDestinationAndDepartureTimeMsg = await session.continue({
-        intentName: 'snips-assistant:GetArrivalTime',
+    const whichOriginAndDepartureTimeMsg = await session.continue({
+        intentName: 'snips-assistant:ElicitOriginAndDepartureTime',
         input: 'I want to go arrive at Buckingham Palace at ten pm',
         slots: [
-            createLocationToSlot('Buckingham Palace'),
+            createLocationFromSlot('Buckingham Palace'),
             createDepartureTimeSlot('2019-02-12 22:00:00 +00:00')
         ]
     })
-    expect(getMessageKey(whichDestinationAndDepartureTimeMsg.text)).toBe('directions.dialog.noDestinationAddressAndDepartureTime')
+    expect(getMessageKey(whichOriginAndDepartureTimeMsg.text)).toBe('directions.dialog.noDestinationAddressAndDepartureTime')
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
@@ -482,7 +482,7 @@ it('should ask the missing destination and pass', async () => {
     })
 
     const whichDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:GetDepartureTime',
+        intentName: 'snips-assistant:ElicitDestination',
         input: 'I want to go at Buckingham Palace',
         slots: [
             createLocationToSlot('Buckingham Palace')
@@ -518,7 +518,7 @@ it('should ask the missing arrival time and pass', async () => {
     })
 
     const whichArrivalTimeMsg = await session.continue({
-        intentName: 'snips-assistant:GetDepartureTime',
+        intentName: 'snips-assistant:ElicitArrivalTime',
         input: 'I want to go at Buckingham Palace',
         slots: [
             createArrivalTimeSlot('2019-02-12 22:00:00 +00:00')
@@ -551,7 +551,7 @@ it('should ask the missing destination & arrival time and pass', async () => {
     })
 
     const whichDestinationAndArrivalTimeMsg = await session.continue({
-        intentName: 'snips-assistant:GetDepartureTime',
+        intentName: 'snips-assistant:ElicitDestinationAndArrivalTime',
         input: 'I want to go arrive at Buckingham Palace at ten pm',
         slots: [
             createLocationToSlot('Buckingham Palace'),
@@ -585,13 +585,13 @@ it('should ask the missing destination and arrival time twice and pass', async (
     })
 
     const whichDestinationAndArrivalTimeMsg1 = (await session.continue({
-        intentName: 'snips-assistant:GetDepartureTime',
+        intentName: 'snips-assistant:ElicitDestinationAndArrivalTime',
         input: 'I want to arrive at'
     })).text
     expect(getMessageKey(whichDestinationAndArrivalTimeMsg1)).toBe('directions.dialog.noDestinationAddressAndArrivalTime')
     
     const whichDestinationAndArrivalTimeMsg2 = (await session.continue({
-        intentName: 'snips-assistant:GetDepartureTime',
+        intentName: 'snips-assistant:ElicitDestinationAndArrivalTime',
         input: 'I want to arrive at Buckingham Palace at ten pm',
         slots: [
             createLocationToSlot('Buckingham Palace'),
