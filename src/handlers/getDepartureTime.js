@@ -86,26 +86,40 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
 
         // missing destination and arrival time
-        if (slot.missing(locationTo) && slot.missing(arrivalTime)) {
+        if (slot.missing(locationTo) && slot.missing(arrivalTime) && !slot.missing(locationFrom)) {
             // elicitation intent
             flow.continue('snips-assistant:ElicitDestinationArrivalTime', (msg, flow) => {
                 if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                     throw new Error('intentNotRecognized')
                 }
 
-                const slots = {
+                return require('./index').getDepartureTime(msg, flow, {
                     travel_mode: travelMode,
+                    location_from: locationFrom,
                     depth: knownSlots.depth - 1
-                }
-
-                if (!slot.missing(locationFrom)) {
-                    slots.location_from = locationFrom
-                }
-
-                return require('./index').getDepartureTime(msg, flow, slots)
+                })
             })
 
             return i18n('directions.dialog.noDestinationAddressAndArrivalTime')
+        }
+
+        // missing origin and arrival time
+        // should not happen, origin has a default value
+        if (slot.missing(locationFrom) && slot.missing(arrivalTime) && !slot.missing(locationTo)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitOriginArrivalTime', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                return require('./index').getDepartureTime(msg, flow, {
+                    travel_mode: travelMode,
+                    location_to: locationTo,
+                    depth: knownSlots.depth - 1
+                })
+            })
+
+            return i18n('directions.dialog.noOriginAddressAndArrivalTime')
         }
 
         // single slot missing

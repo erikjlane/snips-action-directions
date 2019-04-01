@@ -87,6 +87,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
         
         // missing origin and departure time
+        // should not happen, origin has a default value
         if (slot.missing(locationFrom) && slot.missing(departureTime) && !slot.missing(locationTo)) {
             // elicitation intent
             flow.continue('snips-assistant:ElicitOriginDepartureTime', (msg, flow) => {
@@ -105,23 +106,18 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
 
         // missing destination and departure time
-        if (slot.missing(locationTo) && slot.missing(departureTime)) {
+        if (slot.missing(locationTo) && slot.missing(departureTime) && !slot.missing(locationFrom)) {
             // elicitation intent
             flow.continue('snips-assistant:ElicitDestinationDepartureTime', (msg, flow) => {
                 if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                     throw new Error('intentNotRecognized')
                 }
 
-                const slots = {
+                return require('./index').getArrivalTime(msg, flow, {
                     travel_mode: travelMode,
+                    location_from: locationFrom,
                     depth: knownSlots.depth - 1
-                }
-
-                if (!slot.missing(locationFrom)) {
-                    slots.location_from = locationFrom
-                }
-
-                return require('./index').getArrivalTime(msg, flow, slots)
+                })
             })
 
             return i18n('directions.dialog.noDestinationAddressAndDepartureTime')
