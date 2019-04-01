@@ -89,7 +89,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         // missing origin and departure time
         if (slot.missing(locationFrom) && slot.missing(departureTime) && !slot.missing(locationTo)) {
             // elicitation intent
-            flow.continue('snips-assistant:ElicitOriginAndDepartureTime', (msg, flow) => {
+            flow.continue('snips-assistant:ElicitOriginDepartureTime', (msg, flow) => {
                 if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                     throw new Error('intentNotRecognized')
                 }
@@ -102,6 +102,29 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             })
 
             return i18n('directions.dialog.noOriginAddressAndDepartureTime')
+        }
+
+        // missing destination and departure time
+        if (slot.missing(locationTo) && slot.missing(departureTime)) {
+            // elicitation intent
+            flow.continue('snips-assistant:ElicitDestinationDepartureTime', (msg, flow) => {
+                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                    throw new Error('intentNotRecognized')
+                }
+
+                const slots = {
+                    travel_mode: travelMode,
+                    depth: knownSlots.depth - 1
+                }
+
+                if (!slot.missing(locationFrom)) {
+                    slots.location_from = locationFrom
+                }
+
+                return require('./index').getArrivalTime(msg, flow, slots)
+            })
+
+            return i18n('directions.dialog.noDestinationAddressAndDepartureTime')
         }
 
         // single slot missing
@@ -163,7 +186,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         // missing departure_time
         if (slot.missing(departureTime) && !slot.missing(locationTo) && !slot.missing(locationFrom)) {
             // elicitation intent
-            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
+            flow.continue('snips-assistant:ElicitDepartureTime', (msg, flow) => {
                 if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                     throw new Error('intentNotRecognized')
                 }

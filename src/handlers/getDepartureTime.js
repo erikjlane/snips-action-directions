@@ -86,19 +86,26 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         }
 
         // missing destination and arrival time
-        if (slot.missing(locationTo) && slot.missing(arrivalTime) && !slot.missing(locationFrom)) {
+        if (slot.missing(locationTo) && slot.missing(arrivalTime)) {
             // elicitation intent
-            flow.continue('snips-assistant:ElicitDestinationAndArrivalTime', (msg, flow) => {
+            flow.continue('snips-assistant:ElicitDestinationArrivalTime', (msg, flow) => {
                 if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                     throw new Error('intentNotRecognized')
                 }
 
-                return require('./index').getDepartureTime(msg, flow, {
+                const slots = {
                     travel_mode: travelMode,
-                    location_from: locationFrom,
                     depth: knownSlots.depth - 1
-                })
+                }
+
+                if (!slot.missing(locationFrom)) {
+                    slots.location_from = locationFrom
+                }
+
+                return require('./index').getDepartureTime(msg, flow, slots)
             })
+
+            return i18n('directions.dialog.noDestinationAddressAndArrivalTime')
         }
 
         // single slot missing
