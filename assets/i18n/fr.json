@@ -75,7 +75,8 @@
                 "walkToMetro": "Marchez {{ duration }} jusqu'à la station {{- arrival_stop }}.",
                 "metro": "Prenez la ligne {{- line_name }} en direction de {{- headsign }}, et descendez à {{- arrival_stop }}.",
                 "connectionMetro": "À la correspondance, prenez la ligne {{- line_name }} en direction de {{- headsign }} puis descendez à {{- arrival_stop }}.",
-                "walkToFinalDestination": "Marchez encore {{ duration }} pour arriver à {{- location_to }}."
+                "walkToFinalDestination": "Marchez encore {{ duration }} pour arriver à {{- location_to }}.",
+                "finalDestination": "Vous serez alors à {{- location_to }}."
             },
             "bus": {
                 "toDestination": [

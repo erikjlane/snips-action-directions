@@ -161,11 +161,15 @@ module.exports = {
 
                 if (currentStep.travel_mode === 'WALKING') {
                     if (i === directionsData.length - 1) {
-                        // If the distance of the final step is insignificant, skip it
-                        if (currentStep.distance > 100) {
+                        // If the duration of the final step is insignificant, skip it
+                        if (currentStep.duration > 60) {
                             tts += i18n('directions.directions.transit.walkToFinalDestination', {
                                 location_to: beautify.address(locationTo),
                                 duration: beautify.duration(currentStep.duration)
+                            })
+                        } else {
+                            tts += i18n('directions.directions.transit.finalDestination', {
+                                location_to: beautify.address(locationTo)
                             })
                         }
                     } else if (isConnection(directionsData, i)) {
