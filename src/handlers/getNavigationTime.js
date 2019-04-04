@@ -1,4 +1,4 @@
-const { i18nFactory, directionsHttpFactory } = require('../factories')
+const { directionsHttpFactory, i18nFactory } = require('../factories')
 const { logger, translation, directions, slot, tts } = require('../utils')
 const commonHandler = require('./common')
 const {
@@ -17,11 +17,24 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         travelMode
     } = await commonHandler(msg, knownSlots)
 
-    // At least one required slot is missing
-    if (slot.missing(locationFrom) || slot.missing(locationTo)) {
+    // origin was provided but not understood
+    if (slot.providedButNotUnderstood(msg, 'location_from')) {
         if (knownSlots.depth === 0) {
             throw new Error('slotsNotRecognized')
         }
+
+        // elicitation intent
+        flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                throw new Error('intentNotRecognized')
+            }
+
+            return require('./index').getNavigationTime(msg, flow, {
+                travel_mode: travelMode,
+                location_to: locationTo,
+                depth: knownSlots.depth - 1
+            })
+        })
 
         // intent not recognized
 
@@ -31,63 +44,6 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             return require('./index').getNavigationTime(msg, flow, knownSlots)
         })
 
-        // multiple slots missing
-
-        // missing itinerary
-        if (slot.missing(locationFrom) && slot.missing(locationTo)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitItinerary', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getNavigationTime(msg, flow, {
-                    travel_mode: travelMode,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noOriginAndDestinationAddresses')
-        }
-
-        // single slot missing
-
-        // missing origin
-        if (slot.missing(locationFrom) && !slot.missing(locationTo)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getNavigationTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_to: locationTo,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noOriginAddress')
-        }
-
-        // missing destination
-        if (slot.missing(locationTo) && !slot.missing(locationFrom)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getNavigationTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_from: locationFrom,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noDestinationAddress')
-        }
-
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
         })
@@ -95,6 +51,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             flow.end()
         })
 
+        return i18n('directions.dialog.noOriginAddress')
+    }
+
+    // One required slot is missing
+    if (slot.missing(locationTo)) {
         throw new Error('intentNotRecognized')
     } else {
         // Are the origin and destination addresses the same?

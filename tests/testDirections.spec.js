@@ -98,7 +98,7 @@ it('should ask to properly configure the work location', async () => {
     expect(getMessageKey(endMsg)[0]).toBe('error.noWorkAddress')
 })
 
-it('should ask the missing destination and pass', async () => {
+it('should break as the destination is missing', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -113,25 +113,41 @@ it('should ask the missing destination and pass', async () => {
     const session = new Session()
     await session.start({
         intentName: 'snips-assistant:GetDirections',
-        input: 'Give me directions to go to'
+        input: 'How much time to go'
     })
 
-    const whichDestinationMsg = await session.continue({
-        intentName: 'snips-assistant:ElicitDestination',
-        input: 'I want to go to Buckingham Palace',
+    const endMsg = (await session.end()).text
+    expect(getMessageKey(endMsg)[0]).toBe('error.intentNotRecognized')
+})
+
+it('should set the current location as the origin', async () => {
+    configFactory.mock({
+        locale: 'english',
+        current_region: 'uk',
+        current_location: 'home',
+        home_address: '21 Onslow Gardens',
+        home_city: 'London',
+        work_address: 'Hammond Court, 10 Hotspur St',
+        work_city: 'London',
+        unit_system: 'metric'
+    })
+
+    const session = new Session()
+    await session.start({
+        intentName: 'snips-assistant:GetDirections',
+        input: 'How much time to go to Buckingham Palace',
         slots: [
             createLocationToSlot('Buckingham Palace')
         ]
     })
-    expect(getMessageKey(whichDestinationMsg.text)).toBe('directions.dialog.noDestinationAddress')
 
     const endMsg = (await session.end()).text
-    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
-    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 
+    expect(endMsg.includes('directions.directions.transit.toDestination')).toBeTruthy()
+    expect(endMsg.includes('directions.fromLocation.home')).toBeTruthy()
 })
 
-it('should ask the missing destination twice and pass', async () => {
+it('should ask the misunderstood origin and pass', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -146,30 +162,41 @@ it('should ask the missing destination twice and pass', async () => {
     const session = new Session()
     await session.start({
         intentName: 'snips-assistant:GetDirections',
-        input: 'Give me directions to go to'
+        input: 'Give me directions to go to',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            },
+            createLocationToSlot('London Eye')
+        ]
     })
 
-    const whichDestinationMsg1 = (await session.continue({
-        intentName: 'snips-assistant:ElicitDestination',
-        input: 'I want to go to'
-    })).text
-    expect(getMessageKey(whichDestinationMsg1)).toBe('directions.dialog.noDestinationAddress')
-
-    const whichDestinationMsg2 = (await session.continue({
-        intentName: 'snips-assistant:ElicitDestination',
+    const whichOriginMsg = await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to Buckingham Palace',
         slots: [
-            createLocationToSlot('Buckingham Palace')
+            createLocationFromSlot('Buckingham Palace')
         ]
-    })).text
-    expect(getMessageKey(whichDestinationMsg2)).toBe('directions.dialog.noDestinationAddress')
+    })
+    expect(getMessageKey(whichOriginMsg.text)).toBe('directions.dialog.noOriginAddress')
 
     const endMsg = (await session.end()).text
     expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
     expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 })
 
-it('should ask the missing destination twice and fail', async () => {
+it('should ask the misunderstood origin twice and pass', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
@@ -184,20 +211,140 @@ it('should ask the missing destination twice and fail', async () => {
     const session = new Session()
     await session.start({
         intentName: 'snips-assistant:GetDirections',
-        input: 'Give me directions to go to'
+        input: 'Give me directions to go to',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            },
+            createLocationToSlot('London Eye')
+        ]
     })
 
-    const whichDestinationMsg1 = (await session.continue({
-        intentName: 'snips-assistant:ElicitDestination',
-        input: 'I want to go'
+    const whichOriginMsg1 = (await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
+        input: 'I want to go to',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            }
+        ]
     })).text
-    expect(getMessageKey(whichDestinationMsg1)).toBe('directions.dialog.noDestinationAddress')
+    expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
+
+    const whichOriginMsg2 = (await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
+        input: 'I want to go to Buckingham Palace',
+        slots: [
+            createLocationFromSlot('Buckingham Palace')
+        ]
+    })).text
+    expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
+
+    const endMsg = (await session.end()).text
+    expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
+    expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
+})
+
+it('should ask the misunderstood origin twice and fail', async () => {
+    configFactory.mock({
+        locale: 'english',
+        current_region: 'uk',
+        current_location: 'home',
+        home_address: '21 Onslow Gardens',
+        home_city: 'London',
+        work_address: 'Hammond Court, 10 Hotspur St',
+        work_city: 'London',
+        unit_system: 'metric'
+    })
+
+    const session = new Session()
+    await session.start({
+        intentName: 'snips-assistant:GetDirections',
+        input: 'Give me directions to go to',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            },
+            createLocationToSlot('London Eye')
+        ]
+    })
+
+    const whichOriginMsg1 = (await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
+        input: 'I want to go',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            }
+        ]
+    })).text
+    expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
     
-    const whichDestinationMsg2 = (await session.continue({
-        intentName: 'snips-assistant:ElicitDestination',
-        input: 'I want to go'
+    const whichOriginMsg2 = (await session.continue({
+        intentName: 'snips-assistant:ElicitOrigin',
+        input: 'I want to go',
+        slots: [
+            {
+                slotName: 'location_from',
+                entity: 'address',
+                confidenceScore: 0.05,
+                rawValue: 'Buckingham Palace',
+                value: {
+                    kind: 'Custom',
+                    value: 'Buckingham Palace'
+                },
+                range: {
+                    start: 0,
+                    end: 1
+                }
+            }
+        ]
     })).text
-    expect(getMessageKey(whichDestinationMsg2)).toBe('directions.dialog.noDestinationAddress')
+    expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
 
     const endMsg = (await session.end()).text
     expect(getMessageKey(endMsg)[0]).toBe('error.slotsNotRecognized')

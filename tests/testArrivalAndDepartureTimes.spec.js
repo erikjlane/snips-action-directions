@@ -272,7 +272,7 @@ it('should ask the missing destination & departure time and pass', async () => {
     expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
-it('should ask the missing destination and departure time twice and pass', async () => {
+it('should ask the missing destination & departure time twice and pass', async () => {
     configFactory.mock({
         locale: 'english',
         current_region: 'uk',
