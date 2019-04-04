@@ -6,8 +6,12 @@
 ## Setup
 
 ```
-npm install
+sh setup.sh
 ```
+
+Don't forget to edit the `config.ini` file.
+
+To be able to make calls to the API, you must have a [Google Directions API key](https://developers.google.com/maps/documentation/directions/get-api-key).
 
 ## Run
 
