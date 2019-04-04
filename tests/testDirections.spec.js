@@ -401,7 +401,6 @@ it('should query the directions to go from work to Buckingham Palace by bus', as
     })
 
     const endMsg = (await session.end()).text
-    expect(endMsg.includes('noTripWithTravelMode')).toBeTruthy()
     expect(endMsg.includes('directions.directions.transit.walkToMetro')).toBeTruthy()
     expect(endMsg.includes('directions.directions.transit.metro')).toBeTruthy()
 })
