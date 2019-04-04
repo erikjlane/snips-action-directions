@@ -17,6 +17,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         travelMode
     } = await commonHandler(msg, knownSlots)
 
+    // One required slot is missing
+    if (slot.missing(locationTo)) {
+        throw new Error('intentNotRecognized')
+    }
+
     // origin was provided but not understood
     if (slot.providedButNotUnderstood(msg, 'location_from')) {
         if (knownSlots.depth === 0) {
@@ -54,52 +59,47 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         return i18n('directions.dialog.noOriginAddress')
     }
 
-    // One required slot is missing
-    if (slot.missing(locationTo)) {
-        throw new Error('intentNotRecognized')
-    } else {
-        // Are the origin and destination addresses the same?
-        if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
-            const speech = i18n('directions.dialog.sameLocations')
-            flow.end()
-            logger.info(speech)
+    // Are the origin and destination addresses the same?
+    if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
+        const speech = i18n('directions.dialog.sameLocations')
+        flow.end()
+        logger.info(speech)
+        return speech
+    }
+
+    const now = Date.now()
+
+    // Get the data from Directions API
+    const directionsData = await directionsHttpFactory.calculateRoute({
+        origin: locationFrom,
+        destination: locationTo,
+        travelMode
+    })
+    logger.debug(directionsData)
+
+    try {
+        const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
+        logger.debug(aggregatedDirectionsData)
+
+        const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
+        const duration = directionsData.routes[0].legs[0].duration.value
+
+        let durationInTraffic
+        if (travelMode === 'driving') {
+            durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
+        }
+        
+        const speech = translation.navigationTimeToSpeech(origin, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
+        logger.info(speech)
+
+        flow.end()
+        if (Date.now() - now < 4000) {
             return speech
+        } else {
+            tts.say(speech)
         }
-
-        const now = Date.now()
-
-        // Get the data from Directions API
-        const directionsData = await directionsHttpFactory.calculateRoute({
-            origin: locationFrom,
-            destination: locationTo,
-            travelMode
-        })
-        logger.debug(directionsData)
-
-        try {
-            const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-            logger.debug(aggregatedDirectionsData)
-
-            const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
-            const duration = directionsData.routes[0].legs[0].duration.value
-
-            let durationInTraffic
-            if (travelMode === 'driving') {
-                durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
-            }
-            
-            const speech = translation.navigationTimeToSpeech(origin, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
-            logger.info(speech)
-
-            flow.end()
-            if (Date.now() - now < 4000) {
-                return speech
-            } else {
-                tts.say(speech)
-            }
-        } catch (error) {
-            logger.error(error)
-            throw new Error('APIResponse')
-        }
+    } catch (error) {
+        logger.error(error)
+        throw new Error('APIResponse')
     }
 }

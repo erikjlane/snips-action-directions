@@ -52,8 +52,54 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
 
     logger.info('\tdeparture_time: ', departureTime)
 
-    // At least one required slot is missing
-    if (slot.missing(locationFrom) || slot.missing(locationTo) || slot.missing(departureTime)) {
+    // One required slot is missing
+    if (slot.missing(locationTo)) {
+        throw new Error('intentNotRecognized')
+    }
+
+    if (slot.providedButNotUnderstood(msg, 'location_from')) {
+        if (slot.missing(departureTime)) {
+            throw new Error('intentNotRecognized')
+        }
+
+        if (knownSlots.depth === 0) {
+            throw new Error('slotsNotRecognized')
+        }
+
+        // elicitation intent
+        flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                throw new Error('intentNotRecognized')
+            }
+
+            return require('./index').getArrivalTime(msg, flow, {
+                travel_mode: travelMode,
+                location_to: locationTo,
+                departure_time: departureTime,
+                depth: knownSlots.depth - 1
+            })
+        })
+
+        // intent not recognized
+
+        flow.notRecognized((msg, flow) => {
+            knownSlots.depth -= 1
+            msg.slots = []
+            return require('./index').getArrivalTime(msg, flow, knownSlots)
+        })
+
+        flow.continue('snips-assistant:Cancel', (_, flow) => {
+            flow.end()
+        })
+        flow.continue('snips-assistant:Stop', (_, flow) => {
+            flow.end()
+        })
+
+        return i18n('directions.dialog.noOriginAddress')
+    }
+
+    // missing departure_time
+    if (slot.missing(departureTime)) {
         if (knownSlots.depth === 0) {
             throw new Error('slotsNotRecognized')
         }
@@ -66,137 +112,19 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
             return require('./index').getArrivalTime(msg, flow, knownSlots)
         })
 
-        // multiple slots missing
+        // elicitation intent
+        flow.continue('snips-assistant:ElicitDepartureTime', (msg, flow) => {
+            if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
+                throw new Error('intentNotRecognized')
+            }
 
-        // missing itinerary
-        if (slot.missing(locationFrom) && slot.missing(locationTo) && !slot.missing(departureTime)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitItinerary', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    departure_time: departureTime,
-                    depth: knownSlots.depth - 1
-                })
+            return require('./index').getArrivalTime(msg, flow, {
+                travel_mode: travelMode,
+                location_from: locationFrom,
+                location_to: locationTo,
+                depth: knownSlots.depth - 1
             })
-
-            return i18n('directions.dialog.noOriginAndDestinationAddresses')
-        }
-        
-        // missing origin and departure time
-        // should not happen, origin has a default value
-        if (slot.missing(locationFrom) && slot.missing(departureTime) && !slot.missing(locationTo)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitOriginDepartureTime', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_to: locationTo,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noOriginAddressAndDepartureTime')
-        }
-
-        // missing destination and departure time
-        if (slot.missing(locationTo) && slot.missing(departureTime) && !slot.missing(locationFrom)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitDestinationDepartureTime', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_from: locationFrom,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noDestinationAddressAndDepartureTime')
-        }
-
-        // single slot missing
-
-        // missing origin
-        if (slot.missing(locationFrom) && !slot.missing(locationTo) && !slot.missing(departureTime)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_to: locationTo,
-                    departure_time: departureTime,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            // slot filling
-            /*
-            flow.continue('snips-assistant:GetArrivalTime', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_to: locationTo,
-                    departure_time: departureTime,
-                    depth: knownSlots.depth - 1
-                })
-            }, { slotFiller: 'location_from' })
-            */
-
-            return i18n('directions.dialog.noOriginAddress')
-        }
-
-        // missing destination
-        if (slot.missing(locationTo) && !slot.missing(locationFrom) && !slot.missing(departureTime)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitDestination', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_from: locationFrom,
-                    departure_time: departureTime,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noDestinationAddress')
-        }
-
-        // missing departure_time
-        if (slot.missing(departureTime) && !slot.missing(locationTo) && !slot.missing(locationFrom)) {
-            // elicitation intent
-            flow.continue('snips-assistant:ElicitDepartureTime', (msg, flow) => {
-                if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
-                    throw new Error('intentNotRecognized')
-                }
-
-                return require('./index').getArrivalTime(msg, flow, {
-                    travel_mode: travelMode,
-                    location_from: locationFrom,
-                    location_to: locationTo,
-                    depth: knownSlots.depth - 1
-                })
-            })
-
-            return i18n('directions.dialog.noDepartureTime')
-        }
+        })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -204,56 +132,56 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         flow.continue('snips-assistant:Stop', (_, flow) => {
             flow.end()
         })
-        
-        throw new Error('intentNotRecognized')
-    } else {        
-        // Are the origin and destination addresses the same?
-        if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
-            const speech = i18n('directions.dialog.sameLocations')
-            flow.end()
-            logger.info(speech)
+
+        return i18n('directions.dialog.noDepartureTime')
+    }
+
+    // Are the origin and destination addresses the same?
+    if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
+        const speech = i18n('directions.dialog.sameLocations')
+        flow.end()
+        logger.info(speech)
+        return speech
+    }
+
+    const now = Date.now()
+
+    // Get the data from Directions API
+    const directionsData = await directionsHttpFactory.calculateRoute({
+        origin: locationFrom,
+        destination: locationTo,
+        travelMode: travelMode,
+        departureTime: departureTime.getTime() / 1000
+    })
+    logger.debug(directionsData)
+
+    try {
+        const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
+        //logger.debug(aggregatedDirectionsData)
+
+        const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
+
+        // With travel modes different from transit, the API doesn't return departure and arrival time
+        let departureTimeEpoch, arrivalTimeEpoch
+        if (travelMode === 'transit') {
+            departureTimeEpoch = directionsData.routes[0].legs[0].departure_time.value
+            arrivalTimeEpoch = directionsData.routes[0].legs[0].arrival_time.value
+        } else {
+            departureTimeEpoch = departureTime.getTime() / 1000
+            arrivalTimeEpoch = departureTimeEpoch + directionsData.routes[0].legs[0].duration.value
+        }
+
+        const speech = translation.arrivalTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
+        logger.info(speech)
+
+        flow.end()
+        if (Date.now() - now < 4000) {
             return speech
+        } else {
+            tts.say(speech)
         }
-
-        const now = Date.now()
-
-        // Get the data from Directions API
-        const directionsData = await directionsHttpFactory.calculateRoute({
-            origin: locationFrom,
-            destination: locationTo,
-            travelMode: travelMode,
-            departureTime: departureTime.getTime() / 1000
-        })
-        logger.debug(directionsData)
-
-        try {
-            const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-            logger.debug(aggregatedDirectionsData)
-
-            const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
-
-            // With travel modes different from transit, the API doesn't return departure and arrival time
-            let departureTimeEpoch, arrivalTimeEpoch
-            if (travelMode === 'transit') {
-                departureTimeEpoch = directionsData.routes[0].legs[0].departure_time.value
-                arrivalTimeEpoch = directionsData.routes[0].legs[0].arrival_time.value
-            } else {
-                departureTimeEpoch = departureTime.getTime() / 1000
-                arrivalTimeEpoch = departureTimeEpoch + directionsData.routes[0].legs[0].duration.value
-            }
-
-            const speech = translation.arrivalTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
-            logger.info(speech)
-
-            flow.end()
-            if (Date.now() - now < 4000) {
-                return speech
-            } else {
-                tts.say(speech)
-            }
-        } catch (error) {
-            logger.error(error)
-            throw new Error('APIResponse')
-        }
+    } catch (error) {
+        logger.error(error)
+        throw new Error('APIResponse')
     }
 }

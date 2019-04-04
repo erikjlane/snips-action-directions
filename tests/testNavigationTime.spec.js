@@ -296,7 +296,8 @@ it('should ask the missing origin twice and fail', async () => {
                     start: 0,
                     end: 1
                 }
-            }
+            },
+            createLocationToSlot('London Eye')
         ]
     })
 
