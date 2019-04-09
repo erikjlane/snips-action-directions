@@ -153,7 +153,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         travelMode: travelMode,
         departureTime: departureTime.getTime() / 1000
     })
-    logger.debug(directionsData)
+    //logger.debug(directionsData)
 
     try {
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)

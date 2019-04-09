@@ -1,6 +1,9 @@
 const { default: wretch } = require('wretch')
 const { dedupe } = require('wretch-middlewares')
 const configFactory = require('./configFactory')
+const {
+    LANGUAGE_MAPPINGS
+} = require('../constants')
 
 const BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
 
@@ -21,10 +24,12 @@ module.exports = {
         })
     },
     nearbySearch: async (coords, name) => {
+        const config = configFactory.get()
         const query = {
             location: coords,
             radius: 50000,
-            name
+            name,
+            language: LANGUAGE_MAPPINGS[config.locale]
         }
 
         const results = await placesHttp

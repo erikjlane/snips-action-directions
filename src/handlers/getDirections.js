@@ -75,11 +75,11 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         destination: locationTo,
         travelMode: travelMode
     })
-    logger.debug(directionsData)
+    //logger.debug(directionsData)
 
     try {
         const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
-        logger.debug(aggregatedDirectionsData)
+        //logger.debug(aggregatedDirectionsData)
 
         const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
         const duration = directionsData.routes[0].legs[0].duration.value
