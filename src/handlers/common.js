@@ -3,6 +3,7 @@ const { configFactory } = require('../factories')
 const {
     HOME_SYNONYMS,
     WORK_SYNONYMS,
+    LANGUAGE_MAPPINGS,
     INTENT_PROBABILITY_THRESHOLD,
     SLOT_CONFIDENCE_THRESHOLD,
     ASR_UTTERANCE_CONFIDENCE_THRESHOLD
@@ -46,10 +47,15 @@ function getHomeLocation() {
 }
 
 function getCompleteAddress(location) {
-    if (WORK_SYNONYMS.includes(location)) {
+    const config = configFactory.get()
+
+    const workSynonyms = WORK_SYNONYMS[LANGUAGE_MAPPINGS[config.locale]]
+    if (workSynonyms && workSynonyms.includes(location)) {
         return getWorkLocation()
     }
-    if (HOME_SYNONYMS.includes(location)) {
+
+    const homeSynonyms = HOME_SYNONYMS[LANGUAGE_MAPPINGS[config.locale]]
+    if (homeSynonyms && homeSynonyms.includes(location)) {
         return getHomeLocation()
     }
 
