@@ -50,7 +50,7 @@
             }
         },
         "departureTime": {
-            "transit": "By public transportation, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}.",
+            "transit": "By public transport, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}.",
             "bus": "By bus, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}.",
             "train": "By train, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}.",
             "walking": "By foot, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}.",
@@ -58,7 +58,7 @@
             "driving": "By car, you should leave at {{ departure_time }} from {{- location_from }} to be at {{- location_to }} at {{ arrival_time }}."
         },
         "arrivalTime": {
-            "transit": "By public transportation, you should arrive at {{- location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{- location_from }}.",
+            "transit": "By public transport, you should arrive at {{- location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{- location_from }}.",
             "bus": "By bus, you should arrive at {{- location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{- location_from }}.",
             "train": "By train, you should arrive at {{- location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{- location_from }}.",
             "walking": "By foot, you should arrive at {{- location_to }} at {{ arrival_time }} if you leave at {{ departure_time }} from {{- location_from }}.",
@@ -69,7 +69,7 @@
             "transit": {
                 "toDestination": [
                     "Going from {{- location_from }} to {{- location_to }} by public transport usually takes {{ duration }}.",
-                    "By public transport, you should plan {{ duration }} to go from {{- location_from }} to {{- location_to}}."
+                    "By public transport, you should plan {{ duration }} to go from {{- location_from }} to {{- location_to }}."
                 ],
                 "walkToMetro": "Walk {{ duration }} to the station {{- arrival_stop }}.",
                 "metro": "Take line {{- line_name }} towards {{- headsign }} and get off at {{- arrival_stop }}.",

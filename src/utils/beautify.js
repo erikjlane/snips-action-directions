@@ -47,6 +47,7 @@ module.exports = {
             address = address.replace(/(.*)( St| ST)(\/|$|-|,| )(.*)/g, '$1 Street$3$4')
             address = address.replace(/(.*)( Pk)(\/|$|-|,| )(.*)/g, '$1 Park$3$4')
             address = address.replace(/(.*)( Blvd)(\/|$|-|,| )(.*)/g, '$1 Boulevard$3$4')
+            address = address.replace(/(.*)\/(.*)/g, '$1 $2')
         }
 
         return address
