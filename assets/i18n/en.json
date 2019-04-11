@@ -35,7 +35,7 @@
             "noDestinationAddressAndArrivalTime": "I'm sorry, can you repeat where you want to go as well as the time you want to arrive there?",
             "noDepartureTime": "I'm sorry, can you repeat the time you want to leave at?",
             "sameLocations": "Good news! It seems that you are already where you wanted to be!",
-            "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you {{ travel_mode }}."
+            "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you by {{ travel_mode }}."
         },
         "navigationTime": {
             "transit": "Going from {{- location_from }} to {{- location_to }} by public transport usually takes {{ duration }}.",
