@@ -162,13 +162,15 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
 
         // With travel modes different from transit, the API doesn't return departure and arrival time
+        // Same if the transit trip is too short and contains no public transportation steps
         let departureTimeEpoch, arrivalTimeEpoch
-        if (travelMode === 'transit') {
-            departureTimeEpoch = directionsData.routes[0].legs[0].departure_time.value
-            arrivalTimeEpoch = directionsData.routes[0].legs[0].arrival_time.value
+        const leg = directionsData.routes[0].legs[0]
+        if (travelMode === 'transit' && leg.departure_time && leg.arrival_time) {
+            departureTimeEpoch = leg.departure_time.value
+            arrivalTimeEpoch = leg.arrival_time.value
         } else {
             arrivalTimeEpoch = arrivalTime.getTime() / 1000
-            departureTimeEpoch = arrivalTimeEpoch - directionsData.routes[0].legs[0].duration.value
+            departureTimeEpoch = arrivalTimeEpoch - leg.duration.value
         }
 
         const speech = translation.departureTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
