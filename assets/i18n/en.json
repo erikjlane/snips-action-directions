@@ -130,5 +130,8 @@
     "joins": {
         "andSomething": "and {{- something }}",
         "finally": "Finally, {{- something }}"
+    },
+    "moment": {
+        "time": "h m A"
     }
 }

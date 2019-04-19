@@ -1,27 +1,21 @@
 const { i18nFactory, configFactory } = require('../factories')
+const moment = require('moment')
+import 'moment/locale/fr'
 
 function metersToFeet(distance) {
     return distance * 3.28084
 }
 
-module.exports = {    
+module.exports = {
     time: date => {
+        const i18n = i18nFactory.get()
         const config = configFactory.get()
-        const options = { hour: 'numeric', minute: 'numeric' }
+        const language = LANGUAGE_MAPPINGS[config.locale]
 
-        if (config.locale === 'french') {
-            // French
-            return date.toLocaleString('fr-FR', {
-                ...options,
-                hour12: false
-            }).replace(':', ' heure ').replace(' 00', '')
-        } else {
-            // English
-            return date.toLocaleString('en-US', {
-                ...options,
-                hour12: true
-            }).replace(':', ' ').replace(' 00','')
-        }
+        return moment(date)
+            .locale(language)
+            .format(i18n('moment.time'))
+            .replace(' 0', '')
     },
     
     address: address => {
@@ -87,7 +81,6 @@ module.exports = {
 
     duration: duration => {
         const i18n = i18nFactory.get()
-
         const minutes = Math.round(duration / 60)
 
         if (minutes > 59) {
