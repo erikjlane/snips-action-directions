@@ -1,6 +1,6 @@
 const { i18nFactory, configFactory } = require('../factories')
 const moment = require('moment')
-import 'moment/locale/fr'
+require('moment/locale/fr')
 
 function metersToFeet(distance) {
     return distance * 3.28084
