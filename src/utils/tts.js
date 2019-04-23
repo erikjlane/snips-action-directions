@@ -1,8 +1,7 @@
-const { Hermes, Dialog } = require('hermes-javascript')
+const { Dialog } = require('hermes-javascript')
 
 module.exports = {
-    say: (text, siteId='default') => {
-        const hermes = new Hermes()
+    say: (hermes, text, siteId='default') => {
         const dialog = hermes.dialog()
         
         dialog.publish('start_session', {

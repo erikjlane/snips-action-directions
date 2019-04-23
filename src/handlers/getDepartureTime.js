@@ -6,7 +6,7 @@ const {
     INTENT_FILTER_PROBABILITY_THRESHOLD
 } = require('../constants')
 
-module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
+module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
     const i18n = i18nFactory.get()
 
     logger.info('GetDepartureTime')
@@ -71,7 +71,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
                 throw new Error('intentNotRecognized')
             }
 
-            return require('./index').getDepartureTime(msg, flow, {
+            return require('./index').getDepartureTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 arrival_time: arrivalTime,
@@ -84,7 +84,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
-            return require('./index').getDepartureTime(msg, flow, knownSlots)
+            return require('./index').getDepartureTime(msg, flow, hermes, knownSlots)
         })
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
@@ -108,7 +108,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
             msg.slots = []
-            return require('./index').getDepartureTime(msg, flow, knownSlots)
+            return require('./index').getDepartureTime(msg, flow, hermes, knownSlots)
         })
 
         // elicitation intent
@@ -117,7 +117,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
                 throw new Error('intentNotRecognized')
             }
 
-            return require('./index').getDepartureTime(msg, flow, {
+            return require('./index').getDepartureTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_from: locationFrom,
                 location_to: locationTo,
@@ -180,7 +180,7 @@ module.exports = async function (msg, flow, knownSlots = { depth: 2 }) {
         if (Date.now() - now < 4000) {
             return speech
         } else {
-            tts.say(speech)
+            tts.say(hermes, speech)
         }
     } catch (error) {
         logger.error(error)

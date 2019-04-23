@@ -18,19 +18,19 @@ module.exports = function ({
             dialog.flows([
                 {
                     intent: 'snips-assistant:GetNavigationTime',
-                    action: handlers.getNavigationTime
+                    action: (msg, flow) => handlers.getNavigationTime(msg, flow, hermes)
                 },
                 {
                     intent: 'snips-assistant:GetDepartureTime',
-                    action: handlers.getDepartureTime
+                    action: (msg, flow) => handlers.getDepartureTime(msg, flow, hermes)
                 },
                 {
                     intent: 'snips-assistant:GetArrivalTime',
-                    action: handlers.getArrivalTime
+                    action: (msg, flow) => handlers.getArrivalTime(msg, flow, hermes)
                 },
                 {
                     intent: 'snips-assistant:GetDirections',
-                    action: handlers.getDirections
+                    action: (msg, flow) => handlers.getDirections(msg, flow, hermes)
                 }
             ])
         } catch (error) {

@@ -1,4 +1,5 @@
 const { i18nFactory, configFactory } = require('../factories')
+const { LANGUAGE_MAPPINGS } = require('../constants')
 const moment = require('moment')
 require('moment/locale/fr')
 
