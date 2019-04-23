@@ -13,41 +13,17 @@ Don't forget to edit the `config.ini` file.
 
 To be able to make calls to the API, you must have a [Google Directions API key](https://developers.google.com/maps/documentation/directions/get-api-key).
 
+An assistant containing the intents listed below must be installed on your system. Deploy it following [these instructions](https://docs.snips.ai/articles/console/actions/deploy-your-assistant).
+
 ## Run
 
 ```
 node action-directions.js
 ```
 
-## Debug
-
-In the `action-directions.js` file:
-
-```js
-// Uncomment this line to print everything
-// debug.enable(name + ':*')
-```
-
-When running from the terminal, to enable full depth object printing:
-
-```bash
-env DEBUG_DEPTH=null node action-directions.js
-```
-
-## Test & Lint
-
-*Requires [mosquitto](https://mosquitto.org/download/) to be installed.*
-
-```sh
-npm start
-```
-
-**In test mode, i18n output and http calls are mocked.**
-
-- **http**: see `tests/httpMocks/index.js`
-- **i18n**: see `src/factories/i18nFactory.js`
-
 ## Test & Demo cases
+
+This app only supports french 🇫🇷 and english 🇬🇧.
 
 ### `GetDirections`
 
@@ -100,6 +76,34 @@ Get the arrival time to location B when leaving location A at the given departur
 
 Get the arrival time to location B when leaving location A at the given departure time, indicating a travel mode
 > *Hey Snips, when will I reach the airport if I take the subway from 124 Main Street by noon?*
+
+## Debug
+
+In the `action-directions.js` file:
+
+```js
+// Uncomment this line to print everything
+// debug.enable(name + ':*')
+```
+
+When running from the terminal, to enable full depth object printing:
+
+```bash
+env DEBUG_DEPTH=null node action-directions.js
+```
+
+## Test & Lint
+
+*Requires [mosquitto](https://mosquitto.org/download/) to be installed.*
+
+```sh
+npm start
+```
+
+**In test mode, i18n output and http calls are mocked.**
+
+- **http**: see `tests/httpMocks/index.js`
+- **i18n**: see `src/factories/i18nFactory.js`
 
 ## Contributing
 
