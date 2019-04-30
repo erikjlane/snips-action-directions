@@ -1,11 +1,12 @@
 # snips-action-directions
-#### Snips action code for the Directions &amp; traffic info app
+
+Snips action code for the Directions &amp; traffic info app
 
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 
 ## Setup
 
-```
+```sh
 sh setup.sh
 ```
 
@@ -17,7 +18,7 @@ An assistant containing the intents listed below must be installed on your syste
 
 ## Run
 
-```
+```sh
 node action-directions.js
 ```
 
