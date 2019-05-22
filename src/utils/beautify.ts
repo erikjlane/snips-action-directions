@@ -1,20 +1,25 @@
 import { i18n, config } from 'snips-toolkit'
-const moment = require('moment')
+import moment from 'moment'
 import 'moment/locale/fr'
 
-function metersToFeet(distance) {
+function metersToFeet(distance: number): number {
     return distance * 3.28084
 }
 
+function round(value: number, precision: number = 0) {
+    const multiplier = Math.pow(10, precision)
+    return Math.round(value * multiplier) / multiplier
+}
+
 export const beautify = {
-    time: date => {
+    time: (date: Date): string => {
         return moment(date)
             .locale(config.get().locale)
             .format(i18n.translate('moment.time'))
             .replace(' 0', '')
     },
     
-    address: address => {
+    address: (address: string): string => {
         if (address.includes(config.get().homeAddress) || config.get().homeAddress.includes(address)) {
             return i18n.translate('directions.fromLocation.home')
         }
@@ -25,7 +30,7 @@ export const beautify = {
         return address.split(',')[0]
     },
 
-    headsign: address => {
+    headsign: (address: string): string => {
         if (config.get().locale === 'en') {
             address = address.replace(/(.*)( Av| AV| Av\.| Ave)(\/|$|-|,| )(.*)/g, '$1 Avenue$3$4')
             address = address.replace(/(.*)( Rd)(\/|$|-|,| )(.*)/g, '$1 Road$3$4')
@@ -38,12 +43,12 @@ export const beautify = {
         return address
     },
     
-    distance: distance => {
+    distance: (distance: number): string => {
         if (config.get().unitSystem === 'imperial') {
             distance = metersToFeet(distance)
     
             if (distance > 5280) {
-                distance = +(Math.round(distance / 5280 + 'e+1') + 'e-1')
+                distance = round(distance / 5280, 1)
                 return i18n.translate('units.distance.imperial.miles', { distance })
             } else {
                 distance = 100 * Math.floor(distance / 100)
@@ -56,7 +61,7 @@ export const beautify = {
                 if (distance > 20) {
                     distance = Math.round(distance)
                 } else {
-                    distance = +(Math.round(distance + 'e+1') + 'e-1')
+                    distance = round(distance, 1)
                 }
 
                 return i18n.translate('units.distance.metric.kilometers', { distance })
@@ -67,7 +72,7 @@ export const beautify = {
         }
     },
 
-    duration: duration => {
+    duration: (duration: number): string => {
         const minutes = Math.round(duration / 60)
 
         if (minutes > 59) {

@@ -1,19 +1,21 @@
-require('./helpers/setup').bootstrap()
-const Session = require('./helpers/session')
-const { configFactory } = require('../src/factories')
-const { getMessageKey, getMessageOptions } = require('./helpers/tools')
-const {
+import { Test } from 'snips-toolkit'
+import {
     createLocationFromSlot,
     createLocationToSlot,
     createTravelModeSlot,
     createDepartureTimeSlot,
-    createArrivalTimeSlot
-} = require('./utils')
+    createArrivalTimeSlot }
+from './utils'
+
+const { Session, Tools} = Test
+const { getMessageKey, getMessageOptions } = Tools
+
+import './mocks/http'
 
 // Arrival time
 
 it('should ask to configure the current location of the device', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: '',
@@ -22,7 +24,7 @@ it('should ask to configure the current location of the device', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -34,12 +36,12 @@ it('should ask to configure the current location of the device', async () => {
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noCurrentAddress')
 })
 
 it('should ask to properly configure the current location of the device', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'random_value',
@@ -48,7 +50,7 @@ it('should ask to properly configure the current location of the device', async 
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -56,12 +58,12 @@ it('should ask to properly configure the current location of the device', async 
         input: 'What time should will I arrive'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.badCurrentAddress')
 })
 
 it('should ask to properly configure the home location', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -70,7 +72,7 @@ it('should ask to properly configure the home location', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -78,12 +80,12 @@ it('should ask to properly configure the home location', async () => {
         input: 'What time should will I arrive'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noHomeAddress')
 })
 
 it('should ask to properly configure the work location', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'work',
@@ -92,7 +94,7 @@ it('should ask to properly configure the work location', async () => {
         work_address: '',
         work_city: '',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -100,12 +102,12 @@ it('should ask to properly configure the work location', async () => {
         input: 'What time should will I arrive'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noWorkAddress')
 })
 
 it('should break as the destination is missing', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -114,7 +116,7 @@ it('should break as the destination is missing', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -122,12 +124,12 @@ it('should break as the destination is missing', async () => {
         input: 'How much time to go to'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.intentNotRecognized')
 })
 
 it('should ask the misunderstood origin and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -136,7 +138,7 @@ it('should ask the misunderstood origin and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -169,14 +171,14 @@ it('should ask the misunderstood origin and pass', async () => {
             createLocationFromSlot('Buckingham Palace')
         ]
     })
-    expect(getMessageKey(whichOriginMsg.text)).toBe('directions.dialog.noOriginAddress')
+    expect(getMessageKey(whichOriginMsg)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
 })
 
 it('should ask the misunderstood origin twice and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -185,7 +187,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -211,7 +213,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         ]
     })
 
-    const whichOriginMsg1 = (await session.continue({
+    const whichOriginMsg1 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to',
         slots: [
@@ -230,24 +232,24 @@ it('should ask the misunderstood origin twice and pass', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
 
-    const whichOriginMsg2 = (await session.continue({
+    const whichOriginMsg2 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to Buckingham Palace',
         slots: [
             createLocationFromSlot('Buckingham Palace')
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
-    expect(endMsg.includes('directions.arrivalTime.transit')).toBeTruthy()
+    const endMsg = await session.end()
+    expect(endMsg.text && endMsg.text.includes('directions.arrivalTime.transit')).toBeTruthy()
 })
 
 it('should ask the misunderstood origin twice and fail', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -256,7 +258,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -282,7 +284,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         ]
     })
 
-    const whichOriginMsg1 = (await session.continue({
+    const whichOriginMsg1 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go',
         slots: [
@@ -301,10 +303,10 @@ it('should ask the misunderstood origin twice and fail', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
     
-    const whichOriginMsg2 = (await session.continue({
+    const whichOriginMsg2 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go',
         slots: [
@@ -323,15 +325,15 @@ it('should ask the misunderstood origin twice and fail', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.slotsNotRecognized')
 })
 
 it('should ask the missing departure time and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -340,7 +342,7 @@ it('should ask the missing departure time and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -358,16 +360,16 @@ it('should ask the missing departure time and pass', async () => {
             createDepartureTimeSlot('2019-02-12 22:00:00 +00:00')
         ]
     })
-    expect(getMessageKey(whichDepartureTimeMsg.text)).toBe('directions.dialog.noDepartureTime')
+    expect(getMessageKey(whichDepartureTimeMsg)).toBe('directions.dialog.noDepartureTime')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
     expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should break as the origin is misunderstood & the departure time not provided', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -376,7 +378,7 @@ it('should break as the origin is misunderstood & the departure time not provide
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -401,12 +403,12 @@ it('should break as the origin is misunderstood & the departure time not provide
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.intentNotRecognized')
 })
 
 it('should query the arrival time when going to Buckingham Palace (default: home & transit)', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -415,7 +417,7 @@ it('should query the arrival time when going to Buckingham Palace (default: home
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -427,12 +429,12 @@ it('should query the arrival time when going to Buckingham Palace (default: home
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.transit')
 })
 
 it('should query the arrival time when going from work to Buckingham Palace if leaving at ten pm by foot', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -441,7 +443,7 @@ it('should query the arrival time when going from work to Buckingham Palace if l
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -455,14 +457,14 @@ it('should query the arrival time when going from work to Buckingham Palace if l
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.arrivalTime.walking')
 })
 
 // Departure time
 
 it('should ask to configure the current location of the device', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: '',
@@ -471,7 +473,7 @@ it('should ask to configure the current location of the device', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -483,12 +485,12 @@ it('should ask to configure the current location of the device', async () => {
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noCurrentAddress')
 })
 
 it('should ask to properly configure the current location of the device', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'random_value',
@@ -497,7 +499,7 @@ it('should ask to properly configure the current location of the device', async 
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -505,12 +507,12 @@ it('should ask to properly configure the current location of the device', async 
         input: 'When should I leave'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.badCurrentAddress')
 })
 
 it('should ask to properly configure the home location', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -519,7 +521,7 @@ it('should ask to properly configure the home location', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -527,12 +529,12 @@ it('should ask to properly configure the home location', async () => {
         input: 'What time should I leave'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noHomeAddress')
 })
 
 it('should ask to properly configure the work location', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'work',
@@ -541,7 +543,7 @@ it('should ask to properly configure the work location', async () => {
         work_address: '',
         work_city: '',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -549,12 +551,12 @@ it('should ask to properly configure the work location', async () => {
         input: 'What time should I leave'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.noWorkAddress')
 })
 
 it('should break as the destination is missing', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -563,7 +565,7 @@ it('should break as the destination is missing', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -571,12 +573,12 @@ it('should break as the destination is missing', async () => {
         input: 'How much time to go to'
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.intentNotRecognized')
 })
 
 it('should ask the misunderstood origin and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -585,7 +587,7 @@ it('should ask the misunderstood origin and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -618,14 +620,14 @@ it('should ask the misunderstood origin and pass', async () => {
             createLocationFromSlot('Buckingham Palace')
         ]
     })
-    expect(getMessageKey(whichOriginMsg.text)).toBe('directions.dialog.noOriginAddress')
+    expect(getMessageKey(whichOriginMsg)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
 })
 
 it('should ask the misunderstood origin twice and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -634,7 +636,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -660,7 +662,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         ]
     })
 
-    const whichOriginMsg1 = (await session.continue({
+    const whichOriginMsg1 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to',
         slots: [
@@ -679,24 +681,24 @@ it('should ask the misunderstood origin twice and pass', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
 
-    const whichOriginMsg2 = (await session.continue({
+    const whichOriginMsg2 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go to Buckingham Palace',
         slots: [
             createLocationFromSlot('Buckingham Palace')
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
-    expect(endMsg.includes('directions.departureTime.transit')).toBeTruthy()
+    const endMsg = await session.end()
+    expect(endMsg.text && endMsg.text.includes('directions.departureTime.transit')).toBeTruthy()
 })
 
 it('should ask the misunderstood origin twice and fail', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -705,7 +707,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -731,7 +733,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         ]
     })
 
-    const whichOriginMsg1 = (await session.continue({
+    const whichOriginMsg1 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go',
         slots: [
@@ -750,10 +752,10 @@ it('should ask the misunderstood origin twice and fail', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
     
-    const whichOriginMsg2 = (await session.continue({
+    const whichOriginMsg2 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go',
         slots: [
@@ -772,15 +774,15 @@ it('should ask the misunderstood origin twice and fail', async () => {
                 }
             }
         ]
-    })).text
+    })
     expect(getMessageKey(whichOriginMsg2)).toBe('directions.dialog.noOriginAddress')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.slotsNotRecognized')
 })
 
 it('should ask the missing arrival time and pass', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -789,7 +791,7 @@ it('should ask the missing arrival time and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -807,16 +809,16 @@ it('should ask the missing arrival time and pass', async () => {
             createArrivalTimeSlot('2019-02-12 22:00:00 +00:00')
         ]
     })
-    expect(getMessageKey(whichArrivalTimeMsg.text)).toBe('directions.dialog.noArrivalTime')
+    expect(getMessageKey(whichArrivalTimeMsg)).toBe('directions.dialog.noArrivalTime')
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
     expect(getMessageKey(getMessageOptions(endMsg).location_from)).toBe('directions.fromLocation.home')
     expect(getMessageOptions(endMsg).location_to).toBe('Buckingham Palace')
 })
 
 it('should break as the origin is misunderstood & the arrival time not provided', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -825,7 +827,7 @@ it('should break as the origin is misunderstood & the arrival time not provided'
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -850,12 +852,12 @@ it('should break as the origin is misunderstood & the arrival time not provided'
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)[0]).toBe('error.intentNotRecognized')
 })
 
 it('should query the departure time to be at Buckingham Palace at ten pm (default: home & transit)', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -864,7 +866,7 @@ it('should query the departure time to be at Buckingham Palace at ten pm (defaul
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -876,12 +878,12 @@ it('should query the departure time to be at Buckingham Palace at ten pm (defaul
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.transit')
 })
 
 it('should query the departure time to be at ten pm at Buckingham Palace if leaving from work by foot', async () => {
-    configFactory.mock({
+    SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -890,7 +892,7 @@ it('should query the departure time to be at ten pm at Buckingham Palace if leav
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    })
+    }
 
     const session = new Session()
     await session.start({
@@ -904,6 +906,6 @@ it('should query the departure time to be at ten pm at Buckingham Palace if leav
         ]
     })
 
-    const endMsg = (await session.end()).text
+    const endMsg = await session.end()
     expect(getMessageKey(endMsg)).toBe('directions.departureTime.walking')
 })
