@@ -12,7 +12,7 @@ export type KnownSlots = {
     travel_mode?: string
 }
 
-export default async function (msg: IntentMessage, knownSlots: KnownSlots) {
+export default async function(msg: IntentMessage, knownSlots: KnownSlots) {
     checkCurrentCoordinates()
 
     let locationFrom, locationTo, travelMode

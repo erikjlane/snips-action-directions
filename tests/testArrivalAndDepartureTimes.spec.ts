@@ -4,8 +4,9 @@ import {
     createLocationToSlot,
     createTravelModeSlot,
     createDepartureTimeSlot,
-    createArrivalTimeSlot }
-from './utils'
+    createArrivalTimeSlot,
+    mockConfig
+} from './utils'
 
 const { Session, Tools} = Test
 const { getMessageKey, getMessageOptions } = Tools
@@ -14,8 +15,8 @@ import './mocks/http'
 
 // Arrival time
 
-it.only('should ask to configure the current location of the device', async () => {
-    SnipsToolkit.config = {
+it('should ask to configure the current location of the device', async () => {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: '',
@@ -24,7 +25,7 @@ it.only('should ask to configure the current location of the device', async () =
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -41,7 +42,7 @@ it.only('should ask to configure the current location of the device', async () =
 })
 
 it('should ask to properly configure the current location of the device', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'random_value',
@@ -50,7 +51,7 @@ it('should ask to properly configure the current location of the device', async 
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -63,7 +64,7 @@ it('should ask to properly configure the current location of the device', async 
 })
 
 it('should ask to properly configure the home location', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -72,7 +73,7 @@ it('should ask to properly configure the home location', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -85,7 +86,7 @@ it('should ask to properly configure the home location', async () => {
 })
 
 it('should ask to properly configure the work location', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'work',
@@ -94,7 +95,7 @@ it('should ask to properly configure the work location', async () => {
         work_address: '',
         work_city: '',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -107,7 +108,7 @@ it('should ask to properly configure the work location', async () => {
 })
 
 it('should break as the destination is missing', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -116,7 +117,7 @@ it('should break as the destination is missing', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -129,7 +130,7 @@ it('should break as the destination is missing', async () => {
 })
 
 it('should ask the misunderstood origin and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -138,7 +139,7 @@ it('should ask the misunderstood origin and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -178,7 +179,7 @@ it('should ask the misunderstood origin and pass', async () => {
 })
 
 it('should ask the misunderstood origin twice and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -187,7 +188,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -249,7 +250,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
 })
 
 it('should ask the misunderstood origin twice and fail', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -258,7 +259,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -333,7 +334,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
 })
 
 it('should ask the missing departure time and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -342,7 +343,7 @@ it('should ask the missing departure time and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -369,7 +370,7 @@ it('should ask the missing departure time and pass', async () => {
 })
 
 it('should break as the origin is misunderstood & the departure time not provided', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -378,7 +379,7 @@ it('should break as the origin is misunderstood & the departure time not provide
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -408,7 +409,7 @@ it('should break as the origin is misunderstood & the departure time not provide
 })
 
 it('should query the arrival time when going to Buckingham Palace (default: home & transit)', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -417,7 +418,7 @@ it('should query the arrival time when going to Buckingham Palace (default: home
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -434,7 +435,7 @@ it('should query the arrival time when going to Buckingham Palace (default: home
 })
 
 it('should query the arrival time when going from work to Buckingham Palace if leaving at ten pm by foot', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -443,7 +444,7 @@ it('should query the arrival time when going from work to Buckingham Palace if l
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -464,7 +465,7 @@ it('should query the arrival time when going from work to Buckingham Palace if l
 // Departure time
 
 it('should ask to configure the current location of the device', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: '',
@@ -473,7 +474,7 @@ it('should ask to configure the current location of the device', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -490,7 +491,7 @@ it('should ask to configure the current location of the device', async () => {
 })
 
 it('should ask to properly configure the current location of the device', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'random_value',
@@ -499,7 +500,7 @@ it('should ask to properly configure the current location of the device', async 
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -512,7 +513,7 @@ it('should ask to properly configure the current location of the device', async 
 })
 
 it('should ask to properly configure the home location', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -521,7 +522,7 @@ it('should ask to properly configure the home location', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -534,7 +535,7 @@ it('should ask to properly configure the home location', async () => {
 })
 
 it('should ask to properly configure the work location', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'work',
@@ -543,7 +544,7 @@ it('should ask to properly configure the work location', async () => {
         work_address: '',
         work_city: '',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -556,7 +557,7 @@ it('should ask to properly configure the work location', async () => {
 })
 
 it('should break as the destination is missing', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -565,7 +566,7 @@ it('should break as the destination is missing', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -578,7 +579,7 @@ it('should break as the destination is missing', async () => {
 })
 
 it('should ask the misunderstood origin and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -587,7 +588,7 @@ it('should ask the misunderstood origin and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -627,7 +628,7 @@ it('should ask the misunderstood origin and pass', async () => {
 })
 
 it('should ask the misunderstood origin twice and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -636,7 +637,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -698,7 +699,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
 })
 
 it('should ask the misunderstood origin twice and fail', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -707,7 +708,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -782,7 +783,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
 })
 
 it('should ask the missing arrival time and pass', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -791,7 +792,7 @@ it('should ask the missing arrival time and pass', async () => {
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -818,7 +819,7 @@ it('should ask the missing arrival time and pass', async () => {
 })
 
 it('should break as the origin is misunderstood & the arrival time not provided', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -827,7 +828,7 @@ it('should break as the origin is misunderstood & the arrival time not provided'
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -857,7 +858,7 @@ it('should break as the origin is misunderstood & the arrival time not provided'
 })
 
 it('should query the departure time to be at Buckingham Palace at ten pm (default: home & transit)', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -866,7 +867,7 @@ it('should query the departure time to be at Buckingham Palace at ten pm (defaul
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({
@@ -883,7 +884,7 @@ it('should query the departure time to be at Buckingham Palace at ten pm (defaul
 })
 
 it('should query the departure time to be at ten pm at Buckingham Palace if leaving from work by foot', async () => {
-    SnipsToolkit.config = {
+    mockConfig({
         locale: 'english',
         current_region: 'uk',
         current_location: 'home',
@@ -892,7 +893,7 @@ it('should query the departure time to be at ten pm at Buckingham Palace if leav
         work_address: 'Hammond Court, 10 Hotspur St',
         work_city: 'London',
         unit_system: 'metric'
-    }
+    })
 
     const session = new Session()
     await session.start({

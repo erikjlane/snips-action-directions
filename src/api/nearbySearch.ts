@@ -1,8 +1,13 @@
 import { config } from 'snips-toolkit'
 import { placesRequest } from './index'
 
-export async function nearbySearch (coords, name) {
-    const query = {
+export async function nearbySearch (coords: string, name: string) {
+    const query: {
+        location: string,
+        radius: number,
+        name: string,
+        language: string
+    } = {
         location: coords,
         radius: 50000,
         name,

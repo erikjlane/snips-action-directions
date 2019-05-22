@@ -1,12 +1,7 @@
 import { config } from 'snips-toolkit'
 import { directionsRequest } from './index'
 
-interface Context {
-    originName?: string,
-    destinationName?: string
-}
-
-export async function calculateRoute (origin: string, destination: string, travelMode: string, departureTime?: number, arrivalTime?: number) {
+export async function calculateRoute(origin: string, destination: string, travelMode: string, departureTime?: number, arrivalTime?: number) {
     let query = {
         origin,
         destination,
@@ -27,7 +22,10 @@ export async function calculateRoute (origin: string, destination: string, trave
         }
     }
 
-    const context: Context = {}
+    const context: {
+        originName?: string,
+        destinationName?: string
+    } = {}
     const results = await directionsRequest
         .query(query)
         .options({ origin, destination, query, context })

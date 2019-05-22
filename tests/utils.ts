@@ -1,3 +1,11 @@
+import { camelize } from 'snips-toolkit'
+
+export const mockConfig = conf => {
+    SnipsToolkit.mock.config(config => {
+        Object.assign(config, camelize.camelizeKeys(conf))
+    })
+}
+
 export function createLocationFromSlot(address) {
     return {
         slotName: 'location_from',
