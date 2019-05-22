@@ -1,12 +1,12 @@
-const { Dialog } = require('hermes-javascript')
+import { Enums } from 'hermes-javascript/types'
 
-module.exports = {
+export const tts = {
     say: (hermes, text, siteId='default') => {
         const dialog = hermes.dialog()
         
         dialog.publish('start_session', {
             init: {
-                type: Dialog.enums.initType.notification,
+                type: Enums.initType.notification,
                 text
             },
             siteId

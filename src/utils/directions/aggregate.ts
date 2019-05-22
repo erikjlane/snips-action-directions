@@ -10,7 +10,7 @@ function resetAccumulatorItem(nbSteps) {
     }))
 }
 
-module.exports = {
+export const aggregate = {
     aggregateDirections: directionsData => {
         const steps = directionsData.routes[0].legs[0].steps
         const finalData = resetAccumulatorItem(steps.length)

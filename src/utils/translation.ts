@@ -1,69 +1,37 @@
-const { i18nFactory } = require('../factories')
-const { isConnection, noStepByTravelMode, chosenTravelMode } = require('./directions')
-const beautify = require('./beautify')
+import { i18n } from 'snips-toolkit'
+import { beautify, helpers } from '../utils'
 
-module.exports = {
-    // Outputs an error message based on the error object, or a default message if not found.
-    errorMessage: async error => {
-        let i18n = i18nFactory.get()
-
-        if (!i18n) {
-            await i18nFactory.init()
-            i18n = i18nFactory.get()
-        }
-
-        if (i18n) {
-            return i18n([`error.${error.message}`, 'error.unspecific'])
-        } else {
-            return 'Oops, something went wrong.'
-        }
-    },
-
-    // Takes an array from the i18n and returns a random item.
-    randomTranslation (key, opts) {
-        const i18n = i18nFactory.get()
-
-        const possibleValues = i18n(key, { returnObjects: true, ...opts })
-        if (typeof possibleValues === 'string') {
-            return possibleValues
-        }
-
-        const randomIndex = Math.floor(Math.random() * possibleValues.length)
-        return possibleValues[randomIndex]
-    },
-
-    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, directionsData, durationInTraffic = '') {
-        const i18n = i18nFactory.get()
-
+export const translation = {
+    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, directionsData, durationInTraffic?: number) {
         let tts = ''
 
         // If no route has been found by travelMode
-        if (noStepByTravelMode(travelMode, directionsData)) {
-            tts += i18n('directions.dialog.noTripWithTravelMode', {
-                travel_mode: i18n('directions.travel_modes.', travelMode)
+        if (helpers.noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n.translate('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n.translate('directions.travel_modes.', travelMode)
             })
             tts += ' '
-            travelMode = chosenTravelMode(directionsData)
+            travelMode = helpers.chosenTravelMode(directionsData)
         }
 
-        tts += i18n('directions.navigationTime.' + travelMode, {
+        tts += i18n.translate('directions.navigationTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             duration: beautify.duration(duration)
         })
 
         if (travelMode === 'driving') {
-            let trafficQualifier = ''
+            if (durationInTraffic) {
+                let trafficQualifier = ''
 
-            if (durationInTraffic > 1.15 * duration) {
-                trafficQualifier = 'slower'
-            } else if (durationInTraffic < 0.85 * duration) {
-                trafficQualifier = 'faster'
-            }
+                if (durationInTraffic > 1.15 * duration) {
+                    trafficQualifier = 'slower'
+                } else if (durationInTraffic < 0.85 * duration) {
+                    trafficQualifier = 'faster'
+                }
 
-            if (trafficQualifier) {
                 tts += ' '
-                tts += i18n('directions.navigationTime.trafficInfo.' + trafficQualifier, {
+                tts += i18n.translate('directions.navigationTime.trafficInfo.' + trafficQualifier, {
                     duration_in_traffic: beautify.duration(durationInTraffic)
                 })
             }
@@ -73,8 +41,6 @@ module.exports = {
     },
 
     departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
-        const i18n = i18nFactory.get()
-
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
@@ -82,15 +48,15 @@ module.exports = {
         let tts = ''
 
         // If no route has been found by travelMode
-        if (noStepByTravelMode(travelMode, directionsData)) {
-            tts += i18n('directions.dialog.noTripWithTravelMode', {
-                travel_mode: i18n('directions.travel_modes.', travelMode)
+        if (helpers.noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n.translate('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n.translate('directions.travel_modes.', travelMode)
             })
             tts += ' '
-            travelMode = chosenTravelMode(directionsData)
+            travelMode = helpers.chosenTravelMode(directionsData)
         }
 
-        tts += i18n('directions.departureTime.' + travelMode, {
+        tts += i18n.translate('directions.departureTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             departure_time: beautify.time(departureTimeDate),
@@ -101,8 +67,6 @@ module.exports = {
     },
 
     arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
-        const i18n = i18nFactory.get()
-
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
@@ -110,15 +74,15 @@ module.exports = {
         let tts = ''
 
         // If no route has been found by travelMode
-        if (noStepByTravelMode(travelMode, directionsData)) {
-            tts += i18n('directions.dialog.noTripWithTravelMode', {
-                travel_mode: i18n('directions.travel_modes.', travelMode)
+        if (helpers.noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n.translate('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n.translate('directions.travel_modes.', travelMode)
             })
             tts += ' '
-            travelMode = chosenTravelMode(directionsData)
+            travelMode = helpers.chosenTravelMode(directionsData)
         }
 
-        tts += i18n('directions.arrivalTime.' + travelMode, {
+        tts += i18n.translate('directions.arrivalTime.' + travelMode, {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             departure_time: beautify.time(departureTimeDate),
@@ -129,18 +93,15 @@ module.exports = {
     },
 
     directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData) {
-        const i18n = i18nFactory.get()
-        const { randomTranslation } = module.exports
-
         let tts = ''
 
         // If no route has been found by travelMode
-        if (noStepByTravelMode(travelMode, directionsData)) {
-            tts += i18n('directions.dialog.noTripWithTravelMode', {
-                travel_mode: i18n('travel_modes.' + travelMode)
+        if (helpers.noStepByTravelMode(travelMode, directionsData)) {
+            tts += i18n.translate('directions.dialog.noTripWithTravelMode', {
+                travel_mode: i18n.translate('travel_modes.' + travelMode)
             })
             tts += ' '
-            travelMode = chosenTravelMode(directionsData)
+            travelMode = helpers.chosenTravelMode(directionsData)
         }
 
         if (travelMode !== 'transit' && travelMode !== 'train' && travelMode !== 'bus') {
@@ -149,7 +110,7 @@ module.exports = {
         }
 
         // Time to get there by travelMode
-        tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
+        tts += i18n.randomTranslation('directions.directions.' + travelMode + '.toDestination', {
             location_from: beautify.address(locationFrom),
             location_to: beautify.address(locationTo),
             duration: beautify.duration(duration),
@@ -168,22 +129,22 @@ module.exports = {
                     if (i === directionsData.length - 1) {
                         // If the duration of the final step is insignificant, skip it
                         if (currentStep.duration > 60) {
-                            tts += i18n('directions.directions.transit.walkToFinalDestination', {
+                            tts += i18n.translate('directions.directions.transit.walkToFinalDestination', {
                                 location_to: beautify.address(locationTo),
                                 duration: beautify.duration(currentStep.duration)
                             })
                         } else {
-                            tts += i18n('directions.directions.transit.finalDestination', {
+                            tts += i18n.translate('directions.directions.transit.finalDestination', {
                                 location_to: beautify.address(locationTo)
                             })
                         }
-                    } else if (isConnection(directionsData, i)) {
+                    } else if (helpers.isConnection(directionsData, i)) {
                         // If the current step is a connection step, set a flag to true to adapt the next sentence
                         connection = true
                     } else {
                         // If the next step is a metro step, adapt the sentence accordingly
                         const nextStep = directionsData[i + 1]
-                        tts += i18n('directions.directions.transit.walkToMetro', {
+                        tts += i18n.translate('directions.directions.transit.walkToMetro', {
                             arrival_stop: beautify.headsign(nextStep.departure_stop),
                             duration: beautify.duration(currentStep.duration)
                         })
@@ -192,7 +153,7 @@ module.exports = {
                 else if (currentStep.travel_mode === 'TRANSIT') {
                     connection = false
 
-                    tts += i18n('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
+                    tts += i18n.translate('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
                         line_name: currentStep.line_name,
                         headsign: beautify.headsign(currentStep.headsign),
                         arrival_stop: beautify.headsign(currentStep.arrival_stop)

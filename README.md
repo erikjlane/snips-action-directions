@@ -1,6 +1,6 @@
 # snips-action-directions
 
-Snips action code for the Directions &amp; traffic info app
+Snips action code for the Directions app
 
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 
@@ -18,8 +18,20 @@ An assistant containing the intents listed below must be installed on your syste
 
 ## Run
 
+- Dev mode:
+
 ```sh
-node action-directions.js
+# Dev mode watches for file changes and restarts the action.
+npm run dev
+```
+
+- Prod mode:
+
+```sh
+# 1) Lint, transpile and test.
+npm start
+# 2) Run the action.
+npm run launch
 ```
 
 ## Test & Demo cases
@@ -80,17 +92,11 @@ Get the arrival time to location B when leaving location A at the given departur
 
 ## Debug
 
-In the `action-directions.js` file:
+In the `src/index.ts` file:
 
 ```js
 // Uncomment this line to print everything
 // debug.enable(name + ':*')
-```
-
-When running from the terminal, to enable full depth object printing:
-
-```bash
-env DEBUG_DEPTH=null node action-directions.js
 ```
 
 ## Test & Lint

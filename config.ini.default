@@ -1,5 +1,5 @@
 [global]
-locale=english
+locale=en
 
 [secret]
 current_region=us

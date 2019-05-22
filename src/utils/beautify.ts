@@ -1,42 +1,32 @@
-const { i18nFactory, configFactory } = require('../factories')
-const { LANGUAGE_MAPPINGS } = require('../constants')
+import { i18n, config } from 'snips-toolkit'
 const moment = require('moment')
-require('moment/locale/fr')
+import 'moment/locale/fr'
 
 function metersToFeet(distance) {
     return distance * 3.28084
 }
 
-module.exports = {
+export const beautify = {
     time: date => {
-        const i18n = i18nFactory.get()
-        const config = configFactory.get()
-        const language = LANGUAGE_MAPPINGS[config.locale]
-
         return moment(date)
-            .locale(language)
-            .format(i18n('moment.time'))
+            .locale(config.get().locale)
+            .format(i18n.translate('moment.time'))
             .replace(' 0', '')
     },
     
     address: address => {
-        const i18n = i18nFactory.get()
-        const config = configFactory.get()
-    
-        if (address.includes(config.homeAddress) || config.homeAddress.includes(address)) {
-            return i18n('directions.fromLocation.home')
+        if (address.includes(config.get().homeAddress) || config.get().homeAddress.includes(address)) {
+            return i18n.translate('directions.fromLocation.home')
         }
-        if (address.includes(config.workAddress) || config.workAddress.includes(address)) {
-            return i18n('directions.fromLocation.work')
+        if (address.includes(config.get().workAddress) || config.get().workAddress.includes(address)) {
+            return i18n.translate('directions.fromLocation.work')
         }
     
         return address.split(',')[0]
     },
 
     headsign: address => {
-        const config = configFactory.get()
-
-        if (config.locale === 'english') {
+        if (config.get().locale === 'en') {
             address = address.replace(/(.*)( Av| AV| Av\.| Ave)(\/|$|-|,| )(.*)/g, '$1 Avenue$3$4')
             address = address.replace(/(.*)( Rd)(\/|$|-|,| )(.*)/g, '$1 Road$3$4')
             address = address.replace(/(.*)( St| ST)(\/|$|-|,| )(.*)/g, '$1 Street$3$4')
@@ -49,18 +39,15 @@ module.exports = {
     },
     
     distance: distance => {
-        const i18n = i18nFactory.get()
-        const config = configFactory.get()
-    
-        if (config.unitSystem === 'imperial') {
+        if (config.get().unitSystem === 'imperial') {
             distance = metersToFeet(distance)
     
             if (distance > 5280) {
                 distance = +(Math.round(distance / 5280 + 'e+1') + 'e-1')
-                return i18n('units.distance.imperial.miles', { distance: distance })
+                return i18n.translate('units.distance.imperial.miles', { distance })
             } else {
                 distance = 100 * Math.floor(distance / 100)
-                return i18n('units.distance.imperial.feet', { distance: distance })
+                return i18n.translate('units.distance.imperial.feet', { distance })
             }
         } else {
             if (distance > 999) {
@@ -72,26 +59,25 @@ module.exports = {
                     distance = +(Math.round(distance + 'e+1') + 'e-1')
                 }
 
-                return i18n('units.distance.metric.kilometers', { distance: distance })
+                return i18n.translate('units.distance.metric.kilometers', { distance })
             } else {
                 distance = 10 * Math.floor(distance / 10)
-                return i18n('units.distance.metric.meters', { distance: distance })
+                return i18n.translate('units.distance.metric.meters', { distance })
             }
         }
     },
 
     duration: duration => {
-        const i18n = i18nFactory.get()
         const minutes = Math.round(duration / 60)
 
         if (minutes > 59) {
             const str =
-                i18n('units.duration.hours', { duration: Math.floor(minutes / 60) }) + ' ' +
-                i18n('joins.andSomething', { something: i18n('units.duration.minutes', { duration: minutes % 60 }) })
+                i18n.translate('units.duration.hours', { duration: Math.floor(minutes / 60) }) + ' ' +
+                i18n.translate('joins.andSomething', { something: i18n.translate('units.duration.minutes', { duration: minutes % 60 }) })
 
             return str
         } else {
-            return i18n('units.duration.minutes', { duration: minutes })
+            return i18n.translate('units.duration.minutes', { duration: minutes })
         }
     }
 }

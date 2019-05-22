@@ -1,4 +1,4 @@
-const { configFactory } = require('../../factories')
+import { config } from 'snips-toolkit'
 
 const buses = [
     'BUS',
@@ -12,7 +12,7 @@ const trains = [
     'LONG_DISTANCE_TRAIN'
 ]
 
-module.exports = {
+export const helpers = {
     isConnection: (aggregatedDirectionsData, currentIndex) => {
         const previousStep = aggregatedDirectionsData[currentIndex - 1]
         const currentStep = aggregatedDirectionsData[currentIndex]
@@ -53,10 +53,8 @@ module.exports = {
     },
 
     getFullAddress: (locationFrom, locationTo, directionsData) => {
-        const config = configFactory.get()
-
         let origin = locationFrom
-        if (!locationFrom.includes(config.homeAddress) && !locationFrom.includes(config.workAddress)) {
+        if (!locationFrom.includes(config.get().homeAddress) && !locationFrom.includes(config.get().workAddress)) {
             origin = directionsData.routes[0].legs[0].start_address_name
             if (!origin) {
                 origin = directionsData.routes[0].legs[0].start_address
@@ -64,7 +62,7 @@ module.exports = {
         }
 
         let destination = locationTo
-        if (!locationTo.includes(config.homeAddress) && !locationTo.includes(config.workAddress)) {
+        if (!locationTo.includes(config.get().homeAddress) && !locationTo.includes(config.get().workAddress)) {
             destination = directionsData.routes[0].legs[0].end_address_name
             if (!destination) {
                 destination = directionsData.routes[0].legs[0].end_address

@@ -1,15 +1,11 @@
-const { i18nFactory, directionsHttpFactory } = require('../factories')
-const { message, logger, translation, directions, slot, tts } = require('../utils')
-const commonHandler = require('./common')
-const {
-    SLOT_CONFIDENCE_THRESHOLD,
-    INTENT_FILTER_PROBABILITY_THRESHOLD
-} = require('../constants')
-const { Dialog } = require('hermes-javascript')
+import { Handler, message, logger, i18n } from 'snips-toolkit'
+import { translation, slot, tts, aggregate, helpers } from '../utils'
+import commonHandler, { KnownSlots } from './common'
+import { SLOT_CONFIDENCE_THRESHOLD, INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
+import { Enums } from 'hermes-javascript/types'
+import { calculateRoute } from '../api'
 
-module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
-    const i18n = i18nFactory.get()
-
+export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetArrivalTime')
 
     // Extracting slots
@@ -30,11 +26,11 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
 
         if (departureTimeSlot) {
             // Is it an InstantTime object?
-            if (departureTimeSlot.value.kind === Dialog.enums.slotType.instantTime) {
+            if (departureTimeSlot.value.kind === Enums.slotType.instantTime) {
                 departureTime = new Date(departureTimeSlot.value.value)
             }
             // Or is it a TimeInterval object?
-            else if (departureTimeSlot.value.kind === Dialog.enums.slotType.timeInterval) {
+            else if (departureTimeSlot.value.kind === Enums.slotType.timeInterval) {
                 const to = departureTimeSlot.value.to
                 if (to) {
                     departureTime = new Date(to)
@@ -72,7 +68,7 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
                 throw new Error('intentNotRecognized')
             }
 
-            return require('./index').getArrivalTime(msg, flow, hermes, {
+            return getArrivalTimeHandler(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 departure_time: departureTime,
@@ -81,12 +77,12 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
         })
 
         // intent not recognized
-
+        /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            msg.slots = []
-            return require('./index').getArrivalTime(msg, flow, hermes, knownSlots)
+            return getArrivalTimeHandler(msg, flow, hermes, knownSlots)
         })
+        */
 
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
@@ -95,7 +91,7 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
             flow.end()
         })
 
-        return i18n('directions.dialog.noOriginAddress')
+        return i18n.translate('directions.dialog.noOriginAddress')
     }
 
     // missing departure_time
@@ -105,12 +101,12 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
         }
 
         // intent not recognized
-
+        /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            msg.slots = []
-            return require('./index').getArrivalTime(msg, flow, hermes, knownSlots)
+            return getArrivalTimeHandler(msg, flow, hermes, knownSlots)
         })
+        */
 
         // elicitation intent
         flow.continue('snips-assistant:ElicitDepartureTime', (msg, flow) => {
@@ -118,7 +114,7 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
                 throw new Error('intentNotRecognized')
             }
 
-            return require('./index').getArrivalTime(msg, flow, hermes, {
+            return getArrivalTimeHandler(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_from: locationFrom,
                 location_to: locationTo,
@@ -133,12 +129,12 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
             flow.end()
         })
 
-        return i18n('directions.dialog.noDepartureTime')
+        return i18n.translate('directions.dialog.noDepartureTime')
     }
 
     // Are the origin and destination addresses the same?
     if (locationFrom.includes(locationTo) || locationTo.includes(locationFrom)) {
-        const speech = i18n('directions.dialog.sameLocations')
+        const speech = i18n.translate('directions.dialog.sameLocations')
         flow.end()
         logger.info(speech)
         return speech
@@ -147,19 +143,14 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
     const now = Date.now()
 
     // Get the data from Directions API
-    const directionsData = await directionsHttpFactory.calculateRoute({
-        origin: locationFrom,
-        destination: locationTo,
-        travelMode: travelMode,
-        departureTime: departureTime.getTime() / 1000
-    })
+    const directionsData = await calculateRoute(locationFrom, locationTo, travelMode, departureTime.getTime() / 1000)
     //logger.debug(directionsData)
 
     try {
-        const aggregatedDirectionsData = directions.aggregateDirections(directionsData)
+        const aggregatedDirectionsData = aggregate.aggregateDirections(directionsData)
         //logger.debug(aggregatedDirectionsData)
 
-        const { origin, destination } = directions.getFullAddress(locationFrom, locationTo, directionsData)
+        const { origin, destination } = helpers.getFullAddress(locationFrom, locationTo, directionsData)
 
         // With travel modes different from transit, the API doesn't return departure and arrival time
         // Same if the transit trip is too short and contains no public transportation steps
