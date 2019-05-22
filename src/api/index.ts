@@ -51,10 +51,10 @@ export function init() {
 
                 if (opts.context.originName || opts.context.destinationName) {
                     return wretch(BASE_URL_DIRECTIONS).query(query).get().res()
-                } else {
-                    return next(url, opts)
                 }
             }
+
+            return next(url, opts)
         }
     ])
 

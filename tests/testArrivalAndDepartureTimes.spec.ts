@@ -14,7 +14,7 @@ import './mocks/http'
 
 // Arrival time
 
-it('should ask to configure the current location of the device', async () => {
+it.only('should ask to configure the current location of the device', async () => {
     SnipsToolkit.config = {
         locale: 'english',
         current_region: 'uk',

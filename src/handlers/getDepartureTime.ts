@@ -15,7 +15,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
     } = await commonHandler(msg, knownSlots)
 
     // Get arrival_time specific slot
-    let arrivalTime
+    let arrivalTime : Date | undefined
 
     if (!('arrival_time' in knownSlots)) {
         const arrivalTimeSlot = message.getSlotsByName(msg, 'arrival_time', {
@@ -139,41 +139,43 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
         return speech
     }
 
-    const now = Date.now()
+    if (arrivalTime) {
+        const now = Date.now()
 
-    // Get the data from Directions API
-    const directionsData = await calculateRoute(locationFrom, locationTo, travelMode, undefined, arrivalTime.getTime() / 1000)
-    //logger.debug(directionsData)
+        // Get the data from Directions API
+        const directionsData = await calculateRoute(locationFrom, locationTo, travelMode, undefined, arrivalTime.getTime() / 1000)
+        //logger.debug(directionsData)
 
-    try {
-        const aggregatedDirectionsData = aggregate.aggregateDirections(directionsData)
-        //logger.debug(aggregatedDirectionsData)
+        try {
+            const aggregatedDirectionsData = aggregate.aggregateDirections(directionsData)
+            //logger.debug(aggregatedDirectionsData)
 
-        const { origin, destination } = helpers.getFullAddress(locationFrom, locationTo, directionsData)
+            const { origin, destination } = helpers.getFullAddress(locationFrom, locationTo, directionsData)
 
-        // With travel modes different from transit, the API doesn't return departure and arrival time
-        // Same if the transit trip is too short and contains no public transportation steps
-        let departureTimeEpoch, arrivalTimeEpoch
-        const leg = directionsData.routes[0].legs[0]
-        if (travelMode === 'transit' && leg.departure_time && leg.arrival_time) {
-            departureTimeEpoch = leg.departure_time.value
-            arrivalTimeEpoch = leg.arrival_time.value
-        } else {
-            arrivalTimeEpoch = arrivalTime.getTime() / 1000
-            departureTimeEpoch = arrivalTimeEpoch - leg.duration.value
+            // With travel modes different from transit, the API doesn't return departure and arrival time
+            // Same if the transit trip is too short and contains no public transportation steps
+            let departureTimeEpoch, arrivalTimeEpoch
+            const leg = directionsData.routes[0].legs[0]
+            if (travelMode === 'transit' && leg.departure_time && leg.arrival_time) {
+                departureTimeEpoch = leg.departure_time.value
+                arrivalTimeEpoch = leg.arrival_time.value
+            } else {
+                arrivalTimeEpoch = arrivalTime.getTime() / 1000
+                departureTimeEpoch = arrivalTimeEpoch - leg.duration.value
+            }
+
+            const speech = translation.departureTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
+            logger.info(speech)
+
+            flow.end()
+            if (Date.now() - now < 4000) {
+                return speech
+            } else {
+                tts.say(hermes, speech)
+            }
+        } catch (error) {
+            logger.error(error)
+            throw new Error('APIResponse')
         }
-
-        const speech = translation.departureTimeToSpeech(origin, destination, travelMode, departureTimeEpoch, arrivalTimeEpoch, aggregatedDirectionsData)
-        logger.info(speech)
-
-        flow.end()
-        if (Date.now() - now < 4000) {
-            return speech
-        } else {
-            tts.say(hermes, speech)
-        }
-    } catch (error) {
-        logger.error(error)
-        throw new Error('APIResponse')
     }
 }
