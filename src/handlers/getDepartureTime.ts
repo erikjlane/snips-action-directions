@@ -3,6 +3,7 @@ import { translation, slot, tts, aggregate, helpers } from '../utils'
 import commonHandler, { KnownSlots } from './common'
 import { SLOT_CONFIDENCE_THRESHOLD, INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
 import { calculateRoute } from '../api'
+import handlers from './index'
 
 export const getDepartureTimeHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetDepartureTime')
@@ -67,7 +68,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
                 throw new Error('intentNotRecognized')
             }
 
-            return getDepartureTimeHandler(msg, flow, hermes, {
+            return handlers.getDepartureTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 arrival_time: arrivalTime,
@@ -79,7 +80,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getDepartureTimeHandler(msg, flow, hermes, knownSlots)
+            return handlers.getDepartureTime(msg, flow, hermes, knownSlots)
         })
         */
 
@@ -103,7 +104,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getDepartureTimeHandler(msg, flow, hermes, knownSlots)
+            return handlers.getDepartureTime(msg, flow, hermes, knownSlots)
         })
         */
 
@@ -113,7 +114,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
                 throw new Error('intentNotRecognized')
             }
 
-            return getDepartureTimeHandler(msg, flow, hermes, {
+            return handlers.getDepartureTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_from: locationFrom,
                 location_to: locationTo,

@@ -13,7 +13,7 @@ import './mocks/http'
 
 it('should ask to configure the current location of the device', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: '',
         home_address: '21 Onslow Gardens',
@@ -37,7 +37,7 @@ it('should ask to configure the current location of the device', async () => {
 
 it('should ask to properly configure the current location of the device', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'random_value',
         home_address: '21 Onslow Gardens',
@@ -59,7 +59,7 @@ it('should ask to properly configure the current location of the device', async 
 
 it('should ask to properly configure the home location', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '',
@@ -81,7 +81,7 @@ it('should ask to properly configure the home location', async () => {
 
 it('should ask to properly configure the work location', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'work',
         home_address: '21 Onslow Gardens',
@@ -103,7 +103,7 @@ it('should ask to properly configure the work location', async () => {
 
 it('should break as the destination is missing', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -125,7 +125,7 @@ it('should break as the destination is missing', async () => {
 
 it('should set the current location as the origin', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -151,7 +151,7 @@ it('should set the current location as the origin', async () => {
 
 it('should ask the misunderstood origin and pass', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -200,7 +200,7 @@ it('should ask the misunderstood origin and pass', async () => {
 
 it('should ask the misunderstood origin twice and pass', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -271,7 +271,7 @@ it('should ask the misunderstood origin twice and pass', async () => {
 
 it('should ask the misunderstood origin twice and fail', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -354,7 +354,7 @@ it('should ask the misunderstood origin twice and fail', async () => {
 
 it('should query the directions to go to Buckingham Palace (default: home & transit)', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'home',
         home_address: '21 Onslow Gardens',
@@ -381,7 +381,7 @@ it('should query the directions to go to Buckingham Palace (default: home & tran
 //TODO: the user asked for a trip by bus, but another transit mode is returned by Google (metro)
 it('should query the directions to go from work to Buckingham Palace by bus', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'work',
         home_address: '21 Onslow Gardens',
@@ -409,7 +409,7 @@ it('should query the directions to go from work to Buckingham Palace by bus', as
 
 it('should suggest another travel mode instead of car', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'work',
         home_address: '21 Onslow Gardens',
@@ -438,7 +438,7 @@ it('should suggest another travel mode instead of car', async () => {
 
 it('should laugh of you', async () => {
     mockConfig({
-        locale: 'english',
+        locale: 'en',
         current_region: 'uk',
         current_location: 'work',
         home_address: '21 Onslow Gardens',

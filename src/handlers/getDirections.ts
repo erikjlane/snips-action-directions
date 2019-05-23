@@ -3,6 +3,7 @@ import commonHandler, { KnownSlots } from './common'
 import { INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
 import { Handler, i18n, logger } from 'snips-toolkit'
 import { calculateRoute } from '../api'
+import handlers from './index'
 
 export const getDirectionsHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetDirections')
@@ -31,7 +32,7 @@ export const getDirectionsHandler: Handler = async function (msg, flow, hermes, 
                 throw new Error('intentNotRecognized')
             }
 
-            return getDirectionsHandler(msg, flow, hermes, {
+            return handlers.getDirections(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 depth: knownSlots.depth - 1
@@ -42,7 +43,7 @@ export const getDirectionsHandler: Handler = async function (msg, flow, hermes, 
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getDirectionsHandler(msg, flow, hermes, knownSlots)
+            return handlers.getDirections(msg, flow, hermes, knownSlots)
         })
         */
 

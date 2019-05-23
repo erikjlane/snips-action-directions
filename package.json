@@ -26,7 +26,7 @@
   "dependencies": {
     "hermes-javascript": "^0.3.11",
     "moment": "^2.24.0",
-    "snips-toolkit": "^0.1.4",
+    "snips-toolkit": "^0.1.5",
     "wretch": "^1.5.2",
     "wretch-middlewares": "^0.1.10"
   },

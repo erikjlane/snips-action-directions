@@ -3,6 +3,7 @@ import commonHandler, { KnownSlots } from './common'
 import { INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
 import { i18n, Handler, logger } from 'snips-toolkit'
 import { calculateRoute } from '../api'
+import handlers from './index'
 
 export const getNavigationTimeHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetNavigationTime')
@@ -31,7 +32,7 @@ export const getNavigationTimeHandler: Handler = async function (msg, flow, herm
                 throw new Error('intentNotRecognized')
             }
 
-            return getNavigationTimeHandler(msg, flow, hermes, {
+            return handlers.getNavigationTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 depth: knownSlots.depth - 1
@@ -42,7 +43,7 @@ export const getNavigationTimeHandler: Handler = async function (msg, flow, herm
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getNavigationTimeHandler(msg, flow, hermes, knownSlots)
+            return handlers.getNavigationTime(msg, flow, hermes, knownSlots)
         })
         */
 

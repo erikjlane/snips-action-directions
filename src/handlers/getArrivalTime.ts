@@ -4,6 +4,7 @@ import commonHandler, { KnownSlots } from './common'
 import { SLOT_CONFIDENCE_THRESHOLD, INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
 import { Enums } from 'hermes-javascript/types'
 import { calculateRoute } from '../api'
+import handlers from './index'
 
 export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetArrivalTime')
@@ -68,7 +69,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
                 throw new Error('intentNotRecognized')
             }
 
-            return getArrivalTimeHandler(msg, flow, hermes, {
+            return handlers.getArrivalTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_to: locationTo,
                 departure_time: departureTime,
@@ -80,7 +81,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getArrivalTimeHandler(msg, flow, hermes, knownSlots)
+            return handlers.getArrivalTime(msg, flow, hermes, knownSlots)
         })
         */
 
@@ -104,7 +105,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
         /*
         flow.notRecognized((msg, flow) => {
             knownSlots.depth -= 1
-            return getArrivalTimeHandler(msg, flow, hermes, knownSlots)
+            return handlers.getArrivalTime(msg, flow, hermes, knownSlots)
         })
         */
 
@@ -114,7 +115,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
                 throw new Error('intentNotRecognized')
             }
 
-            return getArrivalTimeHandler(msg, flow, hermes, {
+            return handlers.getArrivalTime(msg, flow, hermes, {
                 travel_mode: travelMode,
                 location_from: locationFrom,
                 location_to: locationTo,
