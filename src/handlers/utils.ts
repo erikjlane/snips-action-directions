@@ -1,5 +1,5 @@
 import { config } from 'snips-toolkit'
-import { WORK_SYNONYMS, HOME_SYNONYMS } from '../constants'
+import { WORK_SYNONYMS, HOME_SYNONYMS, TRAVEL_MODE_VARIABLES } from '../constants'
 
 export const getCurrentLocation = function() {
     if (config.get().currentLocation) {
@@ -70,4 +70,9 @@ export const checkCurrentCoordinates = function() {
     if (!config.get().currentCoordinates) {
         throw new Error('noCurrentCoordinates')
     }
+}
+
+export function containsFlag(flag: string, travelMode: string): boolean {
+    const flags = TRAVEL_MODE_VARIABLES[config.get().locale]
+    return flags && flags[flag] && travelMode === flags[flag]
 }

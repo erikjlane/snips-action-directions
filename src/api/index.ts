@@ -65,3 +65,4 @@ export function init() {
 
 export * from './calculateRoute'
 export * from './nearbySearch'
+export * from './types'

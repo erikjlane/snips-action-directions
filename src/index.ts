@@ -17,7 +17,7 @@ export default async function ({
         const { name } = require('../package.json')
         logger.init(name)
         // Replace 'error' with '*' to log everything
-        logger.enable('error')
+        logger.enable('*')
 
         config.init()
         await i18n.init(config.get().locale)

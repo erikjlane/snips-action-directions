@@ -1,8 +1,9 @@
 import { i18n } from 'snips-toolkit'
 import { beautify, helpers } from '../utils'
+import { AggregatedData } from '../api'
 
 export const translation = {
-    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, directionsData, durationInTraffic?: number) {
+    navigationTimeToSpeech (locationFrom, locationTo, travelMode, duration, directionsData: AggregatedData[], durationInTraffic?: number) {
         let tts = ''
 
         // If no route has been found by travelMode
@@ -40,7 +41,7 @@ export const translation = {
         return tts
     },
 
-    departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
+    departureTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData: AggregatedData[]) {
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
@@ -66,7 +67,7 @@ export const translation = {
         return tts
     },
 
-    arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData) {
+    arrivalTimeToSpeech (locationFrom, locationTo, travelMode, departureTime, arrivalTime, directionsData: AggregatedData[]) {
         // Date object handles the epoch in ms
         const departureTimeDate = new Date(departureTime * 1000)
         const arrivalTimeDate = new Date(arrivalTime * 1000)
@@ -92,7 +93,7 @@ export const translation = {
         return tts
     },
 
-    directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData) {
+    directionsToSpeech (locationFrom, locationTo, travelMode, duration, distance, directionsData: AggregatedData[]): string {
         let tts = ''
 
         // If no route has been found by travelMode
@@ -144,20 +145,24 @@ export const translation = {
                     } else {
                         // If the next step is a metro step, adapt the sentence accordingly
                         const nextStep = directionsData[i + 1]
-                        tts += i18n.translate('directions.directions.transit.walkToMetro', {
-                            arrival_stop: beautify.headsign(nextStep.departure_stop),
-                            duration: beautify.duration(currentStep.duration)
-                        })
+                        if (nextStep.departure_stop) {
+                            tts += i18n.translate('directions.directions.transit.walkToMetro', {
+                                arrival_stop: beautify.headsign(nextStep.departure_stop),
+                                duration: beautify.duration(currentStep.duration)
+                            })
+                        }
                     }
                 }
                 else if (currentStep.travel_mode === 'TRANSIT') {
                     connection = false
 
-                    tts += i18n.translate('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
-                        line_name: currentStep.line_name,
-                        headsign: beautify.headsign(currentStep.headsign),
-                        arrival_stop: beautify.headsign(currentStep.arrival_stop)
-                    })
+                    if (currentStep.headsign && currentStep.arrival_stop) {
+                        tts += i18n.translate('directions.directions.transit.' + (connection ? 'connectionMetro' : 'metro'), {
+                            line_name: currentStep.line_name,
+                            headsign: beautify.headsign(currentStep.headsign),
+                            arrival_stop: beautify.headsign(currentStep.arrival_stop)
+                        })
+                    }
                 }
                 tts += ' '
             }

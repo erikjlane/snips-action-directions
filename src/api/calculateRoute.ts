@@ -1,14 +1,15 @@
-import { config } from 'snips-toolkit'
+import { config, logger } from 'snips-toolkit'
 import { directionsRequest } from './index'
+import { CalculateRoutePayload } from './types'
 
-export async function calculateRoute(origin: string, destination: string, travelMode: string, departureTime?: number, arrivalTime?: number) {
+export async function calculateRoute(origin: string, destination: string, travelMode: string, departureTime?: number, arrivalTime?: number): Promise<CalculateRoutePayload> {
     let query = {
         origin,
         destination,
         mode: travelMode,
         transit_mode: '',
         departure_time: departureTime || 'now',
-        arrival_time: arrivalTime,
+        arrival_time: arrivalTime || '',
         units: config.get().unitSystem,
         region: config.get().currentRegion,
         language: config.get().locale
@@ -32,12 +33,13 @@ export async function calculateRoute(origin: string, destination: string, travel
         .get()
         .json()
         .catch(error => {
+            logger.error(error)
             // Network error
             if (error.name === 'TypeError')
                 throw new Error('APIRequest')
             // Other error
             throw new Error('APIResponse')
-        })
+        }) as CalculateRoutePayload
     
     if (results) {
         if (results.status === 'ZERO_RESULTS' || results.status === 'NOT FOUND') {

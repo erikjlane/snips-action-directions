@@ -46,7 +46,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
         arrivalTime = knownSlots.arrival_time
     }
 
-    logger.info('\tarrival_time: ', arrivalTime)
+    logger.info('\tarrival_time: ', arrivalTime ? arrivalTime.toString() : undefined)
 
     // One required slot is missing
     if (slot.missing(locationTo)) {

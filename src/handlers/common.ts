@@ -1,7 +1,7 @@
 import { message, logger } from 'snips-toolkit'
 import { SLOT_CONFIDENCE_THRESHOLD } from '../constants'
 import { NluSlot, slotType, IntentMessage } from 'hermes-javascript/types'
-import { checkCurrentCoordinates, getCompleteAddress, getCurrentLocation } from './utils'
+import { checkCurrentCoordinates, getCompleteAddress, getCurrentLocation, containsFlag } from './utils'
 
 export type KnownSlots = {
     depth: number,
@@ -58,15 +58,14 @@ export default async function(msg: IntentMessage, knownSlots: KnownSlots) {
         })
 
         if (travelModeSlot) {
-            const travelModeAvailable = {
-                bike: 'bicycling',
-                car: 'driving',
-                walk: 'walking',
-                subway: 'transit',
-                train: 'train',
-                bus: 'bus'
-            }
-            travelMode = travelModeAvailable[travelModeSlot.value.value] || 'transit'
+            const travelModeValue = travelModeSlot.value.value
+            if (containsFlag('subway', travelModeValue)) travelMode = 'transit'
+            else if (containsFlag('bike', travelModeValue)) travelMode = 'bicycling'
+            else if (containsFlag('car', travelModeValue)) travelMode = 'driving'
+            else if (containsFlag('walk', travelModeValue)) travelMode = 'walking'
+            else if (containsFlag('train', travelModeValue)) travelMode = 'train'
+            else if (containsFlag('bus', travelModeValue)) travelMode = 'bus'
+            else travelMode = 'transit'
         } else {
             travelMode = 'transit'
         }

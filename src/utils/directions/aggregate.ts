@@ -1,37 +1,24 @@
-function resetAccumulatorItem(nbSteps) {
-    return Array.from({length: nbSteps}, () => ({
-        travel_mode: null,
-        distance: 0,
-        duration: 0,
-        line_name: null,
-        headsign: null,
-        departure_stop: null,
-        arrival_stop: null
-    }))
-}
+import { CalculateRoutePayload, Step, AggregatedData } from '../../api'
 
 export const aggregate = {
-    aggregateDirections: directionsData => {
-        const steps = directionsData.routes[0].legs[0].steps
-        const finalData = resetAccumulatorItem(steps.length)
+    aggregateDirections: (directionsData: CalculateRoutePayload): AggregatedData[] => {
+        const steps: Step[] = directionsData.routes[0].legs[0].steps
+        let data: AggregatedData[] = []
 
-        let i = 0
-        for (let element of Object.values(steps)) {
-            finalData[i].travel_mode = element.travel_mode
-            finalData[i].distance = element.distance.value
-            finalData[i].duration = element.duration.value
-
-            if (element.travel_mode === 'TRANSIT') {
-                finalData[i].line_name = element.transit_details.line.short_name
-                finalData[i].vehicle_type = element.transit_details.line.vehicle.type
-                finalData[i].headsign = element.transit_details.headsign
-                finalData[i].departure_stop = element.transit_details.departure_stop.name
-                finalData[i].arrival_stop = element.transit_details.arrival_stop.name
-            }
-
-            i++
+        for (let i = 0; i < steps.length; i++) {
+            const step = steps[i]
+            data.push({
+                travel_mode: step.travel_mode,
+                distance: step.distance.value,
+                duration: step.duration.value,
+                line_name: (step.transit_details) ? step.transit_details.line.short_name : undefined,
+                vehicle_type: (step.transit_details) ? step.transit_details.line.vehicle.type : undefined,
+                headsign: (step.transit_details) ? step.transit_details.headsign : undefined,
+                departure_stop: (step.transit_details) ? step.transit_details.departure_stop.name : undefined,
+                arrival_stop: (step.transit_details) ? step.transit_details.arrival_stop.name : undefined,
+            })
         }
 
-        return finalData
+        return data
     }
 }

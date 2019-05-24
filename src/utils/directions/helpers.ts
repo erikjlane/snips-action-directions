@@ -1,4 +1,5 @@
 import { config } from 'snips-toolkit'
+import { AggregatedData } from '../../api';
 
 const buses = [
     'BUS',
@@ -13,7 +14,7 @@ const trains = [
 ]
 
 export const helpers = {
-    isConnection: (aggregatedDirectionsData, currentIndex) => {
+    isConnection: (aggregatedDirectionsData, currentIndex): boolean => {
         const previousStep = aggregatedDirectionsData[currentIndex - 1]
         const currentStep = aggregatedDirectionsData[currentIndex]
         const nextStep = aggregatedDirectionsData[currentIndex + 1]
@@ -24,26 +25,26 @@ export const helpers = {
             nextStep.travel_mode === 'TRANSIT'
     },
 
-    noStepByTravelMode: (travelMode, aggregatedDirectionsData) => {
-        for (let element of Object.values(aggregatedDirectionsData)) {
+    noStepByTravelMode: (travelMode, aggregatedData: AggregatedData[]): boolean => {
+        for (let data of Object.values(aggregatedData)) {
             switch (travelMode) {
                 case 'walking':
-                    if (element.travel_mode === 'WALKING') return false
+                    if (data.travel_mode === 'WALKING') return false
                     break
                 case 'bicycling':
-                    if (element.travel_mode === 'BICYCLING') return false
+                    if (data.travel_mode === 'BICYCLING') return false
                     break
                 case 'driving':
-                    if (element.travel_mode === 'DRIVING') return false
+                    if (data.travel_mode === 'DRIVING') return false
                     break
                 case 'transit':
-                    if (element.travel_mode === 'TRANSIT') return false
+                    if (data.travel_mode === 'TRANSIT') return false
                     break
                 case 'bus':
-                    if (element.travel_mode === 'TRANSIT' && buses.includes(element.vehicle_type)) return false
+                    if (data.travel_mode === 'TRANSIT' && data.vehicle_type && buses.includes(data.vehicle_type)) return false
                     break
                 case 'train':
-                    if (element.travel_mode === 'TRANSIT' && trains.includes(element.vehicle_type)) return false
+                    if (data.travel_mode === 'TRANSIT' && data.vehicle_type && trains.includes(data.vehicle_type)) return false
                     break
                 default:
                     break
@@ -72,18 +73,18 @@ export const helpers = {
         return { origin, destination }
     },
 
-    chosenTravelMode: aggregatedDirectionsData => {
+    chosenTravelMode: (aggregatedData: AggregatedData[]): string => {
         const defaultTravelMode = 'walking'
         let chosenTravelMode = defaultTravelMode
 
-        for (let element of Object.values(aggregatedDirectionsData)) {
-            if (buses.includes(element.vehicle_type)) {
+        for (let data of Object.values(aggregatedData)) {
+            if (data.vehicle_type && buses.includes(data.vehicle_type)) {
                 if (chosenTravelMode !== defaultTravelMode) {
                     return 'transit'
                 }
                 chosenTravelMode = 'bus'
             }
-            if (trains.includes(element.vehicle_type)) {
+            if (data.vehicle_type && trains.includes(data.vehicle_type)) {
                 if (chosenTravelMode !== defaultTravelMode) {
                     return 'transit'
                 }
