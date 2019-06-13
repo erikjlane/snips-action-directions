@@ -35,7 +35,8 @@
             "noDestinationAddressAndArrivalTime": "Désolé, pouvez-vous répéter où vous souhaitez vous rendre, ainsi que l'heure à laquelle vous souhaitez y être ?",
             "noDepartureTime": "Désolé, pouvez-vous répéter l'heure à laquelle vous souhaitez partir ?",
             "sameLocations": "Super ! Il semble que vous soyez déjà là où vous souhaitiez aller !",
-            "noTripWithTravelMode": "Désolé, je n'ai pas de trajet pertinent à vous proposer en {{ travel_mode }}."
+            "noTripWithTravelMode": "Désolé, je n'ai pas de trajet pertinent à vous proposer en {{ travel_mode }}.",
+            "tooLongToExplain": "Cet itinéraire est trop long à détailler."
         },
         "navigationTime": {
             "transit": "Se rendre de {{- location_from }} à {{- location_to }} en transports en commun prend habituellement {{ duration }}.",
@@ -91,6 +92,7 @@
                 ]
             },
             "walking": {
+                "tooLongToExplain": "Votre itinéraire à pied est trop long à détailler.",
                 "toDestination": [
                     "Se rendre de {{- location_from }} à {{- location_to }} à pied vous prendra {{ duration }}. Le trajet fait {{ distance }}.",
                     "Marcher de {{- location_from }} jusqu'à {{- location_to }} vous prendra {{ duration }}. Le trajet fait {{ distance }}.",
@@ -99,6 +101,7 @@
                 ]
             },
             "bicycling": {
+                "tooLongToExplain": "Votre itinéraire à vélo est trop long à détailler.",
                 "toDestination": [
                     "Se rendre de {{- location_from }} à {{- location_to }} à vélo vous prendra {{ duration }}. Le trajet fait {{ distance }}.",
                     "À vélo, vous mettrez {{ duration }} pour vous rendre de {{- location_from }} à {{ location_to}}. Le trajet fait {{ distance }}.",
@@ -106,6 +109,7 @@
                 ]
             },
             "driving": {
+                "tooLongToExplain": "Votre itinéraire en voiture est trop long à détailler.",
                 "toDestination": [
                     "Se rendre de {{- location_from }} à {{- location_to }} en voiture vous prendra {{ duration }}. Le trajet fait {{ distance }}.",
                     "En voiture, vous mettrez {{ duration }} pour vous rendre de {{- location_from }} à {{ location_to}}. Le trajet fait {{ distance }}.",

@@ -35,7 +35,8 @@
             "noDestinationAddressAndArrivalTime": "I'm sorry, can you repeat where you want to go as well as the time you want to arrive there?",
             "noDepartureTime": "I'm sorry, can you repeat the time you want to leave at?",
             "sameLocations": "Good news! It seems that you are already where you wanted to be!",
-            "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you by {{ travel_mode }}."
+            "noTripWithTravelMode": "Sorry, I do not have a relevant route to offer you by {{ travel_mode }}.",
+            "tooLongToExplain": "This itinerary is too long to explain."
         },
         "navigationTime": {
             "transit": "Going from {{- location_from }} to {{- location_to }} by public transport usually takes {{ duration }}.",
@@ -85,21 +86,25 @@
             },
             "train": {
                 "toDestination": [
-                    "Going from {{- location_from }} to {{- location_to }} by train usually takes {{ duration }}."                ]
+                    "Going from {{- location_from }} to {{- location_to }} by train usually takes {{ duration }}."
+                ]
             },
             "walking": {
+                "tooLongToExplain": "Your itinerary by foot is too long to explain.",
                 "toDestination": [
                     "Walking from {{- location_from }} to {{- location_to }} usually takes {{ duration }}. The trip is {{ distance }} long.",
                     "The trip from {{- location_from }} to {{- location_to }} is {{ distance }} long. By foot, you should plan {{ duration }}."
                 ]
             },
             "bicycling": {
+                "tooLongToExplain": "Your itinerary by bike is too long to explain.",
                 "toDestination": [
                     "Bicycling from {{- location_from }} to {{- location_to }} usually takes {{ duration }}. The trip is {{ distance }} long.",
                     "The trip from {{- location_from }} to {{- location_to }} is {{ distance }} long. By bike, you should plan {{ duration }}."
                 ]
             },
             "driving": {
+                "tooLongToExplain": "Your itinerary by car is too long to explain.",
                 "toDestination": [
                     "Driving from {{- location_from }} to {{- location_to }} usually takes {{ duration }}. The trip is {{ distance }} long.",
                     "The trip from {{- location_from }} to {{- location_to }} is {{ distance }} long. By car, you should plan {{ duration }}."

@@ -143,6 +143,11 @@ module.exports = {
             travelMode = chosenTravelMode(directionsData)
         }
 
+        if (travelMode !== 'transit' && travelMode !== 'train' && travelMode !== 'bus') {
+            tts += i18n('directions.dialog.tooLongToExplain')
+            tts += ' '
+        }
+
         // Time to get there by travelMode
         tts += randomTranslation('directions.directions.' + travelMode + '.toDestination', {
             location_from: beautify.address(locationFrom),
