@@ -91,7 +91,7 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
         })
-        flow.continue('snips-assistant:Stop', (_, flow) => {
+        flow.continue('snips-assistant:StopSilence', (_, flow) => {
             flow.end()
         })
 
@@ -129,7 +129,7 @@ module.exports = async function (msg, flow, hermes, knownSlots = { depth: 2 }) {
         flow.continue('snips-assistant:Cancel', (_, flow) => {
             flow.end()
         })
-        flow.continue('snips-assistant:Stop', (_, flow) => {
+        flow.continue('snips-assistant:StopSilence', (_, flow) => {
             flow.end()
         })
 
