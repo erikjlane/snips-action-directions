@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
-    "snips-toolkit-runner": "^1.0.0",
     "wretch": "^1.5.2",
     "wretch-middlewares": "^0.1.10"
   },
