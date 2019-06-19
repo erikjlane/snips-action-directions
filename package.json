@@ -21,12 +21,12 @@
     "@typescript-eslint/parser": "^1.9.0",
     "eslint": "^5.12.0",
     "eslint-plugin-jest": "^22.5.1",
+    "hermes-javascript": "^0.3.12",
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "hermes-javascript": "^0.3.11",
     "moment": "^2.24.0",
-    "snips-toolkit": "^0.1.5",
+    "snips-toolkit": "^1.0.1",
     "wretch": "^1.5.2",
     "wretch-middlewares": "^0.1.10"
   },
