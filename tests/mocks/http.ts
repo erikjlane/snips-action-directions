@@ -41,7 +41,8 @@ SnipsToolkit.mock.http(fetchMock => {
                 vicinity: 'London'
             }
         ],
-        status: 'OK'
+        //status: 'OK'
+        status: 200
     })
 
     fetchMock.mock('glob:*api/place/nearbysearch*', {
@@ -84,7 +85,8 @@ SnipsToolkit.mock.http(fetchMock => {
                 vicinity: 'London'
             }
         ],
-        status: 'OK'
+        //status: 'OK'
+        status: 200
     })
 
     fetchMock.mock('glob:*api/directions*', {
@@ -358,7 +360,8 @@ SnipsToolkit.mock.http(fetchMock => {
                 ]
             }
         ],
-        status: 'OK'
+        //status: 'OK'
+        status: 200
     })
 
     return fetchMock
