@@ -1,5 +1,5 @@
 import { config } from 'snips-toolkit'
-import { AggregatedData } from '../../api';
+import { AggregatedData } from '../../api'
 
 const buses = [
     'BUS',
