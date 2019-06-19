@@ -2,7 +2,7 @@
 
 Snips action code for the Directions app
 
-[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
+[![Build Status](https://travis-ci.org/snipsco/snips-action-directions.svg?branch=master)](https://travis-ci.org/snipsco/snips-action-directions)
 
 ## Setup
 
