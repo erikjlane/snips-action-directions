@@ -106,7 +106,7 @@ export const translation = {
         }
 
         if (travelMode !== 'transit' && travelMode !== 'train' && travelMode !== 'bus') {
-            tts += i18n('directions.dialog.tooLongToExplain')
+            tts += i18n.translate('directions.dialog.tooLongToExplain')
             tts += ' '
         }
 
