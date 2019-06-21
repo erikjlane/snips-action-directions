@@ -90,3 +90,4 @@ typings/
 
 # Package manager
 pnpm-lock.yaml
+package-lock.json
