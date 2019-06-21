@@ -16,7 +16,7 @@ export const slot = {
         const slot = message.getSlotsByName(msg, slotName, {
             onlyMostConfident: true
         })
-    
+
         if (slot) {
             return slot.confidenceScore < SLOT_CONFIDENCE_THRESHOLD
         }

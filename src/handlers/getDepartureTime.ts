@@ -52,7 +52,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
     if (slot.missing(locationTo)) {
         throw new Error('intentNotRecognized')
     }
-    
+
     if (slot.providedButNotUnderstood(msg, 'location_from')) {
         if (slot.missing(arrivalTime)) {
             throw new Error('intentNotRecognized')
@@ -128,7 +128,7 @@ export const getDepartureTimeHandler: Handler = async function (msg, flow, herme
         flow.continue('snips-assistant:StopSilence', (_, flow) => {
             flow.end()
         })
-        
+
         return i18n.translate('directions.dialog.noArrivalTime')
     }
 

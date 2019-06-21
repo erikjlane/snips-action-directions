@@ -7,7 +7,7 @@ import handlers from './index'
 
 export const getNavigationTimeHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetNavigationTime')
-    
+
     // Extracting slots
     const {
         locationFrom,
@@ -82,7 +82,7 @@ export const getNavigationTimeHandler: Handler = async function (msg, flow, herm
         if (travelMode === 'driving') {
             durationInTraffic = directionsData.routes[0].legs[0].duration_in_traffic.value
         }
-        
+
         const speech = translation.navigationTimeToSpeech(origin, destination, travelMode, duration, aggregatedDirectionsData, durationInTraffic)
         logger.info(speech)
 

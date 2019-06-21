@@ -323,7 +323,7 @@ it('should ask the missing origin twice and fail', async () => {
         ]
     })
     expect(getMessageKey(whichOriginMsg1)).toBe('directions.dialog.noOriginAddress')
-    
+
     const whichOriginMsg2 = await session.continue({
         intentName: 'snips-assistant:ElicitOrigin',
         input: 'I want to go',

@@ -18,7 +18,7 @@ export const beautify = {
             .format(i18n.translate('moment.time'))
             .replace(' 0', '')
     },
-    
+
     address: (address: string): string => {
         if (address.includes(config.get().homeAddress) || config.get().homeAddress.includes(address)) {
             return i18n.translate('directions.fromLocation.home')
@@ -26,7 +26,7 @@ export const beautify = {
         if (address.includes(config.get().workAddress) || config.get().workAddress.includes(address)) {
             return i18n.translate('directions.fromLocation.work')
         }
-    
+
         return address.split(',')[0]
     },
 
@@ -42,11 +42,11 @@ export const beautify = {
 
         return address
     },
-    
+
     distance: (distance: number): string => {
         if (config.get().unitSystem === 'imperial') {
             distance = metersToFeet(distance)
-    
+
             if (distance > 5280) {
                 distance = round(distance / 5280, 1)
                 return i18n.translate('units.distance.imperial.miles', { distance })

@@ -37,7 +37,7 @@ export function init() {
             // Destination
             if (opts.destination !== config.get().homeAddress && opts.destination !== config.get().workAddress) {
                 const destinationPlaces = await nearbySearch(config.get().currentCoordinates, opts.destination)
-                
+
                 const destinationPlace = destinationPlaces.results[0]
                 if (destinationPlaces.status !== 'ZERO_RESULTS' && destinationPlace) {
                     // Storing the name
