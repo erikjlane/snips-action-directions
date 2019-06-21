@@ -11,7 +11,7 @@ export default async function ({
     done
 }: {
     hermes: Hermes,
-    done: Done 
+    done: Done
 }) {
     try {
         const { name } = require('../package.json')

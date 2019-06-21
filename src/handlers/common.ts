@@ -52,7 +52,7 @@ export default async function(msg: IntentMessage, knownSlots: KnownSlots) {
 
     // Slot travel_mode
     if (!('travel_mode' in knownSlots)) {
-        const travelModeSlot: NluSlot<slotType.custom> | null = message.getSlotsByName(msg, 'travel_mode', { 
+        const travelModeSlot: NluSlot<slotType.custom> | null = message.getSlotsByName(msg, 'travel_mode', {
             onlyMostConfident: true,
             threshold: SLOT_CONFIDENCE_THRESHOLD
         })

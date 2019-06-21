@@ -7,7 +7,7 @@ import handlers from './index'
 
 export const getDirectionsHandler: Handler = async function (msg, flow, hermes, knownSlots: KnownSlots = { depth: 2 }) {
     logger.info('GetDirections')
-    
+
     // Extracting slots
     const {
         locationFrom,
