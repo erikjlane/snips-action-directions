@@ -1,7 +1,7 @@
 import { translation, slot, tts, aggregate, helpers } from '../utils'
 import commonHandler, { KnownSlots } from './common'
 import { INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
-import { Handler, i18n, logger } from 'snips-toolkit'
+import { Handler, i18n, logger, config } from 'snips-toolkit'
 import { calculateRoute, CalculateRoutePayload } from '../api'
 import handlers from './index'
 
@@ -27,7 +27,7 @@ export const getDirectionsHandler: Handler = async function (msg, flow, hermes, 
         }
 
         // elicitation intent
-        flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:ElicitOrigin`, (msg, flow) => {
             if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
@@ -47,10 +47,10 @@ export const getDirectionsHandler: Handler = async function (msg, flow, hermes, 
         })
         */
 
-        flow.continue('snips-assistant:Cancel', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:Cancel`, (_, flow) => {
             flow.end()
         })
-        flow.continue('snips-assistant:StopSilence', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:StopSilence`, (_, flow) => {
             flow.end()
         })
 

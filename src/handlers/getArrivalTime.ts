@@ -1,4 +1,4 @@
-import { Handler, message, logger, i18n } from 'snips-toolkit'
+import { Handler, message, logger, i18n, config } from 'snips-toolkit'
 import { translation, slot, tts, aggregate, helpers } from '../utils'
 import commonHandler, { KnownSlots } from './common'
 import { SLOT_CONFIDENCE_THRESHOLD, INTENT_FILTER_PROBABILITY_THRESHOLD } from '../constants'
@@ -64,7 +64,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
         }
 
         // elicitation intent
-        flow.continue('snips-assistant:ElicitOrigin', (msg, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:ElicitOrigin`, (msg, flow) => {
             if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
@@ -85,10 +85,10 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
         })
         */
 
-        flow.continue('snips-assistant:Cancel', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:Cancel`, (_, flow) => {
             flow.end()
         })
-        flow.continue('snips-assistant:StopSilence', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:StopSilence`, (_, flow) => {
             flow.end()
         })
 
@@ -110,7 +110,7 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
         */
 
         // elicitation intent
-        flow.continue('snips-assistant:ElicitDepartureTime', (msg, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:ElicitDepartureTime`, (msg, flow) => {
             if (msg.intent.confidenceScore < INTENT_FILTER_PROBABILITY_THRESHOLD) {
                 throw new Error('intentNotRecognized')
             }
@@ -123,10 +123,10 @@ export const getArrivalTimeHandler: Handler = async function (msg, flow, hermes,
             })
         })
 
-        flow.continue('snips-assistant:Cancel', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:Cancel`, (_, flow) => {
             flow.end()
         })
-        flow.continue('snips-assistant:StopSilence', (_, flow) => {
+        flow.continue(`${ config.get().assistantPrefix }:StopSilence`, (_, flow) => {
             flow.end()
         })
 

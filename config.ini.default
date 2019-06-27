@@ -11,3 +11,4 @@ work_address=
 work_city=New York City
 unit_system=metric
 api_key=
+assistant_prefix=snips-assistant

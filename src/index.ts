@@ -28,19 +28,19 @@ export default async function ({
         // Subscribe to the app intents
         dialog.flows([
             {
-                intent: 'snips-assistant:GetNavigationTime',
+                intent: `${ config.get().assistantPrefix }:GetNavigationTime`,
                 action: (msg, flow) => handlers.getNavigationTime(msg, flow, hermes)
             },
             {
-                intent: 'snips-assistant:GetDepartureTime',
+                intent: `${ config.get().assistantPrefix }:GetDepartureTime`,
                 action: (msg, flow) => handlers.getDepartureTime(msg, flow, hermes)
             },
             {
-                intent: 'snips-assistant:GetArrivalTime',
+                intent: `${ config.get().assistantPrefix }:GetArrivalTime`,
                 action: (msg, flow) => handlers.getArrivalTime(msg, flow, hermes)
             },
             {
-                intent: 'snips-assistant:GetDirections',
+                intent: `${ config.get().assistantPrefix }:GetDirections`,
                 action: (msg, flow) => handlers.getDirections(msg, flow, hermes)
             }
         ])
