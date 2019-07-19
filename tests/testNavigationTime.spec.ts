@@ -11,6 +11,10 @@ const { getMessageKey, getMessageOptions } = Tools
 
 import './mocks/http'
 
+SnipsToolkit.mock.config(config => {
+    config.apiKey = 'fake_api_key'
+})
+
 it('should ask to configure the current location of the device', async () => {
     mockConfig({
         locale: 'en',
